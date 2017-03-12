@@ -12,9 +12,12 @@ namespace PRPG {
         public const int PlayerSize = 32;
         public Vector2 pos;
         public Texture2D tex;
+        public List<string> items;
 
         public Player(Vector2 pos) {
             this.pos = pos;
+            items = new List<string>();
+            items.Add("Gold");
             tex = GetSolidTex(PlayerSize, PlayerSize, Color.Red);
         }
 
