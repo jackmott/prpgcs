@@ -42,6 +42,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Item.cs" />
     <Compile Include="Trade.cs" />
     <Compile Include="Dialogue.cs" />
     <Compile Include="Noise.cs" />

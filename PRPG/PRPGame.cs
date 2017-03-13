@@ -135,12 +135,12 @@ namespace PRPG {
                 }
                 else if (IsNewKeyPress(Keys.Right)) {
                     Trade.IncColumn();
-                }
-                else if (IsNewKeyPress(Keys.Enter)) {
-                    command = GameCommand.NONE;
-                }
+                }                
                 else if (IsNewKeyPress(Keys.E)) {
                     command = GameCommand.BACK;
+                }
+                else if (IsNewKeyPress(Keys.Enter)) {
+                    Trade.MoveItem();
                 }
             }
             else {

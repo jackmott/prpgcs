@@ -7,17 +7,16 @@ using Microsoft.Xna.Framework.Input;
 
 using static PRPG.ProgrammerArt;
 namespace PRPG {
-    public class Player {
+    public class Player :Entity {
 
         public const int PlayerSize = 32;
         public Vector2 pos;
-        public Texture2D tex;
-        public List<string> items;
+        public Texture2D tex;        
 
         public Player(Vector2 pos) {
             this.pos = pos;
-            items = new List<string>();
-            items.Add("Gold");
+            items = new List<Item>();
+            items.Add(new Item(100, "Gold"));
             tex = GetSolidTex(PlayerSize, PlayerSize, Color.Red);
         }
 

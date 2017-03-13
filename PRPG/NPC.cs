@@ -19,7 +19,34 @@ namespace PRPG {
         }
     }
 
-    public class NPC {
+    public class Entity {
+        public List<Item> items;
+
+        public void AddItem(Item item) {
+            var existingItem = items.Find(x => x.name.Equals(item.name));
+            if (existingItem != null) {
+                existingItem.count++;
+            }
+            else {
+                items.Add(item);
+            }            
+        }
+
+        public void RemoveItem(Item item) {
+            var existingItem = items.Find(x => x.name.Equals(item.name));
+            if (existingItem != null) {
+                if (existingItem.count == 1)
+                    items.RemoveAll(x => x.name.Equals(item.name));
+                else
+                    existingItem.count--;
+            }
+            else {
+                items.Remove(item);
+            }            
+        }
+    }
+
+    public class NPC : Entity {
 
         private static Dictionary<NPCStateTransition, ENPCState> stateMachine = 
             new Dictionary<NPCStateTransition, ENPCState> {
@@ -33,16 +60,16 @@ namespace PRPG {
         public string name;
         public Vector2 pos;
         public Texture2D tex;
-        public List<string> items;
+       
         
 
         public NPC(Vector2 pos) {            
             state = ENPCState.ROAM;
             this.pos = pos;
             name = "Fred";
-            items = new List<string>();
-            items.Add("Guns");
-            items.Add("Butter");
+            items = new List<Item>();
+            items.Add(new Item(1,"Guns"));
+            items.Add(new Item(10,"Butter"));
             tex = GetSolidTex(NPCSize, NPCSize, Color.Purple);
         }
 
