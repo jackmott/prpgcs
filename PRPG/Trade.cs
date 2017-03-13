@@ -24,6 +24,10 @@ namespace PRPG {
         private static Inventory npcItems;
         private static Inventory playerItems;
 
+        private enum TradeState {NONE,GOOD,BAD };
+        private static TradeState tradeState;
+
+
 
         private static NPC npc;
         private static Player player;
@@ -39,6 +43,7 @@ namespace PRPG {
         public static void Setup(Player _player, NPC _npc) {
             npcItems.Clear();
             playerItems.Clear();
+            tradeState = TradeState.NONE;
             npc = _npc;
             player = _player;
             foreach (var slot in npc.items) {
@@ -49,17 +54,23 @@ namespace PRPG {
             }
         }
 
-        public static void Accept() {
-            PRPGame.player.items.Clear();
-            foreach (var slot in playerItems) {
-                PRPGame.player.items.Add(slot);
+        public static bool Accept() {           
+            if (tradeState == TradeState.GOOD) {
+                PRPGame.player.items.Clear();
+                foreach (var slot in playerItems) {
+                    PRPGame.player.items.Add(slot);
+                }
+                PRPGame.closestTalkableNPC.items.Clear();
+                foreach (var slot in npcItems) {
+                    PRPGame.closestTalkableNPC.items.Add(slot);
+                }
+                npcItems.Clear();
+                playerItems.Clear();
+                return true;
             }
-            PRPGame.closestTalkableNPC.items.Clear();
-            foreach (var slot in npcItems) {
-                PRPGame.closestTalkableNPC.items.Add(slot);
+            else {
+                return false;
             }
-            npcItems.Clear();
-            playerItems.Clear();
         }
 
         public static void IncRow() {
@@ -118,7 +129,12 @@ namespace PRPG {
                 playerItems.Remove(item);
                 npcItems.Add(item);
             }
-            CheckColumn();
+            
+            if (npc.IsTradeAcceptable(npcItems)) {
+                tradeState = TradeState.GOOD;
+            } else {
+                tradeState = TradeState.BAD;
+            }
             CheckRow();
         }
 
@@ -165,6 +181,16 @@ namespace PRPG {
                 PRPGame.batch.DrawString(PRPGame.mainFont, slot.count + " " + slot.item.name + " " + diffString, new Vector2(left + 10, top + 10 + i * 20), Color.White);
             }
 
+            if (tradeState == TradeState.GOOD) {
+                string s = "This trade looks good!";
+                strLen = (int)PRPGame.mainFont.MeasureString(s).X;
+                PRPGame.batch.DrawString(PRPGame.mainFont, s, new Vector2(w / 4 + left - strLen / 2, bottom - 50), Color.Green);
+            }
+            else if (tradeState == TradeState.BAD) {
+                string s = "This trade looks BAD!";
+                strLen = (int)PRPGame.mainFont.MeasureString(s).X;
+                PRPGame.batch.DrawString(PRPGame.mainFont, s, new Vector2(w / 4 + left - strLen / 2, bottom - 50), Color.Red);
+            }
 
 
         }

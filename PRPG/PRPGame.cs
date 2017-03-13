@@ -171,8 +171,9 @@ namespace PRPG {
                     Trade.MoveItem();
                 }
                 else if (IsNewAction(Action.CONFIRM)) {
-                    Trade.Accept();
-                    command = GameCommand.BACK;
+                    if (Trade.Accept()) {
+                        command = GameCommand.BACK;
+                    } 
                 }
             }
             else {

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+    
 
 namespace PRPG {
 
@@ -11,6 +13,10 @@ namespace PRPG {
         public Inventory() {
             itemDict = new Dictionary<Item, InventorySlot>();
             itemList = new List<InventorySlot>();
+        }
+
+        public int TotalCount() {
+            return itemList.Sum(x => x.count);
         }
 
         public int CountItem(Item item) {

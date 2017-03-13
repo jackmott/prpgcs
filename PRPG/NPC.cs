@@ -84,20 +84,29 @@ namespace PRPG {
             tex = GetSolidTex(NPCSize, NPCSize, Color.White);
         }
 
+        public bool IsTradeAcceptable(Inventory proposedInventory) {
+            int before = Happiness();
+            int after = Happiness(proposedInventory);
+            if (after > before)
+                return true;
+            else if (after == before) {
+                return proposedInventory.TotalCount() > items.TotalCount();
+            }
+            else {
+                return false;
+            }
+        }
 
+        public int Happiness(Inventory inventory = null) {
+            if (inventory == null)
+                inventory = items;
 
-        public int Happiness() {
             int totalDesire = desires.Sum(x => x.level);
             if (totalDesire == 0)
                 return 100;
 
-            int desiresSatisfied = 0;
-            foreach (var desire in desires) {
-                var desiredItem = desire.item;
-                var numberOwned = items.CountItem(desiredItem);
-                desiresSatisfied += Math.Min(numberOwned, desire.level);
-            }
-            
+            int desiresSatisfied = desires.Sum(x => Math.Min(inventory.CountItem(x.item), x.level));
+                        
             float pct = (float)desiresSatisfied / (float)totalDesire;
             return (int)Math.Round(pct * 100.0);
         }
