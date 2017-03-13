@@ -6,6 +6,26 @@ using System.Linq;
 using static PRPG.ProgrammerArt;
 
 namespace PRPG {
+
+    public class Desire {
+        public Item item;
+        public int level;
+
+        public Desire(Item item, int level) {
+            this.item = item;
+            this.level = level;
+        }
+
+        public override bool Equals(object obj) {
+            var desire = (Desire)obj;
+            return item.Equals(desire.item);
+        }
+
+        public override int GetHashCode() {
+            return item.GetHashCode();
+        }
+    }
+
     public enum ENPCState { ROAM, HELLO};
     public enum ECommand { ENTER_HELLO_DIST, LEAVE_HELLO_DIST }
 
@@ -20,6 +40,7 @@ namespace PRPG {
     }
 
     public class Entity {
+        public string name;
         public Inventory items;        
     }
 
@@ -33,10 +54,10 @@ namespace PRPG {
         
         public ENPCState state;
         public const int NPCSize = 32;
-        public const float helloDist = 1.0f;
-        public string name;
+        public const float helloDist = 1.0f;        
         public Vector2 pos;
-        public Texture2D tex;                
+        public Texture2D tex;
+        public HashSet<Desire> desires;
         
         public NPC(Vector2 pos) {            
             state = ENPCState.ROAM;
@@ -45,14 +66,45 @@ namespace PRPG {
             items = new Inventory();
             var r = new Random((int)pos.X*100+(int)pos.Y*10);
             int numItems = r.Next(0, 10);
-
             var itemPoolArray = Item.itemPool.Values.ToArray();
             for (int i = 0; i < numItems; i++) {
                 var item = itemPoolArray[r.Next(0, Item.itemPool.Count)];
                 items.Add(item);
             }
+
+            desires = new HashSet<Desire>();
+            var numDesires = r.Next(0, 4);
+            for (int i = 0; i < numDesires; i++) {
+                var item = itemPoolArray[r.Next(0, Item.itemPool.Count)];
+                var level = r.Next(1, 100);
+                Desire d = new Desire(item, level);
+                desires.Add(d);
+            }
             
-            tex = GetSolidTex(NPCSize, NPCSize, Color.Purple);
+            tex = GetSolidTex(NPCSize, NPCSize, Color.White);
+        }
+
+
+
+        public int Happiness() {
+            int totalDesire = desires.Sum(x => x.level);
+            if (totalDesire == 0)
+                return 100;
+
+            int desiresSatisfied = 0;
+            foreach (var desire in desires) {
+                var desiredItem = desire.item;
+                var numberOwned = items.CountItem(desiredItem);
+                desiresSatisfied += Math.Min(numberOwned, desire.level);
+            }
+            
+            float pct = (float)desiresSatisfied / (float)totalDesire;
+            return (int)Math.Round(pct * 100.0);
+        }
+
+        public Color GetColor() {
+            int happy = Happiness();
+            return Color.Lerp(Color.Blue, Color.Orange, (float)happy / 100.0f);
         }
 
         public void AdvanceState(ECommand command) {
@@ -75,6 +127,7 @@ namespace PRPG {
         }
 
         public void Draw(SpriteBatch batch, float scale, Vector2 offset) {
+
             batch.Draw(tex, pos * scale - offset, Color.White);
             if (state == ENPCState.HELLO) {
                 batch.DrawString(PRPGame.mainFont, "Hello!", pos * scale - offset, Color.White);

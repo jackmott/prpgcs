@@ -20,3 +20,9 @@
 /processorParam:TextureFormat=Compressed
 /build:MainFont.spritefont
 
+#begin ColorChanger.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:ColorChanger.fx
+

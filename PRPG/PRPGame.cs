@@ -42,8 +42,8 @@ namespace PRPG {
         
 
         GraphicsDeviceManager graphicsManager;
-        
 
+        public ShaderManager shaderManager;
         public static Vector2 worldPos;
         public static Player player;
         public static World world;
@@ -88,6 +88,8 @@ namespace PRPG {
         protected override void LoadContent() {
             batch = new SpriteBatch(GraphicsDevice);
             mainFont = Content.Load<SpriteFont>("MainFont");
+            shaderManager = new ShaderManager(Content, GraphicsDevice);            
+            shaderManager.AddShader("ColorChanger");
         }
 
         protected override void UnloadContent() {
@@ -105,9 +107,11 @@ namespace PRPG {
             return currentlyPressed && !wasPressed;            
         }
 
-        private enum Action { MAIN, BACK, LEFT, RIGHT, UP, DOWN };
+        private enum Action { MAIN,CONFIRM, BACK, LEFT, RIGHT, UP, DOWN };
         private bool IsNewAction(Action a) {
             switch (a) {
+                case Action.CONFIRM:
+                    return IsNewKeyPress(Keys.Enter) || IsNewButtonPress(Buttons.Y);
                 case Action.MAIN:
                     return IsNewKeyPress(Keys.E) || IsNewButtonPress(Buttons.A);                    
                 case Action.BACK:
@@ -159,12 +163,16 @@ namespace PRPG {
                 }
                 else if (IsNewAction(Action.RIGHT)) {
                     Trade.IncColumn();
-                }                
+                }
                 else if (IsNewAction(Action.BACK)) {
                     command = GameCommand.BACK;
                 }
                 else if (IsNewAction(Action.MAIN)) {
                     Trade.MoveItem();
+                }
+                else if (IsNewAction(Action.CONFIRM)) {
+                    Trade.Accept();
+                    command = GameCommand.BACK;
                 }
             }
             else {
@@ -289,14 +297,24 @@ namespace PRPG {
             }
 
             float maxDist = (float)Math.Sqrt(numTilesX * numTilesX + numTilesY * numTilesY);
+
+            batch.End();
+
+            batch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+            var effect = shaderManager.GetShader("ColorChanger");            
             foreach (var npc in world.npcs) {
                 if (Vector2.Distance(npc.pos, worldPos) <= maxDist) {
+                    effect.Parameters["key_color"].SetValue(Color.White.ToVector3());
+                    effect.Parameters["new_color"].SetValue(npc.GetColor().ToVector3());
+                    effect.CurrentTechnique.Passes[0].Apply();
                     npc.Draw(batch, World.TileSize, offset);
                 }
             }
+            batch.End();
 
+            batch.Begin();
             player.Draw(batch, World.TileSize, offset);
-
+            
             if (state == GameState.DIALOGUE) {
                 Dialogue.Draw();
             }

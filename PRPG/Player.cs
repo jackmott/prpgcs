@@ -14,6 +14,7 @@ namespace PRPG {
         public Texture2D tex;
 
         public Player(Vector2 pos) {
+            name = "Player One";
             this.pos = pos;
             items = new Inventory();
             items.Add(new InventorySlot(100, Item.itemPool["Gold"]));
