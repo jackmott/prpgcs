@@ -11,12 +11,12 @@ namespace PRPG {
 
         public const int PlayerSize = 32;
         public Vector2 pos;
-        public Texture2D tex;        
+        public Texture2D tex;
 
         public Player(Vector2 pos) {
             this.pos = pos;
-            items = new List<Item>();
-            items.Add(new Item(100, "Gold"));
+            items = new Inventory();
+            items.Add(new InventorySlot(100, Item.itemPool["Gold"]));
             tex = GetSolidTex(PlayerSize, PlayerSize, Color.Red);
         }
 

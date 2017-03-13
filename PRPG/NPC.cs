@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
+using System.Linq;
 using static PRPG.ProgrammerArt;
 
 namespace PRPG {
@@ -20,30 +20,7 @@ namespace PRPG {
     }
 
     public class Entity {
-        public List<Item> items;
-
-        public void AddItem(Item item) {
-            var existingItem = items.Find(x => x.name.Equals(item.name));
-            if (existingItem != null) {
-                existingItem.count++;
-            }
-            else {
-                items.Add(item);
-            }            
-        }
-
-        public void RemoveItem(Item item) {
-            var existingItem = items.Find(x => x.name.Equals(item.name));
-            if (existingItem != null) {
-                if (existingItem.count == 1)
-                    items.RemoveAll(x => x.name.Equals(item.name));
-                else
-                    existingItem.count--;
-            }
-            else {
-                items.Remove(item);
-            }            
-        }
+        public Inventory items;        
     }
 
     public class NPC : Entity {
@@ -59,17 +36,22 @@ namespace PRPG {
         public const float helloDist = 1.0f;
         public string name;
         public Vector2 pos;
-        public Texture2D tex;
-       
+        public Texture2D tex;                
         
-
         public NPC(Vector2 pos) {            
             state = ENPCState.ROAM;
             this.pos = pos;
             name = "Fred";
-            items = new List<Item>();
-            items.Add(new Item(1,"Guns"));
-            items.Add(new Item(10,"Butter"));
+            items = new Inventory();
+            var r = new Random((int)pos.X*100+(int)pos.Y*10);
+            int numItems = r.Next(0, 10);
+
+            var itemPoolArray = Item.itemPool.Values.ToArray();
+            for (int i = 0; i < numItems; i++) {
+                var item = itemPoolArray[r.Next(0, Item.itemPool.Count)];
+                items.Add(item);
+            }
+            
             tex = GetSolidTex(NPCSize, NPCSize, Color.Purple);
         }
 

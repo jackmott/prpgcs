@@ -25,7 +25,7 @@ namespace PRPG {
             TileTextureDict.Add(TerrainTile.ROCK, GetSolidTex(TileSize, TileSize, Color.Gray));
             TileTextureDict.Add(TerrainTile.SNOW, GetSolidTex(TileSize, TileSize, Color.White));
 
-            npcs = new NPC[1000];
+            npcs = new NPC[5000];
             var r = new Random();
             for (int i = 0; i < npcs.Length; i++) {
                 npcs[i] = new NPC(new Vector2((float)r.NextDouble() * w, (float)r.NextDouble() * h));

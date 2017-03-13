@@ -62,6 +62,9 @@ namespace PRPG {
             GameState newState;
             var trans = new GameStateTransition(state, command);
             if (stateMachine.TryGetValue(trans, out newState)) {
+                if (newState == GameState.TRADE) {
+                    Trade.Setup(player, closestTalkableNPC);
+                }
                 state = newState;
             }
         }
@@ -76,7 +79,8 @@ namespace PRPG {
             windowWidth = GraphicsDevice.Viewport.Bounds.Width;
             Dialogue.Initialize();
             Trade.Initialize();
-            world = new World(100, 100);
+            Item.Initialize();
+            world = new World(500, 500);
             player = new Player(new Vector2(world.width / 2, world.height / 2));
             worldPos = player.pos;
         }
@@ -101,45 +105,65 @@ namespace PRPG {
             return currentlyPressed && !wasPressed;            
         }
 
+        private enum Action { MAIN, BACK, LEFT, RIGHT, UP, DOWN };
+        private bool IsNewAction(Action a) {
+            switch (a) {
+                case Action.MAIN:
+                    return IsNewKeyPress(Keys.E) || IsNewButtonPress(Buttons.A);                    
+                case Action.BACK:
+                    return IsNewKeyPress(Keys.Q) || IsNewButtonPress(Buttons.B);                    
+                case Action.LEFT:
+                    return IsNewKeyPress(Keys.Left) || IsNewButtonPress(Buttons.LeftThumbstickLeft);                    
+                case Action.RIGHT:
+                    return IsNewKeyPress(Keys.Right) || IsNewButtonPress(Buttons.LeftThumbstickRight);                    
+                case Action.UP:
+                    return IsNewKeyPress(Keys.Up) || IsNewButtonPress(Buttons.LeftThumbstickUp);                    
+                case Action.DOWN:
+                    return IsNewKeyPress(Keys.Down) || IsNewButtonPress(Buttons.LeftThumbstickDown);                    
+            }
+            return false;
+        }
+
         protected override void Update(GameTime gameTime) {
             base.Update(gameTime);
 
             var keyState = Keyboard.GetState();
+            var padState = GamePad.GetState(PlayerIndex.One);
             var command = GameCommand.NONE;
 
             if (keyState.IsKeyDown(Keys.Escape))
                 Exit();
 
             if (state == GameState.DIALOGUE) {
-                if (IsNewKeyPress(Keys.Up)) {
+                if (IsNewAction(Action.UP)) {
                     Dialogue.DecrementSelection();
                 }
-                else if (IsNewKeyPress(Keys.Down)) {
+                else if (IsNewAction(Action.DOWN)) {
                     Dialogue.IncrementSelection();
                 }
-                else if (IsNewKeyPress(Keys.Enter)) {
+                else if (IsNewAction(Action.MAIN)) {
                     command = GameCommand.TRADE;
                 }
-                else if (IsNewKeyPress(Keys.E)) {
+                else if (IsNewAction(Action.BACK)) {
                     command = GameCommand.BACK;
                 }
             } else if (state == GameState.TRADE) {
-                if (IsNewKeyPress(Keys.Up)) {
+                if (IsNewAction(Action.UP)) {
                     Trade.DecRow();
                 }
-                else if (IsNewKeyPress(Keys.Down)) {
+                else if (IsNewAction(Action.DOWN)) {
                     Trade.IncRow();
                 }
-                else if (IsNewKeyPress(Keys.Left)) {
+                else if (IsNewAction(Action.LEFT)) {
                     Trade.DecColumn();
                 }
-                else if (IsNewKeyPress(Keys.Right)) {
+                else if (IsNewAction(Action.RIGHT)) {
                     Trade.IncColumn();
                 }                
-                else if (IsNewKeyPress(Keys.E)) {
+                else if (IsNewAction(Action.BACK)) {
                     command = GameCommand.BACK;
                 }
-                else if (IsNewKeyPress(Keys.Enter)) {
+                else if (IsNewAction(Action.MAIN)) {
                     Trade.MoveItem();
                 }
             }
@@ -159,21 +183,18 @@ namespace PRPG {
 
                 var gamePadCap = GamePad.GetCapabilities(PlayerIndex.One);
                 if (gamePadCap.IsConnected) {
-                    var padState = GamePad.GetState(PlayerIndex.One);
+                    
                     if (gamePadCap.HasLeftXThumbStick) {
                         movement += new Vector2(padState.ThumbSticks.Left.X * moveDistance, 0);
                     }
                     if (gamePadCap.HasLeftYThumbStick) {
                         movement -= new Vector2(0, padState.ThumbSticks.Left.Y * moveDistance);
                     }
-                    if (IsNewButtonPress(Buttons.A)) {
+                    if (IsNewAction(Action.MAIN)) {
                         talkButton = true;
                     }
-                    lastPadState = padState;
+                    
                 }
-
-
-
 
 
                 if (keyState.IsKeyDown(Keys.Right)) {
@@ -232,13 +253,12 @@ namespace PRPG {
                     }
                 }
 
-
                 if (talkButton && closestTalkableNPC != null)
                     command = GameCommand.TALK;
 
             }
-
             AdvanceState(command);
+            lastPadState = padState;
             lastKeyState = keyState;            
         }
 
