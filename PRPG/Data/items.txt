@@ -1,0 +1,10 @@
+﻿Gold, Gold
+Carrot, Carrots
+Potato, Potatos
+Sword, Swords
+Armor, Armor
+Shield, Shield
+Bow, Bow
+Iron, Iron
+Gun, Guns
+Butter, Butter

@@ -117,16 +117,20 @@ namespace PRPG {
 
         public static void Initialize() {
             itemPool = new Dictionary<string, Item>();
-            itemPool.Add("Guns",new Item("Guns"));
-            itemPool.Add("Butter",new Item("Butter"));
-            itemPool.Add("Gold",new Item("Gold"));
+            var itemsText = CSVReader.ReadFile("Data/items.txt");
+            foreach (var itemText in itemsText) {
+                var item = new Item(itemText[0], itemText[1]);
+                itemPool.Add(item.name, item);
+            }            
         }
 
         public readonly string name;
+        public readonly string pluralName;
 
         
-        public Item(string name) {        
+        public Item(string name, string pluralName) {        
             this.name = name;
+            this.pluralName = pluralName;
         }
         
 

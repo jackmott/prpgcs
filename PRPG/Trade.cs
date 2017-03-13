@@ -27,8 +27,6 @@ namespace PRPG {
         private enum TradeState {NONE,GOOD,BAD };
         private static TradeState tradeState;
 
-
-
         private static NPC npc;
         private static Player player;
 

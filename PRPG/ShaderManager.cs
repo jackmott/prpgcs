@@ -1,4 +1,14 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿/*
+    HotSwap shader sytem for MonoGame
+
+    HotSwap code only exists for debug builds
+    Edit paths to match your project
+    Construct in your Initialize method
+    Add shaders in LoadContent (or whenever)
+    Call CheckForChanges in Update() or periodically however you like
+    mgcb.exe usually located in C:\Program Files (x86)\MSBuild\MonoGame\v3.0\Tools
+*/
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,7 +24,8 @@ namespace PRPG{
 #if DEBUG
         ContentManager TempContent;
         DateTime LastUpdate;
-        string mgcbPathExe = "c:/projects/prpgcs/Content/MGCB/mgcb.exe";
+        const string mgcbPathExe = "c:/projects/prpgcs/Content/MGCB/mgcb.exe";
+        const string contentPath = "c:/projects/prpgcs/Content";
 #endif
 
         public Dictionary<string, Effect> Shaders;
@@ -33,7 +44,7 @@ namespace PRPG{
 
 #if DEBUG
         public void CheckForChanges() {
-            var files = Directory.GetFiles("c:/projects/prpgcs/Content", "*.fx");
+            var files = Directory.GetFiles(contentPath, "*.fx");
             foreach (var file in files) {
                 var t = File.GetLastWriteTime(file);
                 if (t > LastUpdate) {
@@ -51,7 +62,7 @@ namespace PRPG{
                             FileName = mgcbPathExe,
                             Arguments = "/platform:DesktopGL /config: /profile:Reach /compress:False /importer:EffectImporter /processor:EffectProcessor /processorParam:DebugMode=Auto /build:"+name+".fx",
                             CreateNoWindow = true,
-                            WorkingDirectory = "c:/projects/prpgcs/Content",
+                            WorkingDirectory = contentPath,
                             UseShellExecute = false,
                             RedirectStandardError = true,
                             RedirectStandardOutput = true
@@ -69,7 +80,7 @@ namespace PRPG{
                 stdError = pProcess.StandardError.ReadToEnd();
                 pProcess.WaitForExit();
 
-                string builtPath = "C:/projects/prpgcs/Content/" + name + ".xnb";
+                string builtPath = contentPath+"/" + name + ".xnb";
                 string movePath = "C:/projects/prpgcs/PRPG/bin/DesktopGL/AnyCPU/Debug/Content/" + name + ".xnb";
                 File.Copy(builtPath, movePath, true);
 
@@ -98,7 +109,7 @@ namespace PRPG{
         }
 #endif
 
-        public Effect GetShader(string name) {
+        public Effect GetShader(string name) {            
             return Shaders[name.ToLower()];
         }
 
