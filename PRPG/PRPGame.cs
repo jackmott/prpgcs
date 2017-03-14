@@ -51,7 +51,7 @@ namespace PRPG {
         KeyboardState lastKeyState;
         GamePadState lastPadState;
 
-        public static NPC closestTalkableNPC = null;
+        public static NPC closestNPC = null;
 
         public PRPGame() {
             Content.RootDirectory = "Content";
@@ -63,7 +63,10 @@ namespace PRPG {
             var trans = new GameStateTransition(state, command);
             if (stateMachine.TryGetValue(trans, out newState)) {
                 if (newState == GameState.TRADE) {
-                    Trade.Setup(player, closestTalkableNPC);
+                    Trade.Setup(player, closestNPC);
+                }
+                else if (newState == GameState.DIALOGUE) {
+                    Dialogue.Setup();
                 }
                 state = newState;
             }
@@ -80,6 +83,7 @@ namespace PRPG {
             Dialogue.Initialize();
             Trade.Initialize();
             Item.Initialize();
+            NPC.Initialize();
             world = new World(500, 500);
             player = new Player(new Vector2(world.width / 2, world.height / 2));
             worldPos = player.pos;
@@ -146,7 +150,7 @@ namespace PRPG {
                     Dialogue.IncrementSelection();
                 }
                 else if (IsNewAction(Action.MAIN)) {
-                    command = GameCommand.TRADE;
+                    command = Dialogue.Selection();                    
                 }
                 else if (IsNewAction(Action.BACK)) {
                     command = GameCommand.BACK;
@@ -249,20 +253,20 @@ namespace PRPG {
                 }
 
 
-                closestTalkableNPC = null;
+                closestNPC = null;
                 float closestNPCDist = float.MaxValue;
                 foreach (var npc in world.npcs) {
                     npc.Update(gameTime, player);
                     if (npc.state == ENPCState.HELLO) {
                         var dist = Vector2.DistanceSquared(npc.pos, player.pos);
                         if (dist < closestNPCDist) {
-                            closestTalkableNPC = npc;
+                            closestNPC = npc;
                             closestNPCDist = dist;
                         }
                     }
                 }
 
-                if (talkButton && closestTalkableNPC != null)
+                if (talkButton && closestNPC != null)
                     command = GameCommand.TALK;
 
             }
@@ -277,8 +281,8 @@ namespace PRPG {
             base.Draw(gameTime);
 
             
-            float numTilesX = windowWidth / (float)World.TileSize;
-            float numTilesY = windowHeight / (float)World.TileSize;
+            float numTilesX = windowWidth / (float)World.tileSize;
+            float numTilesY = windowHeight / (float)World.tileSize;
             int startX = (int)Floor(worldPos.X - numTilesX / 2.0f);
             int endX = (int)Ceiling(worldPos.X + numTilesX / 2.0f);
             int startY = (int)Floor(worldPos.Y - numTilesY / 2.0f);
@@ -286,13 +290,13 @@ namespace PRPG {
 
             var screenCenter = new Vector2((float)windowWidth / 2.0f, (float)windowHeight / 2.0f);
 
-            var offset = worldPos * (float)World.TileSize - screenCenter;
+            var offset = worldPos * (float)World.tileSize - screenCenter;
             batch.Begin();
 
             for (int y = startY; y <= endY; y++) {
                 for (int x = startX; x <= endX; x++) {
                     var tile = world.GetTileTexture(x, y);
-                    var screenPos = new Vector2(x, y) * World.TileSize - offset;
+                    var screenPos = new Vector2(x, y) * World.tileSize - offset;
                     batch.Draw(tile, screenPos, Color.White);
                 }
             }
@@ -301,20 +305,20 @@ namespace PRPG {
 
             batch.End();
 
-            batch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+            batch.Begin(SpriteSortMode.Immediate);
             var effect = shaderManager.GetShader("ColorChanger");            
             foreach (var npc in world.npcs) {
                 if (Vector2.Distance(npc.pos, worldPos) <= maxDist) {
                     effect.Parameters["key_color"].SetValue(Color.White.ToVector3());
                     effect.Parameters["new_color"].SetValue(npc.GetColor().ToVector3());
                     effect.CurrentTechnique.Passes[0].Apply();
-                    npc.Draw(batch, World.TileSize, offset);
+                    npc.Draw(batch, World.tileSize, offset);
                 }
             }
             batch.End();
 
             batch.Begin();
-            player.Draw(batch, World.TileSize, offset);
+            player.Draw(batch, World.tileSize, offset);
             
             if (state == GameState.DIALOGUE) {
                 Dialogue.Draw();

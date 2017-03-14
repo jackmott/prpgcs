@@ -14,21 +14,37 @@ namespace PRPG {
         public TerrainTile[,] tiles;
         public readonly int width;
         public readonly int height;
-        public const int TileSize = 128;
+        public const int tileSize = 64;
+        public const double cityDensity = 1.0 / 1000.0;
         public NPC[] npcs;
 
         public World(int w, int h) {
             
             TileTextureDict = new Dictionary<TerrainTile, Texture2D>();
-            TileTextureDict.Add(TerrainTile.WATER, GetSolidTex(TileSize, TileSize, Color.Blue));
-            TileTextureDict.Add(TerrainTile.GRASS, GetSolidTex(TileSize, TileSize, Color.Green));
-            TileTextureDict.Add(TerrainTile.ROCK, GetSolidTex(TileSize, TileSize, Color.Gray));
-            TileTextureDict.Add(TerrainTile.SNOW, GetSolidTex(TileSize, TileSize, Color.White));
+            TileTextureDict.Add(TerrainTile.WATER, GetSolidTex(tileSize, tileSize, Color.Blue));
+            TileTextureDict.Add(TerrainTile.GRASS, GetSolidTex(tileSize, tileSize, Color.Green));
+            TileTextureDict.Add(TerrainTile.ROCK, GetSolidTex(tileSize, tileSize, Color.Gray));
+            TileTextureDict.Add(TerrainTile.SNOW, GetSolidTex(tileSize, tileSize, Color.White));
 
             npcs = new NPC[5000];
-            var r = new Random();
-            for (int i = 0; i < npcs.Length; i++) {
-                npcs[i] = new NPC(new Vector2((float)r.NextDouble() * w, (float)r.NextDouble() * h));
+            
+            var worldArea = w * h;
+            var numCities = (int)(worldArea * cityDensity);
+
+            int npcIndex = 0;
+            int npcsPerCity =(int)( ((double)npcs.Length * 0.75) / (double)numCities);
+            for (int i = 0; i < numCities; i++) {
+                var cityPos = new Vector2(RandUtil.IntEx(0, w), RandUtil.IntEx(0, h));
+                for (int j = 0; j < npcsPerCity;j++) {
+                    var npcVector = new Vector2(RandUtil.Float(-2.0f, 2.0f), RandUtil.Float(-2.0f, 2.0f));
+                    var npcPos = cityPos + npcVector;
+                    npcs[npcIndex] = new NPC(npcPos);
+                    npcIndex++;
+                }
+            }
+
+            for (; npcIndex < npcs.Length; npcIndex++) {
+                npcs[npcIndex] = new NPC(new Vector2(RandUtil.Float(w),RandUtil.Float(h)));
             }
 
             width = w;
@@ -36,7 +52,7 @@ namespace PRPG {
             tiles = new TerrainTile[w, h];
             for (int x = 0; x < w; x++) {
                 for (int y = 0; y < h; y++) {
-                    float f = Noise.Simplex(1337, 0.1f*x, 0.1f*y);
+                    float f = Noise.Simplex(1337, 0.05f*x, 0.05f*y);
                     if (f < -0.15f)
                         tiles[x, y] = TerrainTile.WATER;
                     else if (f < 0.15f)

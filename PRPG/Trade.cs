@@ -58,10 +58,11 @@ namespace PRPG {
                 foreach (var slot in playerItems) {
                     PRPGame.player.items.Add(slot);
                 }
-                PRPGame.closestTalkableNPC.items.Clear();
+                PRPGame.closestNPC.items.Clear();
                 foreach (var slot in npcItems) {
-                    PRPGame.closestTalkableNPC.items.Add(slot);
+                    PRPGame.closestNPC.items.Add(slot);
                 }
+                PRPGame.closestNPC.SetColor();
                 npcItems.Clear();
                 playerItems.Clear();
                 return true;
@@ -87,14 +88,15 @@ namespace PRPG {
                 count = playerItems.Count;
             else
                 count = npcItems.Count;
-            if (row == count)
-                row--;
+            if (row >= count)
+                row=count-1;
             if (row < 0)
                 row = 0;
         }
 
         public static void IncColumn() {
             column++;
+            CheckColumn();
             CheckRow();
         }
         public static void DecColumn() {
@@ -149,13 +151,13 @@ namespace PRPG {
             PRPGame.batch.Draw(tradeBackground, new Rectangle(left, top,w, h), Color.White);
             PRPGame.batch.Draw(lineTexture, new Rectangle(PRPGame.windowWidth / 2, top, 1, h), Color.White);
 
-            int strLen = (int)PRPGame.mainFont.MeasureString(npc.name).X;
+            int strLen = (int)PRPGame.mainFont.MeasureString(npc.fullName).X;
             var strPos = new Vector2(w/4 + left - strLen / 2, top);
-            PRPGame.batch.DrawString(PRPGame.mainFont, npc.name, strPos, Color.White);
+            PRPGame.batch.DrawString(PRPGame.mainFont, npc.fullName, strPos, Color.White);
 
-            strLen = (int)PRPGame.mainFont.MeasureString(player.name).X;
+            strLen = (int)PRPGame.mainFont.MeasureString(player.firstName).X;
             strPos = new Vector2((w - w/4) + left - strLen / 2, top);
-            PRPGame.batch.DrawString(PRPGame.mainFont, player.name, strPos, Color.White);
+            PRPGame.batch.DrawString(PRPGame.mainFont, player.firstName, strPos, Color.White);
 
             top += 20;
 
@@ -174,7 +176,7 @@ namespace PRPG {
 
             for (int i = 0; i < npcItems.Count; i++) {
                 var slot = npcItems[i];
-                var diff = slot.count - PRPGame.closestTalkableNPC.items.CountItem(slot.item);
+                var diff = slot.count - PRPGame.closestNPC.items.CountItem(slot.item);
                 var diffString = diff <= 0 ? "" : " +" + diff;
                 PRPGame.batch.DrawString(PRPGame.mainFont, slot.count + " " + slot.item.name + " " + diffString, new Vector2(left + 10, top + 10 + i * 20), Color.White);
             }
@@ -189,6 +191,11 @@ namespace PRPG {
                 strLen = (int)PRPGame.mainFont.MeasureString(s).X;
                 PRPGame.batch.DrawString(PRPGame.mainFont, s, new Vector2(w / 4 + left - strLen / 2, bottom - 50), Color.Red);
             }
+
+#if DEBUG
+            PRPGame.batch.DrawString(PRPGame.mainFont,"Before Utility:"+npc.Happiness(),new Vector2(left,bottom-40),Color.White);
+            PRPGame.batch.DrawString(PRPGame.mainFont,"After Utility:" +npc.Happiness(npcItems), new Vector2(left, bottom - 20), Color.White);
+#endif
 
 
         }

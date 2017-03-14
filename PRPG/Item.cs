@@ -1,8 +1,10 @@
-﻿using System;
+﻿using System.IO;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-    
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace PRPG {
 
@@ -117,20 +119,22 @@ namespace PRPG {
 
         public static void Initialize() {
             itemPool = new Dictionary<string, Item>();
-            var itemsText = CSVReader.ReadFile("Data/items.txt");
-            foreach (var itemText in itemsText) {
-                var item = new Item(itemText[0], itemText[1]);
-                itemPool.Add(item.name, item);
-            }            
+            var classes = (JArray)JObject.Parse(File.ReadAllText("Data/classes.json"))["Classes"];
+
+            foreach (var c in classes)
+            {
+                var items = (JArray)c["Desires"];
+                foreach (string item in items) {
+                    itemPool.Add(item, new Item(item));
+                }
+            }                        
         }
 
-        public readonly string name;
-        public readonly string pluralName;
+        public readonly string name;        
 
         
-        public Item(string name, string pluralName) {        
-            this.name = name;
-            this.pluralName = pluralName;
+        public Item(string name) {        
+            this.name = name;            
         }
         
 

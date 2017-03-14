@@ -1,0 +1,31 @@
+﻿{
+	"Classes": [
+		{
+			"Name": "Warrior",
+      "Desires": [
+        "Sword","Axe","Shield","Armor","Helmet" ],      
+      "LastNamePrefix":[
+        "Storm","Death","Axe","Hammer","Sword","Shield","Head","Bone","Skull","Doom" ],
+      "LastNameSuffix": [
+        "Crusher","Smasher","Bringer","Slasher","Beard","Scar","Bane","Spell","Slayer"]            
+		},
+    {
+      "Name" : "Smith",
+      "Desires" : [
+        "Iron", "Steel", "Leather", "Wood" ],
+      "LastNamePrefix" : [
+        "Iron","Ferrous","Steel", "Smith", "Fire","Hammer","Sword","Axe","Armor"],
+      "LastNameSuffix": [
+        "Forge","Craft","Brand","Black","Mane","Striker","Cast"]      
+    },
+    {
+      "Name" : "Farmer",
+      "Desires" : [
+        "Carrot","Potato","Shovel"],
+      "LastNamePrefix": [
+        "Muck","Farm","Plant","Dirt","Farm"],
+      "LastNameSuffix": [
+        "Planter","Digger","Grower"]
+    }
+	]
+}

@@ -3,8 +3,8 @@ Carrot, Carrots
 Potato, Potatos
 Sword, Swords
 Armor, Armor
-Shield, Shield
-Bow, Bow
+Shield, Shields
+Bow, Bows
 Iron, Iron
 Gun, Guns
 Butter, Butter
