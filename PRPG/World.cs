@@ -3,7 +3,9 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using static PRPG.GraphUtils;
 using System;
-
+using System.Threading.Tasks;
+using System.Threading;
+using System.Runtime.CompilerServices;
 
 namespace PRPG
 {
@@ -24,11 +26,16 @@ namespace PRPG
         public Dictionary<TerrainTile, Texture2D> simpleTex;
         public LRACachePool<int, Texture2D> texCache;
         public const double cityDensity = 1.0 / 1000.0;
+        public static readonly int CPUCount = Environment.ProcessorCount;
+        public static readonly int chunkSize = tileSize / CPUCount;
         public NPC[] npcs;
         Color[] texColor;
+        Task[] fillTasks;
 
         public World(int w, int h)
         {
+            fillTasks = new Task[CPUCount];
+            
             texColor = new Color[tileSize * tileSize];
             texCache = new LRACachePool<int, Texture2D>(1000);
             simpleTex = new Dictionary<TerrainTile, Texture2D>();
@@ -42,9 +49,9 @@ namespace PRPG
             width = w;
             height = h;
 
-            tilePallette = new TerrainTile[100];            
-            pallette = new Color[100];            
-            for (int i = 0; i < 25;i++) {
+            tilePallette = new TerrainTile[100];
+            pallette = new Color[100];
+            for (int i = 0; i < 25; i++) {
                 tilePallette[i] = TerrainTile.WATER;
                 pallette[i] = Color.DarkBlue;
             }
@@ -76,16 +83,16 @@ namespace PRPG
 
             tiles = new TerrainTile[w, h];
 
-          
+
             for (int x = 0; x < w; x++) {
                 for (int y = 0; y < h; y++) {
                     float f = Noise.FractalFBM(1337, 0.01f * x, 0.01f * y);
-                   
+
                     int tileIndex = (int)Math.Floor(MathHelper.Clamp(f, 0.0f, 1.0f) * (tilePallette.Length - 1));
                     tiles[x, y] = tilePallette[tileIndex];
                 }
             }
-            
+
 
 
             npcs = new NPC[5000];
@@ -112,7 +119,7 @@ namespace PRPG
             }
 
             while (npcIndex < npcs.Length) {
-                var npcPos = new Vector2(RandUtil.Float(w-1), RandUtil.Float(h-1));
+                var npcPos = new Vector2(RandUtil.Float(w - 1), RandUtil.Float(h - 1));
                 var tile = tiles[(int)npcPos.X, (int)npcPos.Y];
                 if (tile != TerrainTile.WATER) {
                     npcs[npcIndex] = new NPC(npcPos);
@@ -130,6 +137,23 @@ namespace PRPG
             return simpleTex[tiles[x, y]];
 
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void fillTex(int x, int y,int startTy, int endTy)
+        {            
+            for (int ty = startTy; ty < endTy; ty++) {
+                float fy = y + ((float)ty / (float)tileSize);
+                int tyIndex = ty * tileSize;
+                for (int tx = 0; tx < tileSize; tx++) {
+                    float fx =x + ((float)tx / (float)tileSize);
+                    float f = Noise.FractalFBM(1337, 0.01f * fx, 0.01f * fy);
+                    int colorIndex = (int)Math.Floor(f * ((float)pallette.Length - 1.0f));
+                    colorIndex = MathHelper.Clamp(colorIndex, 0, pallette.Length);
+                    texColor[tyIndex + tx] = pallette[colorIndex];
+                }
+            }
+        }
+
         public Texture2D GetTex(int x, int y)
         {
             int key = x * 30_000 + y;
@@ -139,23 +163,26 @@ namespace PRPG
                 return tex;
             }
             else {
-                tex = texCache.GetEvicted();
+                tex = texCache.GetEvicted();                
                 if (tex == null)
                     tex = new Texture2D(PRPGame.graphics, tileSize, tileSize);
                 
-                float step = 1.0f / (float)tileSize;
-                int index = 0;                
-                float yMax = (float)y + 1.0f;
-                float xMax = (float)x + 1.0f;
-                for (float fy = y; fy < yMax; fy += step) {
-                    for (float fx = x; fx < xMax; fx += step) {
-                        float f = Noise.FractalFBM(1337, 0.01f * fx, 0.01f * fy);
-                        int colorIndex = (int)Math.Floor(f * ((float)pallette.Length - 1.0f));
-                        colorIndex = MathHelper.Clamp(colorIndex,0, pallette.Length);
-                        texColor[index] = pallette[colorIndex];                        
-                        index++;
+                int chunksRemaining = tileSize;
+                for (int i = 0; i < CPUCount; i++) {
+                    int innerI = i;
+                    if (chunkSize > chunksRemaining) {
+                        fillTasks[innerI] = Task.Factory.StartNew(() =>
+                        { fillTex(x,y,tileSize - chunksRemaining, tileSize); });
                     }
+                    else {
+                        int start = innerI * chunkSize;
+                        fillTasks[innerI] = Task.Factory.StartNew(() =>
+                        { fillTex(x,y,start, start + chunkSize); });
+                    }
+                    chunksRemaining -= chunkSize;
                 }
+
+                Task.WaitAll(fillTasks);
                 
                 tex.SetData(texColor);
                 texCache.Add(key, tex);

@@ -13,16 +13,15 @@ namespace PRPG
             new Dictionary<U,T>();
 
         private readonly List<T> evcitedList = new List<T>();
-     
+
+        public int Capacity { get; private set; }
+
         public LRACachePool(int capacity)
         {            
             Capacity = capacity;
         }
 
-        
-        public int Capacity { get; private set; }
-
-        
+                        
         public void Add(U key, T item)
         {
             Debug.Assert(!dict.ContainsKey(key));
