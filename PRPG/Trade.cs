@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
-using static PRPG.ProgrammerArt;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static PRPG.GraphUtils;
 
-namespace PRPG {
+namespace PRPG
+{
     public static class Trade {
 
 
@@ -189,10 +184,15 @@ namespace PRPG {
             else if (tradeState == TradeState.BAD) {
                 string s = "This trade looks BAD!";
                 strLen = (int)PRPGame.mainFont.MeasureString(s).X;
-                PRPGame.batch.DrawString(PRPGame.mainFont, s, new Vector2(w / 4 + left - strLen / 2, bottom - 50), Color.Red);
+                PRPGame.batch.DrawString(PRPGame.mainFont, s, new Vector2(w / 4 + left - strLen / 2, bottom - 100), Color.Red);
             }
 
 #if DEBUG
+            string likes = string.Empty;
+            foreach (var desire in npc.desires) {
+                likes += desire.item.name + "("+desire.level+","+desire.sufficient+"),";
+            }
+            PRPGame.batch.DrawString(PRPGame.mainFont, likes, new Vector2(left, bottom - 60), Color.White);
             PRPGame.batch.DrawString(PRPGame.mainFont,"Before Utility:"+npc.Happiness(),new Vector2(left,bottom-40),Color.White);
             PRPGame.batch.DrawString(PRPGame.mainFont,"After Utility:" +npc.Happiness(npcItems), new Vector2(left, bottom - 20), Color.White);
 #endif

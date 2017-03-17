@@ -1,12 +1,10 @@
 ﻿using System.IO;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace PRPG {
+namespace PRPG
+{
 
     public class Inventory {
         Dictionary<Item, InventorySlot> itemDict;
@@ -21,9 +19,8 @@ namespace PRPG {
             return itemList.Sum(x => x.count);
         }
 
-        public int CountItem(Item item) {
-            InventorySlot slot;
-            if (itemDict.TryGetValue(item, out slot)) {
+        public int CountItem(Item item) {            
+            if (itemDict.TryGetValue(item, out var slot)) {
                 return slot.count;
             }
             return 0;
@@ -64,9 +61,8 @@ namespace PRPG {
             itemList.Remove(slot);
         }
 
-        public void Add(Item item) {
-            InventorySlot slot;
-            if (itemDict.TryGetValue(item, out slot)) {
+        public void Add(Item item) {            
+            if (itemDict.TryGetValue(item, out var slot)) {
                 slot.count++;
             }
             else {
@@ -76,9 +72,8 @@ namespace PRPG {
             }
         }
 
-        public bool Remove(Item item) {
-            InventorySlot slot;
-            if (itemDict.TryGetValue(item, out slot)) {
+        public bool Remove(Item item) {            
+            if (itemDict.TryGetValue(item, out var slot)) {
                 slot.count--;
                 if (slot.count == 0) {
                     itemDict.Remove(item);

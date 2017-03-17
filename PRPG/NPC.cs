@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System.Linq;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-    
-using static PRPG.ProgrammerArt;
 
-namespace PRPG {
+using static PRPG.GraphUtils;
+using System.Diagnostics;
+
+namespace PRPG
+{
 
     public class NPCClass
     {
@@ -75,7 +76,9 @@ namespace PRPG {
         private static Dictionary<NPCStateTransition, ENPCState> stateMachine = 
             new Dictionary<NPCStateTransition, ENPCState> {
             { new NPCStateTransition(ENPCState.ROAM,ECommand.ENTER_HELLO_DIST),ENPCState.HELLO },
-            { new NPCStateTransition(ENPCState.HELLO,ECommand.LEAVE_HELLO_DIST),ENPCState.ROAM },            
+            { new NPCStateTransition(ENPCState.HELLO,ECommand.LEAVE_HELLO_DIST),ENPCState.ROAM },
+            { new NPCStateTransition(ENPCState.ROAM,ECommand.LEAVE_HELLO_DIST),ENPCState.ROAM },
+            { new NPCStateTransition(ENPCState.HELLO,ECommand.ENTER_HELLO_DIST),ENPCState.HELLO }
         };
 
         public static string[] namePool;
@@ -101,11 +104,17 @@ namespace PRPG {
 
             items = new Inventory();
             
-            int numItems = RandUtil.Int(0, 5);
-            var potentialItems = npcClass.desiredItems;
+            //Give them some things relevant to their class
+            int numItems = RandUtil.Int(0, 5);            
+            for (int i = 0; i < numItems; i++) {                
+                items.Add(RandUtil.Index(npcClass.desiredItems));
+            }
+            
+            //Give them some stuff not relevant to their class
+            numItems = RandUtil.Int(0, 3);
+            var potentialItems = Item.itemPool.Values.ToArray();
             for (int i = 0; i < numItems; i++) {
-                var item = RandUtil.Index(npcClass.desiredItems);
-                items.Add(item);
+                items.Add(RandUtil.Index(potentialItems));
             }
 
             desires = new HashSet<Desire>();
@@ -168,13 +177,10 @@ namespace PRPG {
             int before = Happiness();
             int after = Happiness(proposedInventory);
             if (after > before)
-                return true;
-            else if (after == before) {
-                return proposedInventory.TotalCount() > items.TotalCount();
-            }
-            else {
+                return true;            
+            else 
                 return false;
-            }
+            
         }
 
         public double Utility(Desire desire, int count) {
@@ -189,13 +195,15 @@ namespace PRPG {
             if (inventory == null)
                 inventory = items;
 
-            double totalPossibleUtility = desires.Sum(d => d.level);
+            double totalPossibleUtility = desires.Sum(d => d.level) 
+                + inventory.TotalCount();
 
             //Bhuddism
             if (totalPossibleUtility== 0.0)
                 return 100;
 
-            double utility = desires.Sum(x => Utility(x,inventory.CountItem(x.item)));
+            double utility = desires.Sum(x => Utility(x, inventory.CountItem(x.item))) 
+                + inventory.TotalCount();
                         
             double pct = utility / totalPossibleUtility;
             return (int)Math.Round(pct * 100.0);
@@ -210,12 +218,11 @@ namespace PRPG {
             return currentColor;
         }
 
-        public void AdvanceState(ECommand command) {
-            ENPCState newState;
+        public void AdvanceState(ECommand command) {            
             var trans = new NPCStateTransition(state, command);
-            if (stateMachine.TryGetValue(trans, out newState)) {
-                state = newState;
-            }                
+            var foundState = stateMachine.TryGetValue(trans, out state);
+            Debug.Assert(foundState);
+
         }
 
         public void Update(GameTime gameTime, Player player) {

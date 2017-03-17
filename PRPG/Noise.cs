@@ -3,6 +3,25 @@
 namespace PRPG {
     public static class Noise {
 
+        public static float FractalFBM(int seed, float x, float y)
+        {
+            float gain = 2.0f;
+            float lacunarity = 0.6f;
+            float octaves = 4;
+            float sum = 0f;
+            float freq = 1f;
+            float amplitude = 1f;
+
+            for (int i = 0; i < octaves;i++) {
+                sum += freq * Simplex(seed, x * amplitude, y * amplitude);
+                freq *= lacunarity;
+                amplitude *= gain;
+            }
+
+            return sum * 21.114f + 0.5f;
+        }
+
+
         private const int X_PRIME = 1619;
         private const int Y_PRIME = 31337;
         private const float F2 = (float)(1.0 / 2.0);
@@ -80,7 +99,7 @@ namespace PRPG {
                 n2 = t * t * GradCoord2D(seed, i + 1, j + 1, x2, y2);
             }
 
-            return 50.0f * (n0 + n1 + n2);
+            return (n0 + n1 + n2);
         }
 
 

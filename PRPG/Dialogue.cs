@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using static PRPG.ProgrammerArt;
+using static PRPG.GraphUtils;
 using System.Linq;
 
-namespace PRPG {
+namespace PRPG
+{
     public static class Dialogue {
 
 
@@ -32,17 +32,8 @@ namespace PRPG {
                 return GameCommand.TRADE;
             }
             else {
-                if (PRPGame.closestNPC.desires.Count > 0) {                    
-                    int d = RandUtil.IntEx(0, PRPGame.closestNPC.desires.Count);
-                    int i = 0;
-                    Desire randomDesire = PRPGame.closestNPC.desires.First();
-                    foreach (var desire in PRPGame.closestNPC.desires) {
-                        if (i == d) {
-                            randomDesire = desire;
-                            break;
-                        }
-                        i++;
-                    }
+                if (PRPGame.closestNPC.desires.Count > 0) {
+                    var randomDesire = RandUtil.Index(PRPGame.closestNPC.desires.ToArray());
                     string superlative = string.Empty;
                     if (randomDesire.level < 2) {
                         superlative = "kinda";
@@ -54,7 +45,7 @@ namespace PRPG {
                         superlative = "really";
                     }
 
-                    currentResponse = "I " + superlative + " like " + randomDesire.item.name;
+                    currentResponse = "I " + superlative + " like " + PRPGame.wordBank.QueryNoun(randomDesire.item.name).Plural;
                 }
                 else {
                     currentResponse = "There isn't much to say really...";

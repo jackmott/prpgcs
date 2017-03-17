@@ -1,31 +1,36 @@
 ﻿using System;
-using static PRPG.ProgrammerArt;
 using static System.Math;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using System.Diagnostics;
 
-namespace PRPG {
 
-    public enum GameState { ROAM, DIALOGUE,TRADE };
-    public enum GameCommand { NONE,TALK,TRADE,BACK };
-    
+namespace PRPG
+{
 
-    public struct GameStateTransition {
+    public enum GameState { ROAM, DIALOGUE, TRADE };
+    public enum GameCommand { NONE, TALK, TRADE, BACK };
+
+
+    public struct GameStateTransition
+    {
         public GameState currentState;
         public GameCommand command;
 
-        public GameStateTransition(GameState currentState, GameCommand command) {
+        public GameStateTransition(GameState currentState, GameCommand command)
+        {
             this.currentState = currentState;
             this.command = command;
         }
     }
 
-    public class PRPGame : Game {
-        
+    public class PRPGame : Game
+    {
+
         public static GameState state = GameState.ROAM;
-        private static Dictionary<GameStateTransition,GameState> stateMachine = 
+        private static Dictionary<GameStateTransition, GameState> stateMachine =
             new Dictionary<GameStateTransition, GameState> {
             { new GameStateTransition(GameState.ROAM,GameCommand.TALK),GameState.DIALOGUE },
             { new GameStateTransition(GameState.DIALOGUE,GameCommand.BACK),GameState.ROAM},
@@ -36,10 +41,14 @@ namespace PRPG {
         // GLOBAL STATE
         public static GraphicsDevice graphics;
         public static SpriteFont mainFont;
+        public static Texture2D spriteSheet;
         public static int windowWidth;
         public static int windowHeight;
         public static SpriteBatch batch;
-        
+        public static WordBank wordBank;
+
+        public static bool renderFancyTiles = true;
+
 
         GraphicsDeviceManager graphicsManager;
 
@@ -47,21 +56,22 @@ namespace PRPG {
         public static Vector2 worldPos;
         public static Player player;
         public static World world;
-        
+
         KeyboardState lastKeyState;
         GamePadState lastPadState;
 
         public static NPC closestNPC = null;
 
-        public PRPGame() {
+        public PRPGame()
+        {
             Content.RootDirectory = "Content";
             graphicsManager = new GraphicsDeviceManager(this);
         }
 
-        public void AdvanceState(GameCommand command) {
-            GameState newState;
+        public void AdvanceState(GameCommand command)
+        {
             var trans = new GameStateTransition(state, command);
-            if (stateMachine.TryGetValue(trans, out newState)) {
+            if (stateMachine.TryGetValue(trans, out var newState)) {
                 if (newState == GameState.TRADE) {
                     Trade.Setup(player, closestNPC);
                 }
@@ -70,9 +80,13 @@ namespace PRPG {
                 }
                 state = newState;
             }
+            else {
+                Debug.Assert(command == GameCommand.NONE);
+            }
         }
 
-        protected override void Initialize() {
+        protected override void Initialize()
+        {
             base.Initialize();
             graphicsManager.PreferredBackBufferHeight = 1080;
             graphicsManager.PreferredBackBufferWidth = 1920;
@@ -80,59 +94,74 @@ namespace PRPG {
             graphics = GraphicsDevice;
             windowHeight = GraphicsDevice.Viewport.Bounds.Height;
             windowWidth = GraphicsDevice.Viewport.Bounds.Width;
+            wordBank = new WordBank();
             Dialogue.Initialize();
             Trade.Initialize();
             Item.Initialize();
             NPC.Initialize();
+
+            foreach (var item in Item.itemPool.Values) {
+                var noun = wordBank.QueryNoun(item.name);
+                Debug.Assert(noun != null);                
+            }
+
             world = new World(500, 500);
             player = new Player(new Vector2(world.width / 2, world.height / 2));
             worldPos = player.pos;
         }
 
-        protected override void LoadContent() {
+        protected override void LoadContent()
+        {
             batch = new SpriteBatch(GraphicsDevice);
             mainFont = Content.Load<SpriteFont>("MainFont");
-            shaderManager = new ShaderManager(Content, GraphicsDevice);            
+            shaderManager = new ShaderManager(Content, GraphicsDevice);
             shaderManager.AddShader("ColorChanger");
+            spriteSheet = Content.Load<Texture2D>("spritesheet");
+            
         }
 
-        protected override void UnloadContent() {
+        protected override void UnloadContent()
+        {
         }
 
-        private bool IsNewKeyPress(Keys key) {
+        private bool IsNewKeyPress(Keys key)
+        {
             bool currentlyPressed = Keyboard.GetState().IsKeyDown(key);
             bool wasPressed = lastKeyState.IsKeyDown(key);
             return currentlyPressed && !wasPressed;
         }
 
-        private bool IsNewButtonPress(Buttons button) {
+        private bool IsNewButtonPress(Buttons button)
+        {
             bool currentlyPressed = GamePad.GetState(PlayerIndex.One).IsButtonDown(button);
             bool wasPressed = lastPadState.IsButtonDown(button);
-            return currentlyPressed && !wasPressed;            
+            return currentlyPressed && !wasPressed;
         }
 
-        private enum Action { MAIN,CONFIRM, BACK, LEFT, RIGHT, UP, DOWN };
-        private bool IsNewAction(Action a) {
+        private enum Action { MAIN, CONFIRM, BACK, LEFT, RIGHT, UP, DOWN };
+        private bool IsNewAction(Action a)
+        {
             switch (a) {
                 case Action.CONFIRM:
                     return IsNewKeyPress(Keys.Enter) || IsNewButtonPress(Buttons.Y);
                 case Action.MAIN:
-                    return IsNewKeyPress(Keys.E) || IsNewButtonPress(Buttons.A);                    
+                    return IsNewKeyPress(Keys.E) || IsNewButtonPress(Buttons.A);
                 case Action.BACK:
-                    return IsNewKeyPress(Keys.Q) || IsNewButtonPress(Buttons.B);                    
+                    return IsNewKeyPress(Keys.Q) || IsNewButtonPress(Buttons.B);
                 case Action.LEFT:
-                    return IsNewKeyPress(Keys.Left) || IsNewButtonPress(Buttons.LeftThumbstickLeft);                    
+                    return IsNewKeyPress(Keys.Left) || IsNewButtonPress(Buttons.LeftThumbstickLeft);
                 case Action.RIGHT:
-                    return IsNewKeyPress(Keys.Right) || IsNewButtonPress(Buttons.LeftThumbstickRight);                    
+                    return IsNewKeyPress(Keys.Right) || IsNewButtonPress(Buttons.LeftThumbstickRight);
                 case Action.UP:
-                    return IsNewKeyPress(Keys.Up) || IsNewButtonPress(Buttons.LeftThumbstickUp);                    
+                    return IsNewKeyPress(Keys.Up) || IsNewButtonPress(Buttons.LeftThumbstickUp);
                 case Action.DOWN:
-                    return IsNewKeyPress(Keys.Down) || IsNewButtonPress(Buttons.LeftThumbstickDown);                    
+                    return IsNewKeyPress(Keys.Down) || IsNewButtonPress(Buttons.LeftThumbstickDown);
             }
             return false;
         }
 
-        protected override void Update(GameTime gameTime) {
+        protected override void Update(GameTime gameTime)
+        {
             base.Update(gameTime);
 
             var keyState = Keyboard.GetState();
@@ -150,12 +179,13 @@ namespace PRPG {
                     Dialogue.IncrementSelection();
                 }
                 else if (IsNewAction(Action.MAIN)) {
-                    command = Dialogue.Selection();                    
+                    command = Dialogue.Selection();
                 }
                 else if (IsNewAction(Action.BACK)) {
                     command = GameCommand.BACK;
                 }
-            } else if (state == GameState.TRADE) {
+            }
+            else if (state == GameState.TRADE) {
                 if (IsNewAction(Action.UP)) {
                     Trade.DecRow();
                 }
@@ -177,7 +207,7 @@ namespace PRPG {
                 else if (IsNewAction(Action.CONFIRM)) {
                     if (Trade.Accept()) {
                         command = GameCommand.BACK;
-                    } 
+                    }
                 }
             }
             else {
@@ -196,7 +226,7 @@ namespace PRPG {
 
                 var gamePadCap = GamePad.GetCapabilities(PlayerIndex.One);
                 if (gamePadCap.IsConnected) {
-                    
+
                     if (gamePadCap.HasLeftXThumbStick) {
                         movement += new Vector2(padState.ThumbSticks.Left.X * moveDistance, 0);
                     }
@@ -206,7 +236,7 @@ namespace PRPG {
                     if (IsNewAction(Action.MAIN)) {
                         talkButton = true;
                     }
-                    
+
                 }
 
 
@@ -271,16 +301,21 @@ namespace PRPG {
 
             }
             AdvanceState(command);
+            if (IsNewButtonPress(Buttons.X)) {
+                renderFancyTiles = !renderFancyTiles;
+            }
+
             lastPadState = padState;
-            lastKeyState = keyState;            
+            lastKeyState = keyState;
         }
 
 
-        protected override void Draw(GameTime gameTime) {
+        protected override void Draw(GameTime gameTime)
+        {
             GraphicsDevice.Clear(Color.Black);
             base.Draw(gameTime);
 
-            
+
             float numTilesX = windowWidth / (float)World.tileSize;
             float numTilesY = windowHeight / (float)World.tileSize;
             int startX = (int)Floor(worldPos.X - numTilesX / 2.0f);
@@ -295,9 +330,17 @@ namespace PRPG {
 
             for (int y = startY; y <= endY; y++) {
                 for (int x = startX; x <= endX; x++) {
-                    var tile = world.GetTileTexture(x, y);
+
+                    Texture2D tile;
+                    if (!renderFancyTiles) {
+                        tile = world.GetTexSimple(x, y);
+                    }
+                    else {
+                        tile = world.GetTex(x, y);
+                    }
+                    
                     var screenPos = new Vector2(x, y) * World.tileSize - offset;
-                    batch.Draw(tile, screenPos, Color.White);
+                    batch.Draw(tile, new Rectangle((int)screenPos.X, (int)screenPos.Y, World.tileSize, World.tileSize), Color.White);
                 }
             }
 
@@ -306,7 +349,7 @@ namespace PRPG {
             batch.End();
 
             batch.Begin(SpriteSortMode.Immediate);
-            var effect = shaderManager.GetShader("ColorChanger");            
+            var effect = shaderManager.GetShader("ColorChanger");
             foreach (var npc in world.npcs) {
                 if (Vector2.Distance(npc.pos, worldPos) <= maxDist) {
                     effect.Parameters["key_color"].SetValue(Color.White.ToVector3());
@@ -319,7 +362,7 @@ namespace PRPG {
 
             batch.Begin();
             player.Draw(batch, World.tileSize, offset);
-            
+
             if (state == GameState.DIALOGUE) {
                 Dialogue.Draw();
             }

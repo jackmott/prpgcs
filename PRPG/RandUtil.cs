@@ -27,9 +27,19 @@ namespace PRPG
             return r.Next(min, max + 1);
         }
 
-        public static int IntEx(int min, int max)
+        public static int Int(int max)
         {
-            return r.Next(min, max);
+            return r.Next(max + 1);
+        }
+
+        public static int IntEx(int max)
+        {
+            return r.Next(max);
+        }
+
+        public static int IntEx(int min,int max)
+        {
+            return r.Next(min,max);
         }
 
         public static T Index<T>(IList<T> list)
