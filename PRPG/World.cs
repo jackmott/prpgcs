@@ -143,7 +143,6 @@ namespace PRPG
                 if (tex == null)
                     tex = new Texture2D(PRPGame.graphics, tileSize, tileSize);
                 
-
                 float step = 1.0f / (float)tileSize;
                 int index = 0;                
                 float yMax = (float)y + 1.0f;
