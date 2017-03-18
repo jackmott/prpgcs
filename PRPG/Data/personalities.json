@@ -1,11 +1,11 @@
-﻿//# item  @plural item
+﻿//# item  @plural item  %indefinite article
 {
 	"Personalities": [
 		{
 			"Name": "Normal",        
       "Like":
         ["I really like @",
-         "A # is something I quite enjoy"],        
+         "% # is something I quite enjoy"],        
       "DontLike": 
         ["Do you need any @? I don't much care for them"],
       "HaveEnough": 

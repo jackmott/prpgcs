@@ -59,7 +59,8 @@ namespace PRPG
         public static string[] namePool;
         public static NPCClass[] npcPool;
         public static Personality[] personalityPool;
-        
+
+        public Personality personality;        
         public ENPCState state;
         public const int NPCSize = 32;
         public const float helloDist = 2.0f;        
@@ -107,7 +108,8 @@ namespace PRPG
             var lastNameSuffix = RandUtil.Index(npcClass.lastNameSuffixes);
 
             lastName = lastNamePrefx + lastNameSuffix;
-                 
+
+            personality = RandUtil.Index(personalityPool);
             
             tex = GetSolidTex(NPCSize, NPCSize, Color.White);
             SetColor();
@@ -115,25 +117,16 @@ namespace PRPG
 
         public static void Initialize() {
             var names = (JArray)JObject.Parse(File.ReadAllText("Data/names.json"))["Names"];
+
+
+            namePool = names.Select(x => (string)x).ToArray();
             
-
-            namePool = new string[names.Count];
-            for (int i = 0; i < namePool.Length;i++) {
-                namePool[i] = (string)names[i];
-            }
-
             var classes = (JArray)JObject.Parse(File.ReadAllText("Data/classes.json"))["Classes"];
-            npcPool = new NPCClass[classes.Count];
-            for (int i = 0; i < classes.Count;i++) {                                
-                npcPool[i] = new NPCClass((JObject)classes[i]);
-            }
-
+            npcPool = classes.Select(x => new NPCClass((JObject)x)).ToArray();
+            
             var personalities = (JArray)JObject.Parse(File.ReadAllText("Data/personalities.json"))["Personalities"];
-            personalityPool = new Personality[personalities.Count];
-            for (int i = 0; i < personalities.Count;i++) {
-                personalityPool[i] = new Personality((JObject)personalities[i]);
-            }
-
+            personalityPool = personalities.Select(x => new Personality((JObject)x, PRPGame.wordBank)).ToArray();
+            
         }
 
         public bool IsTradeAcceptable(Inventory proposedInventory) {

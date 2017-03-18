@@ -34,18 +34,7 @@ namespace PRPG
             else {
                 if (PRPGame.closestNPC.desires.Count > 0) {
                     var randomDesire = RandUtil.Index(PRPGame.closestNPC.desires.ToArray());
-                    string superlative = string.Empty;
-                    if (randomDesire.level < 2) {
-                        superlative = "kinda";
-                    }
-                    else if (randomDesire.level < 5) {
-                        superlative = string.Empty;
-                    }
-                    else {
-                        superlative = "really";
-                    }
-
-                    currentResponse = "I " + superlative + " like " + PRPGame.wordBank.QueryNoun(randomDesire.item.name).Plural;
+                    currentResponse = PRPGame.closestNPC.personality.GetLikeResponse(randomDesire.item);
                 }
                 else {
                     currentResponse = "There isn't much to say really...";
