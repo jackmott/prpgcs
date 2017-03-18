@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using static PRPG.GraphUtils;
 using System.Linq;
 
+
 namespace PRPG
 {
     public static class Dialogue {
