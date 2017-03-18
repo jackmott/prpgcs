@@ -28,6 +28,17 @@ namespace PRPG
             private set;
         }
 
+        public static string FirstWord(string words)
+        {
+            return words.Substring(0, words.IndexOf(' '));
+        }
+
+        public static string LastWord(string words)
+        {
+            var lastIndex = words.LastIndexOf(' ') + 1;
+            return words.Substring(lastIndex, words.Length-lastIndex);
+        }
+
         public WordBank()
         {
 

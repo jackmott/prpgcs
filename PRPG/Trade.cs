@@ -22,6 +22,8 @@ namespace PRPG
         private enum TradeState {NONE,GOOD,BAD };
         private static TradeState tradeState;
 
+        public static string currentResponse = string.Empty;
+
         private static NPC npc;
         private static Player player;
 
@@ -123,12 +125,14 @@ namespace PRPG
                 var item = playerItems[row].item;
                 playerItems.Remove(item);
                 npcItems.Add(item);
-            }
-            
+            }            
+
             if (npc.IsTradeAcceptable(npcItems)) {
                 tradeState = TradeState.GOOD;
+                currentResponse = RandUtil.Index(PRPGame.closestNPC.personality.goodTrade);
             } else {
                 tradeState = TradeState.BAD;
+                currentResponse = RandUtil.Index(PRPGame.closestNPC.personality.badTrade);
             }
             CheckRow();
         }
@@ -176,16 +180,12 @@ namespace PRPG
                 PRPGame.batch.DrawString(PRPGame.mainFont, slot.count + " " + slot.item.name + " " + diffString, new Vector2(left + 10, top + 10 + i * 20), Color.White);
             }
 
-            if (tradeState == TradeState.GOOD) {
-                string s = "This trade looks good!";
-                strLen = (int)PRPGame.mainFont.MeasureString(s).X;
-                PRPGame.batch.DrawString(PRPGame.mainFont, s, new Vector2(w / 4 + left - strLen / 2, bottom - 50), Color.Green);
-            }
-            else if (tradeState == TradeState.BAD) {
-                string s = "This trade looks BAD!";
-                strLen = (int)PRPGame.mainFont.MeasureString(s).X;
-                PRPGame.batch.DrawString(PRPGame.mainFont, s, new Vector2(w / 4 + left - strLen / 2, bottom - 100), Color.Red);
-            }
+            
+            strLen = (int)PRPGame.mainFont.MeasureString(currentResponse).X;
+            Color tradeColor = Color.Red;
+            if (tradeState == TradeState.GOOD) tradeColor = Color.Green;
+            PRPGame.batch.DrawString(PRPGame.mainFont, currentResponse, new Vector2(w / 4 + left - strLen / 2, bottom - 100), tradeColor);
+
 
 #if DEBUG
             string likes = string.Empty;

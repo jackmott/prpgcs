@@ -67,6 +67,7 @@ namespace PRPG
         {
             Content.RootDirectory = "Content";
             graphicsManager = new GraphicsDeviceManager(this);
+            //graphicsManager.IsFullScreen = true;
         }
 
         public void AdvanceState(GameCommand command)

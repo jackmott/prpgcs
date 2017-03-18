@@ -10,6 +10,9 @@ namespace PRPG
         public string[] dontLike;
         public string[] haveEnough;
         public string[] needMore;
+        public string[] idleChat;
+        public string[] goodTrade;
+        public string[] badTrade;
         WordBank wordBank;
 
         public Personality(JObject p, WordBank wordBank)
@@ -20,6 +23,9 @@ namespace PRPG
             dontLike = p["DontLike"].Select(x => (string)x).ToArray();
             haveEnough = p["HaveEnough"].Select(x => (string)x).ToArray();
             needMore = p["NeedMore"].Select(x => (string)x).ToArray();
+            idleChat = p["IdleChat"].Select(x => (string)x).ToArray();
+            goodTrade = p["GoodTrade"].Select(x => (string)x).ToArray();
+            badTrade = p["BadTrade"].Select(x => (string)x).ToArray();
         }
 
         public string GetLikeResponse(Item item)
@@ -29,9 +35,9 @@ namespace PRPG
             var noun = wordBank.QueryNoun(itemWord);
             var itemWordPlural = noun.Plural;
             var indefArticle = noun.IndefiniteArticle;
-            response = response.Replace("@", itemWordPlural);
-            response = response.Replace("#", itemWord);
-            response = response.Replace("%", indefArticle);
+            response = response.Replace("ITEMS", itemWordPlural);
+            response = response.Replace("ITEM", itemWord);
+            response = response.Replace("ARTICLE", indefArticle);
             response.Trim();
             return response;
         }

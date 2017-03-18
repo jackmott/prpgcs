@@ -1,20 +1,29 @@
-﻿//# item  @plural item  %indefinite article
-{
+﻿{
 	"Personalities": [
 		{
 			"Name": "Normal",        
       "Like":
-        ["I really like @",
-         "% # is something I quite enjoy"],        
+        ["I really like ITEMS",
+         "ARTICLE ITEM is something I quite enjoy"],        
       "DontLike": 
-        ["Do you need any @? I don't much care for them"],
+        ["Do you need any ITEMS? I don't much care for them"],
       "HaveEnough": 
-        ["I have plenty of @ now",
-         "I don't need any more @"],        
+        ["I have plenty of ITEMS now",
+         "I don't need any more ITEMS"],        
       "NeedMore":
-        ["I could use more @",
-         "I don't have enough @"]
-                    
+        ["I could use more ITEMS",
+         "I don't have enough ITEMS"],
+      "IdleChat":
+        ["Nice day isn't it?",
+         "I used to be an adventurer like you, but then I took an arrow in the knee."],
+      "GoodTrade":
+        ["That looks acceptable!",
+         "I'll take it.",
+         "Excellent, yes, let's trade."],
+      "BadTrade":
+        ["No way, not good enough.",
+         "This doesn't seem fair to me."]
+
 		}    
 	]
 }
