@@ -1,0 +1,20 @@
+﻿//# item  @plural item
+{
+	"Personalities": [
+		{
+			"Name": "Normal",        
+      "Like":
+        ["I really like @",
+         "A # is something I quite enjoy"],        
+      "DontLike": 
+        ["Do you need any @? I don't much care for them"],
+      "HaveEnough": 
+        ["I have plenty of @ now",
+         "I don't need any more @"],        
+      "NeedMore":
+        ["I could use more @",
+         "I don't have enough @"]
+                    
+		}    
+	]
+}

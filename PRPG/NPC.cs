@@ -7,25 +7,15 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 
 using static PRPG.GraphUtils;
-using System.Diagnostics;
 
 namespace PRPG
 {
 
-    public class NPCClass
-    {
-        public string name;
-        public List<Item> desiredItems;        
-        public List<string> lastNamePrefixes;
-        public List<string> lastNameSuffixes;
+    
 
-        public NPCClass(string name, List<Item> desiredItems, List<string> lastNamePrefixes,List<string>lastNameSuffixes)
-        {
-            this.name = name;
-            this.desiredItems = desiredItems;
-            this.lastNamePrefixes = lastNamePrefixes;
-            this.lastNameSuffixes = lastNameSuffixes;
-        }
+    public class NPCPersonality
+    {
+
     }
 
     public class Desire {
@@ -52,15 +42,7 @@ namespace PRPG
     public enum ENPCState { ROAM, HELLO};
     public enum ECommand { ENTER_HELLO_DIST, LEAVE_HELLO_DIST }
 
-    public struct NPCStateTransition {
-        ENPCState currentState;
-        ECommand command;
-
-        public NPCStateTransition(ENPCState currentState, ECommand command) {
-            this.currentState = currentState;
-            this.command = command;
-        }
-    }
+  
 
     public class Entity {
         public string firstName;
@@ -73,20 +55,14 @@ namespace PRPG
 
     public class NPC : Entity {
 
-        private static Dictionary<NPCStateTransition, ENPCState> stateMachine = 
-            new Dictionary<NPCStateTransition, ENPCState> {
-            { new NPCStateTransition(ENPCState.ROAM,ECommand.ENTER_HELLO_DIST),ENPCState.HELLO },
-            { new NPCStateTransition(ENPCState.HELLO,ECommand.LEAVE_HELLO_DIST),ENPCState.ROAM },
-            { new NPCStateTransition(ENPCState.ROAM,ECommand.LEAVE_HELLO_DIST),ENPCState.ROAM },
-            { new NPCStateTransition(ENPCState.HELLO,ECommand.ENTER_HELLO_DIST),ENPCState.HELLO }
-        };
-
+      
         public static string[] namePool;
         public static NPCClass[] npcPool;
+        public static Personality[] personalityPool;
         
         public ENPCState state;
         public const int NPCSize = 32;
-        public const float helloDist = 1.0f;        
+        public const float helloDist = 2.0f;        
         public Vector2 pos;
         public Texture2D tex;
         public HashSet<Desire> desires;
@@ -139,6 +115,7 @@ namespace PRPG
 
         public static void Initialize() {
             var names = (JArray)JObject.Parse(File.ReadAllText("Data/names.json"))["Names"];
+            
 
             namePool = new string[names.Count];
             for (int i = 0; i < namePool.Length;i++) {
@@ -147,28 +124,14 @@ namespace PRPG
 
             var classes = (JArray)JObject.Parse(File.ReadAllText("Data/classes.json"))["Classes"];
             npcPool = new NPCClass[classes.Count];
-            for (int i = 0; i < classes.Count;i++) {
-                var c = (JObject)classes[i];
-                string name = (string)c["Name"];
-                var jsonDesires = (JArray)c["Desires"];
-                var desires = new List<Item>();
-                foreach (string desire in jsonDesires) {
-                    var item = Item.itemPool[desire];
-                    desires.Add(item);
-                }
+            for (int i = 0; i < classes.Count;i++) {                                
+                npcPool[i] = new NPCClass((JObject)classes[i]);
+            }
 
-                var prefixes = new List<string>();
-                foreach (string s in (JArray)c["LastNamePrefix"]) {
-                    prefixes.Add(s);
-                }
-
-                var suffixes = new List<string>();
-                foreach (string s in (JArray)c["LastNameSuffix"]) {
-                    suffixes.Add(s);
-                }
-
-                var npcClass = new NPCClass(name, desires, prefixes, suffixes);
-                npcPool[i] = npcClass;
+            var personalities = (JArray)JObject.Parse(File.ReadAllText("Data/personalities.json"))["Personalities"];
+            personalityPool = new Personality[personalities.Count];
+            for (int i = 0; i < personalities.Count;i++) {
+                personalityPool[i] = new Personality((JObject)personalities[i]);
             }
 
         }
@@ -218,16 +181,22 @@ namespace PRPG
             return currentColor;
         }
 
-        public void AdvanceState(ECommand command) {            
-            var trans = new NPCStateTransition(state, command);
-            var foundState = stateMachine.TryGetValue(trans, out state);
-            Debug.Assert(foundState);
-
+        public void AdvanceState(ECommand command) {    
+            
+            switch (state) {
+                case ENPCState.HELLO:
+                    if (command == ECommand.LEAVE_HELLO_DIST) state = ENPCState.ROAM;
+                    break;
+                case ENPCState.ROAM:
+                    if (command == ECommand.ENTER_HELLO_DIST) state = ENPCState.HELLO;
+                    break;
+            }
+                        
         }
 
         public void Update(GameTime gameTime, Player player) {
 
-            if (Vector2.Distance(pos, player.pos) <= helloDist) {
+            if (Vector2.DistanceSquared(pos, player.pos) <= helloDist) {
                 AdvanceState(ECommand.ENTER_HELLO_DIST);
             }
             else {

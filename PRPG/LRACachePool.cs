@@ -1,35 +1,34 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace PRPG
 {
 
     public class LRACachePool<U, T>
     {
-                                
-        private readonly Queue<U> queue = new Queue<U>();
-        
-        private readonly Dictionary<U,T> dict =
-            new Dictionary<U,T>();
 
-        private readonly List<T> evcitedList = new List<T>();
+        private readonly Queue<U> queue;        
+        private readonly Dictionary<U, T> dict;            
+        private readonly List<T> evictedList;
 
         public int Capacity { get; private set; }
+        
 
         public LRACachePool(int capacity)
         {            
             Capacity = capacity;
+            queue = new Queue<U>(capacity);
+            dict = new Dictionary<U, T>(capacity);
+            evictedList = new List<T>(4);
         }
 
                         
         public void Add(U key, T item)
-        {
-            Debug.Assert(!dict.ContainsKey(key));
-
+        {            
             if (Count >= Capacity) {
                 var oldestKey = queue.Dequeue();
-                evcitedList.Add(dict[oldestKey]);
+                var e = dict[oldestKey];                
                 dict.Remove(oldestKey);                
+                evictedList.Add(e);                
             }            
             dict.Add(key, item);
             queue.Enqueue(key);
@@ -44,7 +43,7 @@ namespace PRPG
         {
             queue.Clear();
             dict.Clear();
-            evcitedList.Clear();
+            evictedList.Clear();
         }
         
         public int Count {
@@ -54,16 +53,16 @@ namespace PRPG
         }
 
         public T Get(U key)
-        {
+        {            
             if (!dict.ContainsKey(key)) return default(T);            
             return dict[key];
         }
 
         public T GetEvicted()
         {
-            if (evcitedList.Count == 0) return default(T);
-            var e = evcitedList[evcitedList.Count - 1];
-            evcitedList.RemoveAt(evcitedList.Count - 1);
+            if (evictedList.Count == 0) return default(T);
+            var e = evictedList[evictedList.Count - 1];
+            evictedList.RemoveAt(evictedList.Count - 1);            
             return e;
         }
         
