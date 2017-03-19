@@ -46,6 +46,8 @@ namespace PRPG
         public static SpriteBatch batch;
         public static WordBank wordBank;
         public static Texture2D[] screenTiles;
+        public static float numTilesX, numTilesY;
+        public static float maxDist;
 
         public static bool renderFancyTiles = true;
 
@@ -91,12 +93,19 @@ namespace PRPG
             base.Initialize();
             graphicsManager.PreferredBackBufferHeight = 1080;
             graphicsManager.PreferredBackBufferWidth = 1920;
+
+
+            
             graphicsManager.ApplyChanges();
             graphics = GraphicsDevice;
             windowHeight = GraphicsDevice.Viewport.Bounds.Height;
             windowWidth = GraphicsDevice.Viewport.Bounds.Width;
+            numTilesX = windowWidth / (float)World.tileSize;
+            numTilesY = windowHeight / (float)World.tileSize;
+            maxDist = (float)Math.Sqrt(numTilesX * numTilesX + numTilesY * numTilesY);
+
             wordBank = new WordBank();
-            CharSprites.Initialize();
+            CharSprites.Initialize(Content);
             Dialogue.Initialize();
             Trade.Initialize();
             Item.Initialize();
@@ -109,7 +118,7 @@ namespace PRPG
 
             world = new World(500, 500);
             screenTiles = new Texture2D[((windowWidth / World.tileSize) +4) * ((windowHeight / World.tileSize)+4)];
-            player = new Player(new Vector2(world.width / 2, world.height / 2));
+            player = new Player(new Vector2(world.width / 2, world.height / 2),Content);
             worldPos = player.pos;
         }
 
@@ -288,7 +297,7 @@ namespace PRPG
                 closestNPC = null;
                 float closestNPCDist = float.MaxValue;
                 foreach (var npc in world.npcs) {
-                    npc.Update(gameTime, player);
+                    npc.Update(gameTime, player,Content);
                     if (npc.state == ENPCState.HELLO) {
                         var dist = Vector2.DistanceSquared(npc.pos, player.pos);
                         if (dist < closestNPCDist) {
@@ -315,15 +324,12 @@ namespace PRPG
 
         protected override void Draw(GameTime gameTime)
         {
-            //GraphicsDevice.Clear(Color.Black);
-                        
-            float numTilesX = windowWidth / (float)World.tileSize;
-            float numTilesY = windowHeight / (float)World.tileSize;
+            //GraphicsDevice.Clear(Color.Black);                        
             int startX = (int)Floor(worldPos.X - numTilesX / 2.0f);
             int endX = (int)Ceiling(worldPos.X + numTilesX / 2.0f);
             int startY = (int)Floor(worldPos.Y - numTilesY / 2.0f);
             int endY = (int)Ceiling(worldPos.Y + numTilesY / 2.0f);
-            float maxDist = (float)Math.Sqrt(numTilesX * numTilesX + numTilesY * numTilesY);
+            
             var screenCenter = new Vector2((float)windowWidth / 2.0f, (float)windowHeight / 2.0f);
 
             var offset = worldPos * (float)World.tileSize - screenCenter;

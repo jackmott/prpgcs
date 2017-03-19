@@ -22,6 +22,11 @@ namespace PRPG
             return (float)r.NextDouble() * max;
         }
 
+        public static bool Bool()
+        {
+            return r.Next(2) == 0;
+        }
+
         public static int Int(int min, int max)
         {
             return r.Next(min, max + 1);

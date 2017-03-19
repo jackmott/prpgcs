@@ -21,7 +21,7 @@ namespace PRPG
         public Color[] pallette;
         public TerrainTile[] tilePallette;
         public Dictionary<TerrainTile, Texture2D> simpleTex;
-        public LRACachePool<int, Texture2D> texCache;
+        public LRACache<int, Texture2D> texCache;
         public const double cityDensity = 1.0 / 1000.0;                
         public NPC[] npcs;
         Color[] texColor;
@@ -32,7 +32,7 @@ namespace PRPG
         
             
             texColor = new Color[(tileSize) * (tileSize)];
-            texCache = new LRACachePool<int, Texture2D>(1000);
+            texCache = new LRACache<int, Texture2D>(1000);
             simpleTex = new Dictionary<TerrainTile, Texture2D>();
             simpleTex.Add(TerrainTile.WATER, GetSolidTex(tileSize, tileSize, Color.Blue));
             simpleTex.Add(TerrainTile.GRASS, GetSolidTex(tileSize, tileSize, Color.ForestGreen));
@@ -99,7 +99,7 @@ namespace PRPG
             var numCities = (int)(worldArea * cityDensity);
 
             int npcIndex = 0;
-            int npcsPerCity = (int)(((double)npcs.Length * 0.75) / (double)numCities);
+            int npcsPerCity = 5;
             for (int i = 0; i < numCities; i++) {
                 var cityPos = new Vector2(RandUtil.IntEx(4, w - 4), RandUtil.IntEx(4, h - 4));
                 var tile = tiles[(int)cityPos.X, (int)cityPos.Y];
@@ -135,9 +135,7 @@ namespace PRPG
             return simpleTex[tiles[x, y]];
 
         }
-
     
-
         public Texture2D GetTex(int x, int y)
         {
             int key = (x << 12) + y;
@@ -147,9 +145,8 @@ namespace PRPG
                 return tex;
             }
             else {
-                tex = texCache.GetEvicted();                
-                if (tex == null)
-                    tex = new Texture2D(PRPGame.graphics, tileSize, tileSize);
+                
+                tex = new Texture2D(PRPGame.graphics, tileSize, tileSize);
 
                 for (int ty = 0; ty < tileSize; ty++) {
                     float fy = y + ((float)ty / (float)tileSize);

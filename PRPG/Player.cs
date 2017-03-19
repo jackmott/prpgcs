@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Linq;
@@ -14,14 +15,15 @@ namespace PRPG
         public Vector2 oldPos;
         public TimeSpan lastAnimationTime;
         
-        public Player(Vector2 pos) {
+        public Player(Vector2 pos, ContentManager content) {
             firstName = "Player One";
             this.pos = pos;
             items = new Inventory();        
             for (int i = 0; i < 5;i++) {
                 items.Add(RandUtil.Index(Item.itemPool.Values.ToArray()));
-            }            
-            sprites = new CharSprites(0, true);
+            }
+            gender = Gender.Male;
+            sprites = new CharSprites(gender,content);
             facing = CharSprites.DOWN;
             lastAnimationTime = TimeSpan.FromMilliseconds(0);
                

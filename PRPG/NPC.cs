@@ -7,6 +7,7 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 
 using static PRPG.GraphUtils;
+using Microsoft.Xna.Framework.Content;
 
 namespace PRPG
 {
@@ -50,6 +51,7 @@ namespace PRPG
         public int animIndex;
         public CharSprites sprites;
         public int facing;
+        public Gender gender;
         public string fullName { get { return firstName + " " + lastName; } }
 
         public Inventory items;        
@@ -78,12 +80,14 @@ namespace PRPG
             this.pos = pos;
             firstName = RandUtil.Index(namePool);
             NPCClass npcClass = RandUtil.Index(npcPool);
-            sprites = new CharSprites(0, true);
-            
-
-
+                        
             items = new Inventory();
             
+            if (RandUtil.Bool()) {
+                gender = Gender.Male;
+            } else {
+                gender = Gender.Female;
+            }
             //Give them some things relevant to their class
             int numItems = RandUtil.Int(0, 5);            
             for (int i = 0; i < numItems; i++) {                
@@ -189,8 +193,11 @@ namespace PRPG
                         
         }
 
-        public void Update(GameTime gameTime, Player player) {
-
+        public void Update(GameTime gameTime, Player player, ContentManager content) {
+            var dist = Vector2.DistanceSquared(pos, player.pos);
+            if (dist <= PRPGame.maxDist * PRPGame.maxDist) {
+                if (sprites == null) sprites = new CharSprites(gender,content);
+            }
             if (Vector2.DistanceSquared(pos, player.pos) <= helloDist) {
                 AdvanceState(ECommand.ENTER_HELLO_DIST);
             }
@@ -202,11 +209,12 @@ namespace PRPG
 
         public void Draw(SpriteBatch batch, float scale, Vector2 offset) {
 
-            
-            batch.Draw(sprites.spriteSheet, pos * scale - offset,sprites.walking[CharSprites.DOWN,0],Color.White);
-            if (state == ENPCState.HELLO) {
-                batch.DrawString(PRPGame.mainFont, "Hello!", pos * scale - offset, Color.White);
-            }            
+            if (sprites != null) {
+                batch.Draw(sprites.spriteSheet, pos * scale - offset, sprites.walking[CharSprites.DOWN, 0], Color.White);
+                if (state == ENPCState.HELLO) {
+                    batch.DrawString(PRPGame.mainFont, "Hello!", pos * scale - offset, Color.White);
+                }
+            }
         }
 
 
