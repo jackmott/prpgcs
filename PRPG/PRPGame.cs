@@ -40,8 +40,7 @@ namespace PRPG
 
         // GLOBAL STATE
         public static GraphicsDevice graphics;
-        public static SpriteFont mainFont;
-        public static Texture2D spriteSheet;
+        public static SpriteFont mainFont;        
         public static int windowWidth;
         public static int windowHeight;
         public static SpriteBatch batch;
@@ -96,7 +95,8 @@ namespace PRPG
             graphics = GraphicsDevice;
             windowHeight = GraphicsDevice.Viewport.Bounds.Height;
             windowWidth = GraphicsDevice.Viewport.Bounds.Width;
-            wordBank = new WordBank();            
+            wordBank = new WordBank();
+            NPCSprites.Initialize();
             Dialogue.Initialize();
             Trade.Initialize();
             Item.Initialize();
@@ -117,9 +117,7 @@ namespace PRPG
         {
             batch = new SpriteBatch(GraphicsDevice);
             mainFont = Content.Load<SpriteFont>("MainFont");
-            shaderManager = new ShaderManager(Content, GraphicsDevice);
-            shaderManager.AddShader("ColorChanger");
-            spriteSheet = Content.Load<Texture2D>("spritesheet");
+            shaderManager = new ShaderManager(Content, GraphicsDevice);                        
             
         }
 
@@ -360,12 +358,9 @@ namespace PRPG
             
 
             
-            var effect = shaderManager.GetShader("ColorChanger");
+            
             foreach (var npc in world.npcs) {
-                if (Vector2.Distance(npc.pos, worldPos) <= maxDist) {
-                    effect.Parameters["key_color"].SetValue(Color.White.ToVector3());
-                    effect.Parameters["new_color"].SetValue(npc.GetColor().ToVector3());
-                    effect.CurrentTechnique.Passes[0].Apply();
+                if (Vector2.Distance(npc.pos, worldPos) <= maxDist) {            
                     npc.Draw(batch, World.tileSize, offset);                    
                 }
             }

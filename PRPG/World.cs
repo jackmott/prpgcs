@@ -31,7 +31,7 @@ namespace PRPG
         {
         
             
-            texColor = new Color[(tileSize/4) * (tileSize/4)];
+            texColor = new Color[(tileSize) * (tileSize)];
             texCache = new LRACachePool<int, Texture2D>(1000);
             simpleTex = new Dictionary<TerrainTile, Texture2D>();
             simpleTex.Add(TerrainTile.WATER, GetSolidTex(tileSize, tileSize, Color.Blue));
@@ -149,13 +149,13 @@ namespace PRPG
             else {
                 tex = texCache.GetEvicted();                
                 if (tex == null)
-                    tex = new Texture2D(PRPGame.graphics, tileSize/4, tileSize/4);
+                    tex = new Texture2D(PRPGame.graphics, tileSize, tileSize);
 
-                for (int ty = 0; ty < tileSize/4; ty++) {
-                    float fy = y + ((float)ty*4 / (float)tileSize);
-                    int tyIndex = ty * (tileSize/4);
-                    for (int tx = 0; tx < tileSize/4; tx++) {
-                        float fx = x + ((float)tx*4 / (float)tileSize);
+                for (int ty = 0; ty < tileSize; ty++) {
+                    float fy = y + ((float)ty / (float)tileSize);
+                    int tyIndex = ty * (tileSize);
+                    for (int tx = 0; tx < tileSize; tx++) {
+                        float fx = x + ((float)tx / (float)tileSize);
                         float f = Noise.FractalFBM(1337, 0.01f * fx, 0.01f * fy);
 
                         int colorIndex = colorIndex = MathHelper.Clamp((int)Math.Floor(f * ((float)pallette.Length - 1.0f)), 0, pallette.Length);                        

@@ -49,6 +49,7 @@
     <Compile Include="Item.cs" />
     <Compile Include="LRACachePool.cs" />
     <Compile Include="NPCClass.cs" />
+    <Compile Include="NPCSprites.cs" />
     <Compile Include="Personality.cs" />
     <Compile Include="RandUtil.cs" />
     <Compile Include="ShaderManager.cs" />
@@ -154,9 +155,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="LPC\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <PropertyGroup>

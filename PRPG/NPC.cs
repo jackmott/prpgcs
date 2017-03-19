@@ -64,11 +64,11 @@ namespace PRPG
         public ENPCState state;
         public const int NPCSize = 32;
         public const float helloDist = 2.0f;        
-        public Vector2 pos;
-        public Texture2D tex;
+        public Vector2 pos;        
         public HashSet<Desire> desires;
         public Color currentColor;
 
+        public Texture2D spriteSheet;
         
         
         public NPC(Vector2 pos) {            
@@ -77,6 +77,7 @@ namespace PRPG
             firstName = RandUtil.Index(namePool);
             NPCClass npcClass = RandUtil.Index(npcPool);
 
+            spriteSheet = RandUtil.Index(NPCSprites.maleBodySheets);
 
 
             items = new Inventory();
@@ -110,8 +111,7 @@ namespace PRPG
             lastName = lastNamePrefx + lastNameSuffix;
 
             personality = RandUtil.Index(personalityPool);
-            
-            tex = GetSolidTex(NPCSize, NPCSize, Color.White);
+                        
             SetColor();
         }
 
@@ -200,7 +200,8 @@ namespace PRPG
 
         public void Draw(SpriteBatch batch, float scale, Vector2 offset) {
 
-            batch.Draw(tex, pos * scale - offset, Color.White);
+            
+            batch.Draw(spriteSheet, pos * scale - offset,NPCSprites.testSpriteRect,Color.White);
             if (state == ENPCState.HELLO) {
                 batch.DrawString(PRPGame.mainFont, "Hello!", pos * scale - offset, Color.White);
             }            
