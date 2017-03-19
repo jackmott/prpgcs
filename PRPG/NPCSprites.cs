@@ -14,9 +14,31 @@ namespace PRPG
         public static Texture2D[] maleBodySheets;
         public static Texture2D[] femaleBodySheets;
 
-        public static Rectangle testSpriteRect = new Rectangle(0, 0, 64, 64);
+        public enum Dir : int {UP,LEFT,DOWN,RIGHT };
+        const int CHAR_SIZE = 64;
+        const int WALKING_INDEX = 8;
+        const int WALKING_WIDTH = 9;
+        public Rectangle[,] walking;
+        public Texture2D spriteSheet;
 
-        public NPCSprites() { }
+        public NPCSprites(int index, bool male) {            
+            if (male) {
+                spriteSheet = maleBodySheets[index];
+            } else {
+                spriteSheet = femaleBodySheets[index];
+            }
+
+            var dirs = (Dir[])Enum.GetValues(typeof(Dir));
+            walking = new Rectangle[4, 9];
+            //walk y index starts at 8 ends at 12
+            //walk width is 9
+            foreach (var dir in dirs) { 
+                for (int x = 0; x < 9; x++) {
+                    int y = (int)dir + WALKING_INDEX;
+                    walking[(int)dir, x] = new Rectangle(x * CHAR_SIZE, y * CHAR_SIZE,CHAR_SIZE,CHAR_SIZE);
+                }
+            }
+        }
 
         public static void Initialize()
         {
@@ -34,6 +56,8 @@ namespace PRPG
                     return Texture2D.FromStream(PRPGame.graphics, fStream);
                 }
             }).ToArray();
+
+
 
         }
 
