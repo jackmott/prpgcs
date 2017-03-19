@@ -49,7 +49,7 @@
     <Compile Include="Item.cs" />
     <Compile Include="LRACachePool.cs" />
     <Compile Include="NPCClass.cs" />
-    <Compile Include="NPCSprites.cs" />
+    <Compile Include="CharSprites.cs" />
     <Compile Include="Personality.cs" />
     <Compile Include="RandUtil.cs" />
     <Compile Include="ShaderManager.cs" />

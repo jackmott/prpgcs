@@ -9,33 +9,37 @@ using System.IO;
 
 namespace PRPG
 {
-    public class NPCSprites
+    public class CharSprites
     {
         public static Texture2D[] maleBodySheets;
         public static Texture2D[] femaleBodySheets;
 
-        public enum Dir : int {UP,LEFT,DOWN,RIGHT };
+        public static int UP = 0;
+        public static int LEFT = 1;
+        public static int DOWN = 2;        
+        public static int RIGHT = 3;
+
         const int CHAR_SIZE = 64;
         const int WALKING_INDEX = 8;
         const int WALKING_WIDTH = 9;
         public Rectangle[,] walking;
         public Texture2D spriteSheet;
 
-        public NPCSprites(int index, bool male) {            
+        public CharSprites(int index, bool male) {            
             if (male) {
                 spriteSheet = maleBodySheets[index];
             } else {
                 spriteSheet = femaleBodySheets[index];
             }
 
-            var dirs = (Dir[])Enum.GetValues(typeof(Dir));
+            
             walking = new Rectangle[4, 9];
             //walk y index starts at 8 ends at 12
             //walk width is 9
-            foreach (var dir in dirs) { 
+            for (int y = 0; y < 4; y++) { 
                 for (int x = 0; x < 9; x++) {
-                    int y = (int)dir + WALKING_INDEX;
-                    walking[(int)dir, x] = new Rectangle(x * CHAR_SIZE, y * CHAR_SIZE,CHAR_SIZE,CHAR_SIZE);
+                    int walkIndex = y+ WALKING_INDEX;
+                    walking[y, x] = new Rectangle(x * CHAR_SIZE, walkIndex * CHAR_SIZE,CHAR_SIZE,CHAR_SIZE);
                 }
             }
         }

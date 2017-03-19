@@ -47,7 +47,9 @@ namespace PRPG
     public class Entity {
         public string firstName;
         public string lastName;
-
+        public int animIndex;
+        public CharSprites sprites;
+        public int facing;
         public string fullName { get { return firstName + " " + lastName; } }
 
         public Inventory items;        
@@ -60,8 +62,7 @@ namespace PRPG
         public static NPCClass[] npcPool;
         public static Personality[] personalityPool;
 
-        public Personality personality;
-        public NPCSprites sprites;
+        public Personality personality;        
         public ENPCState state;
         public const int NPCSize = 32;
         public const float helloDist = 2.0f;        
@@ -77,7 +78,7 @@ namespace PRPG
             this.pos = pos;
             firstName = RandUtil.Index(namePool);
             NPCClass npcClass = RandUtil.Index(npcPool);
-            sprites = new NPCSprites(0, true);
+            sprites = new CharSprites(0, true);
             
 
 
@@ -202,7 +203,7 @@ namespace PRPG
         public void Draw(SpriteBatch batch, float scale, Vector2 offset) {
 
             
-            batch.Draw(sprites.spriteSheet, pos * scale - offset,sprites.walking[(int)NPCSprites.Dir.DOWN,0],Color.White);
+            batch.Draw(sprites.spriteSheet, pos * scale - offset,sprites.walking[CharSprites.DOWN,0],Color.White);
             if (state == ENPCState.HELLO) {
                 batch.DrawString(PRPGame.mainFont, "Hello!", pos * scale - offset, Color.White);
             }            

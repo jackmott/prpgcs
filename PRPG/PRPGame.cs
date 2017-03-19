@@ -96,7 +96,7 @@ namespace PRPG
             windowHeight = GraphicsDevice.Viewport.Bounds.Height;
             windowWidth = GraphicsDevice.Viewport.Bounds.Width;
             wordBank = new WordBank();
-            NPCSprites.Initialize();
+            CharSprites.Initialize();
             Dialogue.Initialize();
             Trade.Initialize();
             Item.Initialize();
@@ -264,6 +264,7 @@ namespace PRPG
 
 
                 player.pos += movement;
+                player.Update(gameTime);
 
                 float xDiff = worldPos.X - player.pos.X;
                 float yDiff = worldPos.Y - player.pos.Y;
