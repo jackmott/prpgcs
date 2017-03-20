@@ -58,8 +58,7 @@ namespace PRPG
                 PRPGame.closestNPC.items.Clear();
                 foreach (var slot in npcItems) {
                     PRPGame.closestNPC.items.Add(slot);
-                }
-                PRPGame.closestNPC.SetColor();
+                }                
                 npcItems.Clear();
                 playerItems.Clear();
                 return true;
@@ -135,6 +134,7 @@ namespace PRPG
                 currentResponse = RandUtil.Index(PRPGame.closestNPC.personality.badTrade);
             }
             CheckRow();
+            CheckColumn();
         }
 
 

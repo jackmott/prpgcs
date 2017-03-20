@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace PRPG
 {
 
-    public class LRACache<U, T> where T: IDisposable
+    public class LRACache<U, T> 
     {
 
         private readonly Queue<U> queue;        
@@ -22,16 +23,18 @@ namespace PRPG
         }
 
                         
-        public void Add(U key, T item)
-        {            
+        public T Add(U key, T item)
+        {
+            var e = default(T);
             if (Count >= Capacity) {
                 var oldestKey = queue.Dequeue();
-                var e = dict[oldestKey];                
+                e = dict[oldestKey];                
                 dict.Remove(oldestKey);
-                e.Dispose();
+                   
             }            
             dict.Add(key, item);
             queue.Enqueue(key);
+            return e;
         }
 
         public bool Contains(U key)

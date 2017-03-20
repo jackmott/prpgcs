@@ -5,7 +5,7 @@ namespace PRPG
 {
     public static class RandUtil
     {
-        public static Random r = new Random();
+        public static Random r = new Random(1);
 
         // intex 
         public static float Float(float min, float max)

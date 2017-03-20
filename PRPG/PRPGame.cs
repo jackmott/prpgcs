@@ -40,18 +40,26 @@ namespace PRPG
 
         // GLOBAL STATE
         public static GraphicsDevice graphics;
-        public static SpriteFont mainFont;        
+        public static SpriteFont mainFont;
         public static int windowWidth;
         public static int windowHeight;
         public static SpriteBatch batch;
         public static WordBank wordBank;
-        public static Texture2D[] screenTiles;
         public static float numTilesX, numTilesY;
-        public static float maxDist;
+        public static float maxDist;        
+        public static List<Texture2D> tilePool;
+        public static List<Texture2D> pendingTilePool;
 
-#if DEBUG
-        public static int npcSprited = 0;
-#endif
+        public static int startX;
+        public static int endX;
+        public static int startY;
+        public static int endY;
+        public Vector2 screenCenter;
+        public Vector2 offset;
+
+
+        public static int npcSprited = 0;        
+
         public static bool renderFancyTiles = true;
 
 
@@ -70,7 +78,9 @@ namespace PRPG
         public PRPGame()
         {
             Content.RootDirectory = "Content";
-            graphicsManager = new GraphicsDeviceManager(this);
+            graphicsManager = new GraphicsDeviceManager(this);            
+            tilePool = new List<Texture2D>(32);
+            pendingTilePool = new List<Texture2D>(32);
             //graphicsManager.IsFullScreen = true;
         }
 
@@ -98,7 +108,7 @@ namespace PRPG
             graphicsManager.PreferredBackBufferWidth = 1920;
 
 
-            
+
             graphicsManager.ApplyChanges();
             graphics = GraphicsDevice;
             windowHeight = GraphicsDevice.Viewport.Bounds.Height;
@@ -116,12 +126,11 @@ namespace PRPG
 
             foreach (var item in Item.itemPool.Values) {
                 var noun = wordBank.QueryNoun(item.name);
-                Debug.Assert(noun != null);                
+                Debug.Assert(noun != null);
             }
 
-            world = new World(500, 500,Content);
-            screenTiles = new Texture2D[((windowWidth / World.tileSize) +4) * ((windowHeight / World.tileSize)+4)];
-            player = new Player(new Vector2(world.width / 2, world.height / 2),Content);
+            world = new World(500, 500, Content);
+            player = new Player(new Vector2(world.width / 2, world.height / 2), Content);
             worldPos = player.pos;
         }
 
@@ -129,8 +138,8 @@ namespace PRPG
         {
             batch = new SpriteBatch(GraphicsDevice);
             mainFont = Content.Load<SpriteFont>("MainFont");
-            shaderManager = new ShaderManager(Content, GraphicsDevice);                        
-            
+            shaderManager = new ShaderManager(Content, GraphicsDevice);
+
         }
 
         protected override void UnloadContent()
@@ -300,7 +309,7 @@ namespace PRPG
                 closestNPC = null;
                 float closestNPCDist = float.MaxValue;
                 foreach (var npc in world.npcs) {
-                    npc.Update(gameTime, player,Content);
+                    npc.Update(gameTime, player, Content);
                     if (npc.state == ENPCState.HELLO) {
                         var dist = Vector2.DistanceSquared(npc.pos, player.pos);
                         if (dist < closestNPCDist) {
@@ -319,6 +328,14 @@ namespace PRPG
                 renderFancyTiles = !renderFancyTiles;
             }
 
+            startX = (int)Floor(worldPos.X - numTilesX / 2.0f);
+            endX = (int)Ceiling(worldPos.X + numTilesX / 2.0f);
+            startY = (int)Floor(worldPos.Y - numTilesY / 2.0f);
+            endY = (int)Ceiling(worldPos.Y + numTilesY / 2.0f);
+
+            screenCenter = new Vector2(windowWidth / 2, windowHeight / 2);
+
+            offset = worldPos * (float)World.tileSize - screenCenter;
 
             lastPadState = padState;
             lastKeyState = keyState;
@@ -327,16 +344,13 @@ namespace PRPG
 
         protected override void Draw(GameTime gameTime)
         {
-            //GraphicsDevice.Clear(Color.Black);                        
-            int startX = (int)Floor(worldPos.X - numTilesX / 2.0f);
-            int endX = (int)Ceiling(worldPos.X + numTilesX / 2.0f);
-            int startY = (int)Floor(worldPos.Y - numTilesY / 2.0f);
-            int endY = (int)Ceiling(worldPos.Y + numTilesY / 2.0f);
+            //GraphicsDevice.Clear(Color.Black);                                    
+            for (int i = 0; i < pendingTilePool.Count;i++) {
+                tilePool.Add(pendingTilePool[i]);
+            }
+            pendingTilePool.Clear();
             
-            var screenCenter = new Vector2((float)windowWidth / 2.0f, (float)windowHeight / 2.0f);
-
-            var offset = worldPos * (float)World.tileSize - screenCenter;
-
+            var screenTiles = new Texture2D[((windowWidth / World.tileSize) + 4) * ((windowHeight / World.tileSize) + 4)];
             int index = 0;
             for (int y = startY; y <= endY; y++) {
                 for (int x = startX; x <= endX; x++) {
@@ -349,32 +363,31 @@ namespace PRPG
                         tile = world.GetTex(x, y);
                     }
                     screenTiles[index] = tile;
-                    index++;                    
+                    index++;
                 }
             }
 
-            batch.Begin(SpriteSortMode.Immediate);
+            batch.Begin(SpriteSortMode.Immediate);            
             index = 0;
             for (int y = startY; y <= endY; y++) {
                 for (int x = startX; x <= endX; x++) {
 
-                    Texture2D tile = screenTiles[index];                    
+                    Texture2D tile = screenTiles[index];
                     index++;
                     var screenPos = new Vector2(x, y) * World.tileSize - offset;
                     if (screenPos.X >= -World.tileSize && screenPos.Y >= -World.tileSize && screenPos.X < windowWidth && screenPos.Y < windowHeight)
-                        batch.Draw(tile,new Rectangle((int)screenPos.X,(int)screenPos.Y,World.tileSize,World.tileSize), Color.White);
+                        batch.Draw(tile, new Rectangle((int)screenPos.X, (int)screenPos.Y, World.tileSize, World.tileSize), Color.White);
                 }
             }
-            
 
-            
-            
+
+
             foreach (var npc in world.npcs) {
-                if (Vector2.Distance(npc.pos, worldPos) <= maxDist) {            
-                    npc.Draw(batch, World.tileSize, offset);                    
+                if (Vector2.Distance(npc.pos, worldPos) <= maxDist) {
+                    npc.Draw(batch, World.tileSize, offset);
                 }
             }
-            
+
             player.Draw(batch, World.tileSize, offset);
 
             if (state == GameState.DIALOGUE) {
@@ -384,11 +397,10 @@ namespace PRPG
                 Trade.Draw();
             }
 
-#if DEBUG
-            batch.DrawString(mainFont, "x:" + (int)worldPos.X + "," + (int)worldPos.Y + "  sprited:" + npcSprited, Vector2.Zero, Color.Yellow);
-#endif
-            batch.End();
 
+            batch.DrawString(mainFont, "x:" + (int)worldPos.X + "," + (int)worldPos.Y + "  sprited:" + npcSprited, Vector2.Zero, Color.Yellow);
+
+            batch.End();            
             base.Draw(gameTime);
         }
     }

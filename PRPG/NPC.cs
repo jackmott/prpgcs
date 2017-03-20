@@ -117,9 +117,7 @@ namespace PRPG
 
             lastName = lastNamePrefx + lastNameSuffix;
 
-            personality = RandUtil.Index(personalityPool);
-                        
-            SetColor();
+            personality = RandUtil.Index(personalityPool);            
         }
 
         public static void Initialize() {
@@ -172,14 +170,7 @@ namespace PRPG
             return (int)Math.Round(pct * 100.0);
         }
 
-        public void SetColor() {
-            int happy = Happiness();
-            currentColor = Color.Lerp(Color.Blue, Color.Orange, (float)happy / 100.0f);
-        }
-
-        public Color GetColor() {
-            return currentColor;
-        }
+      
 
         public void AdvanceState(ECommand command) {    
             
@@ -195,9 +186,12 @@ namespace PRPG
         }
 
         public void Update(GameTime gameTime, Player player, ContentManager content) {
-            var dist = Vector2.DistanceSquared(pos, player.pos);
+            var dist = Vector2.DistanceSquared(pos, player.pos);            
             if (dist <= PRPGame.maxDist * PRPGame.maxDist) {
-                if (sprites == null) sprites = new CharSprites(gender,content);
+
+                if (sprites == null) {              
+                    sprites = new CharSprites(gender, content);
+                }
             }
             if (dist <= helloDist) {
                 AdvanceState(ECommand.ENTER_HELLO_DIST);

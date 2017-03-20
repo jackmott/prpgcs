@@ -1,7 +1,40 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace PRPG {
-    public static class Noise {
+namespace PRPG
+{
+    public static class Noise
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static float Lerp(float a, float b, float t) { return a + t * (b - a); }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static float ValCoord2D(int seed, int x, int y)
+        {
+            int n = seed;
+            n ^= X_PRIME * x;
+            n ^= Y_PRIME * y;
+
+            return (n * n * n * 60493) / 2147483648.0f;
+        }
+
+        private static float SingleValue(int seed, float x, float y)
+        {
+            int x0 = FastFloor(x);
+            int y0 = FastFloor(y);
+            int x1 = x0 + 1;
+            int y1 = y0 + 1;
+
+            float xs, ys;
+
+            xs = x - x0;
+            ys = y - y0;
+
+
+            float xf0 = Lerp(ValCoord2D(seed, x0, y0), ValCoord2D(seed, x1, y0), xs);
+            float xf1 = Lerp(ValCoord2D(seed, x0, y1), ValCoord2D(seed, x1, y1), xs);
+
+            return Lerp(xf0, xf1, ys);
+        }
 
         public static float FractalFBM(int seed, float x, float y)
         {
@@ -12,7 +45,7 @@ namespace PRPG {
             float freq = 1f;
             float amplitude = 1f;
 
-            for (int i = 0; i < octaves;i++) {
+            for (int i = 0; i < octaves; i++) {
                 sum += freq * Simplex(seed, x * amplitude, y * amplitude);
                 freq *= lacunarity;
                 amplitude *= gain;
@@ -32,7 +65,8 @@ namespace PRPG {
         private static int FastFloor(float f) { return (f >= 0.0f ? (int)f : (int)f - 1); }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static float GradCoord2D(int seed, int x, int y, float xd, float yd) {
+        private static float GradCoord2D(int seed, int x, int y, float xd, float yd)
+        {
             int hash = seed;
             hash ^= X_PRIME * x;
             hash ^= Y_PRIME * y;
@@ -59,7 +93,9 @@ namespace PRPG {
             return ((hash & 1) != 0 ? xd : yd);
         }
 
-        public static float Simplex(int seed, float x, float y) {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float Simplex(int seed, float x, float y)
+        {
             float t = (x + y) * F2;
             int i = FastFloor(x + t);
             int j = FastFloor(y + t);
@@ -83,8 +119,8 @@ namespace PRPG {
 
             float x1 = x0 - i1 + G2;
             float y1 = y0 - j1 + G2;
-            float x2 = x0 - 1.0f + 2.0f * G2;
-            float y2 = y0 - 1.0f + 2.0f * G2;
+            float x2 = x0 - 1.0f + F2;
+            float y2 = y0 - 1.0f + F2;
 
             float n0, n1, n2;
 

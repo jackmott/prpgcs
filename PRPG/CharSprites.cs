@@ -7,6 +7,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System.IO;
 using Microsoft.Xna.Framework.Content;
+using System.Diagnostics;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace PRPG
 {
@@ -55,16 +57,16 @@ namespace PRPG
                 eyeSheet = content.Load<Texture2D>(RandUtil.Index(femaleEyePaths));
             }
 
-            Texture2D shirtSheet = content.Load<Texture2D>(RandUtil.Index(shirtPaths));
+            Texture2D shirtSheet = content.Load<Texture2D>(RandUtil.Index(shirtPaths));            
             Texture2D pantSheet = content.Load<Texture2D>(RandUtil.Index(pantsPaths));
             Texture2D shoeSheet = content.Load<Texture2D>(RandUtil.Index(shoePaths));
                         
-            var renderTarget = new RenderTarget2D(PRPGame.graphics,baseSheet.Width,baseSheet.Height,false,SurfaceFormat.Color,DepthFormat.None,0,RenderTargetUsage.PreserveContents);
-                
-                        
+            var renderTarget = new RenderTarget2D(PRPGame.graphics,baseSheet.Width,baseSheet.Height,false,SurfaceFormat.Color,DepthFormat.None,0,RenderTargetUsage.DiscardContents);
+
+                     
             PRPGame.graphics.SetRenderTarget(renderTarget);
             PRPGame.graphics.Clear(Color.Transparent);
-            PRPGame.batch.Begin();
+            PRPGame.batch.Begin();            
             PRPGame.batch.Draw(baseSheet, Vector2.Zero, Color.White);
             PRPGame.batch.Draw(eyeSheet, Vector2.Zero, Color.White);
             PRPGame.batch.Draw(hairSheet, Vector2.Zero, Color.White);
@@ -74,11 +76,10 @@ namespace PRPG
             PRPGame.batch.End();
             PRPGame.graphics.SetRenderTarget(null);
 
+            
 
             spriteSheet = renderTarget;
-            
-            
-
+          
             walking = new Rectangle[4, 9];
             for (int y = 0; y < 4; y++) { 
                 for (int x = 0; x < 9; x++) {

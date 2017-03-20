@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace PRPG
 {
@@ -12,7 +13,7 @@ namespace PRPG
         /// </summary>
         [STAThread]
         static void Main()
-        {
+        {            
             using (var game = new PRPGame())
                 game.Run();
         }

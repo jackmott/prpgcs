@@ -14,23 +14,24 @@ namespace PRPG
             WATER = 0, GRASS, DIRT, ROCK, SNOW
         };
 
+        TileSet tileSet;
 
         public readonly int width;
         public readonly int height;
         public const int tileSize = 64;
         public TerrainTile[,] tiles;
         public Color[] pallette;
-        public TerrainTile[] tilePallette;
+    //    public TerrainTile[] tilePallette;
         public Dictionary<TerrainTile, Texture2D> simpleTex;
         public LRACache<int, Texture2D> texCache;
-        public const double cityDensity = 1.0 / 1000.0;                
+        public const double cityDensity = 1.0 / 1000.0;
         public NPC[] npcs;
         Color[] texColor;
-        
+
 
         public World(int w, int h, ContentManager content)
         {
-        
+
             
             texColor = new Color[(tileSize) * (tileSize)];
             texCache = new LRACache<int, Texture2D>(10000);
@@ -45,40 +46,9 @@ namespace PRPG
             width = w;
             height = h;
 
-            tilePallette = new TerrainTile[100];
-            pallette = new Color[100];
-            for (int i = 0; i < 25; i++) {
-                tilePallette[i] = TerrainTile.WATER;
-                pallette[i] = Color.DarkBlue;
-            }
-            for (int i = 25; i < 30; i++) {
-                tilePallette[i] = TerrainTile.WATER;
-                pallette[i] = Color.Blue;
-            }
-            pallette[25] = Color.Lerp(Color.DarkBlue, Color.Blue, 0.5f);
-            for (int i = 30; i < 32; i++) {
-                tilePallette[i] = TerrainTile.GRASS;
-                pallette[i] = Color.LightGoldenrodYellow;
-            }
-            pallette[30] = Color.Lerp(Color.Blue, Color.LightGoldenrodYellow, 0.5f);
-            for (int i = 32; i < 55; i++) {
-                tilePallette[i] = TerrainTile.GRASS;
-                pallette[i] = Color.ForestGreen;
-            }            
-            for (int i = 55; i < 70; i++) {
-                tilePallette[i] = TerrainTile.DIRT;
-                pallette[i] = Color.SaddleBrown;
-            }            
-            for (int i = 70; i < 90; i++) {
-                tilePallette[i] = TerrainTile.ROCK;
-                pallette[i] = Color.Lerp(Color.Gray, Color.White, (float)(i - 70) / 20.0f);
-            }            
-            for (int i = 90; i < 100; i++) {
-                tilePallette[i] = TerrainTile.SNOW;
-                pallette[i] = Color.White;
-            }
-
-
+            //tilePallette = new TerrainTile[100];
+            pallette = GraphUtils.GetPallete();
+            
             tiles = new TerrainTile[w, h];
 
 
@@ -86,12 +56,13 @@ namespace PRPG
                 for (int y = 0; y < h; y++) {
                     float f = Noise.FractalFBM(1337, 0.01f * x, 0.01f * y);
 
-                    int tileIndex = (int)Math.Floor(MathHelper.Clamp(f, 0.0f, 1.0f) * (tilePallette.Length - 1));
-                    tiles[x, y] = tilePallette[tileIndex];
+                    // int tileIndex = (int)Math.Floor(MathHelper.Clamp(f, 0.0f, 1.0f) * (tilePallette.Length - 1));
+                    tiles[x, y] = TerrainTile.GRASS;//tilePallette[tileIndex];
                 }
             }
 
             npcs = new NPC[5000];
+
 
             var worldArea = w * h;
             var numCities = (int)(worldArea * cityDensity);
@@ -107,7 +78,7 @@ namespace PRPG
                         var npcPos = cityPos + npcVector;
                         tile = tiles[(int)npcPos.X, (int)npcPos.Y];
                         if (tile != TerrainTile.WATER) {
-                            npcs[npcIndex] = new NPC(npcPos,content);
+                            npcs[npcIndex] = new NPC(npcPos, content);
                             npcIndex++;
                         }
                     }
@@ -118,7 +89,7 @@ namespace PRPG
                 var npcPos = new Vector2(RandUtil.Float(w - 1), RandUtil.Float(h - 1));
                 var tile = tiles[(int)npcPos.X, (int)npcPos.Y];
                 if (tile != TerrainTile.WATER) {
-                    npcs[npcIndex] = new NPC(npcPos,content);
+                    npcs[npcIndex] = new NPC(npcPos, content);
                     npcIndex++;
                 }
             }
@@ -133,32 +104,35 @@ namespace PRPG
             return simpleTex[tiles[x, y]];
 
         }
-    
+
         public Texture2D GetTex(int x, int y)
         {
             int key = (x << 12) + y;
-
-            var tex = texCache.Get(key);            
+            var tex = texCache.Get(key);
             if (tex != null) {
                 return tex;
             }
             else {
+                if (PRPGame.tilePool.Count > 0) {
+                    tex = PRPGame.tilePool[PRPGame.tilePool.Count - 1];
+                    PRPGame.tilePool.RemoveAt(PRPGame.tilePool.Count - 1);
+                }
+                else tex = new Texture2D(PRPGame.graphics, tileSize, tileSize);
                 
-                tex = new Texture2D(PRPGame.graphics, tileSize, tileSize);
-
                 for (int ty = 0; ty < tileSize; ty++) {
                     float fy = y + ((float)ty / (float)tileSize);
                     int tyIndex = ty * (tileSize);
                     for (int tx = 0; tx < tileSize; tx++) {
                         float fx = x + ((float)tx / (float)tileSize);
-                        float f = Noise.FractalFBM(1337, 0.01f * fx, 0.01f * fy);
+                        float f = Noise.FractalFBM(1337, 0.04f * fx, 0.04f * fy);
 
-                        int colorIndex = colorIndex = MathHelper.Clamp((int)Math.Floor(f * ((float)pallette.Length - 1.0f)), 0, pallette.Length-1);                        
-                        texColor[tyIndex + tx] = pallette[colorIndex];                        
+                        int colorIndex = colorIndex = MathHelper.Clamp((int)Math.Floor(f * ((float)pallette.Length - 1.0f)), 0, pallette.Length - 1);
+                        texColor[tyIndex + tx] = pallette[colorIndex];
                     }
-                }                
+                }
                 tex.SetData(texColor);
-                texCache.Add(key, tex);
+                var evictedTex = texCache.Add(key, tex);
+                if (evictedTex != null) PRPGame.pendingTilePool.Add(evictedTex);
                 return tex;
             }
         }

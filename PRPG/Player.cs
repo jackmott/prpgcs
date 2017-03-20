@@ -23,7 +23,9 @@ namespace PRPG
                 items.Add(RandUtil.Index(Item.itemPool.Values.ToArray()));
             }
             gender = Gender.Male;
+            
             sprites = new CharSprites(gender,content);
+            
             facing = CharSprites.DOWN;
             lastAnimationTime = TimeSpan.FromMilliseconds(0);
                
