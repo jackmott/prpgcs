@@ -806,7 +806,7 @@
 /processorParam:TextureFormat=Color
 /build:LPC/belt/metal/female/silver_female_no_th-sh.png
 
-#begin LPC/body/female/ears/bigears_dark.png
+#begin LPC/body/elf/female/darkelf.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -816,9 +816,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/ears/bigears_dark.png
+/build:LPC/body/elf/female/darkelf.png
 
-#begin LPC/body/female/ears/bigears_dark2.png
+#begin LPC/body/elf/female/darkelf2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -828,9 +828,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/ears/bigears_dark2.png
+/build:LPC/body/elf/female/darkelf2.png
 
-#begin LPC/body/female/ears/bigears_darkelf.png
+#begin LPC/body/elf/male/darkelf.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -840,9 +840,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/ears/bigears_darkelf.png
+/build:LPC/body/elf/male/darkelf.png
 
-#begin LPC/body/female/ears/bigears_darkelf2.png
+#begin LPC/body/elf/male/darkelf2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -852,9 +852,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/ears/bigears_darkelf2.png
+/build:LPC/body/elf/male/darkelf2.png
 
-#begin LPC/body/female/ears/bigears_light.png
+#begin LPC/body/female_headparts/ears/bigears_dark.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -864,9 +864,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/ears/bigears_light.png
+/build:LPC/body/female_headparts/ears/bigears_dark.png
 
-#begin LPC/body/female/ears/bigears_tanned.png
+#begin LPC/body/female_headparts/ears/bigears_dark2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -876,9 +876,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/ears/bigears_tanned.png
+/build:LPC/body/female_headparts/ears/bigears_dark2.png
 
-#begin LPC/body/female/ears/bigears_tanned2.png
+#begin LPC/body/female_headparts/ears/bigears_darkelf.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -888,9 +888,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/ears/bigears_tanned2.png
+/build:LPC/body/female_headparts/ears/bigears_darkelf.png
 
-#begin LPC/body/female/ears/elvenears_dark.png
+#begin LPC/body/female_headparts/ears/bigears_darkelf2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -900,9 +900,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/ears/elvenears_dark.png
+/build:LPC/body/female_headparts/ears/bigears_darkelf2.png
 
-#begin LPC/body/female/ears/elvenears_dark2.png
+#begin LPC/body/female_headparts/ears/bigears_light.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -912,9 +912,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/ears/elvenears_dark2.png
+/build:LPC/body/female_headparts/ears/bigears_light.png
 
-#begin LPC/body/female/ears/elvenears_darkelf.png
+#begin LPC/body/female_headparts/ears/bigears_tanned.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -924,9 +924,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/ears/elvenears_darkelf.png
+/build:LPC/body/female_headparts/ears/bigears_tanned.png
 
-#begin LPC/body/female/ears/elvenears_darkelf2.png
+#begin LPC/body/female_headparts/ears/bigears_tanned2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -936,9 +936,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/ears/elvenears_darkelf2.png
+/build:LPC/body/female_headparts/ears/bigears_tanned2.png
 
-#begin LPC/body/female/ears/elvenears_light.png
+#begin LPC/body/female_headparts/ears/elvenears_dark.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -948,9 +948,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/ears/elvenears_light.png
+/build:LPC/body/female_headparts/ears/elvenears_dark.png
 
-#begin LPC/body/female/ears/elvenears_tanned.png
+#begin LPC/body/female_headparts/ears/elvenears_dark2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -960,9 +960,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/ears/elvenears_tanned.png
+/build:LPC/body/female_headparts/ears/elvenears_dark2.png
 
-#begin LPC/body/female/ears/elvenears_tanned2.png
+#begin LPC/body/female_headparts/ears/elvenears_darkelf.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -972,9 +972,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/ears/elvenears_tanned2.png
+/build:LPC/body/female_headparts/ears/elvenears_darkelf.png
 
-#begin LPC/body/female/eyes/blue.png
+#begin LPC/body/female_headparts/ears/elvenears_darkelf2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -984,9 +984,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/eyes/blue.png
+/build:LPC/body/female_headparts/ears/elvenears_darkelf2.png
 
-#begin LPC/body/female/eyes/brown.png
+#begin LPC/body/female_headparts/ears/elvenears_light.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -996,9 +996,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/eyes/brown.png
+/build:LPC/body/female_headparts/ears/elvenears_light.png
 
-#begin LPC/body/female/eyes/gray.png
+#begin LPC/body/female_headparts/ears/elvenears_tanned.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1008,9 +1008,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/eyes/gray.png
+/build:LPC/body/female_headparts/ears/elvenears_tanned.png
 
-#begin LPC/body/female/eyes/green.png
+#begin LPC/body/female_headparts/ears/elvenears_tanned2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1020,9 +1020,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/eyes/green.png
+/build:LPC/body/female_headparts/ears/elvenears_tanned2.png
 
-#begin LPC/body/female/eyes/orange.png
+#begin LPC/body/female_headparts/eyes/blue.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1032,9 +1032,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/eyes/orange.png
+/build:LPC/body/female_headparts/eyes/blue.png
 
-#begin LPC/body/female/eyes/purple.png
+#begin LPC/body/female_headparts/eyes/brown.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1044,9 +1044,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/eyes/purple.png
+/build:LPC/body/female_headparts/eyes/brown.png
 
-#begin LPC/body/female/eyes/red.png
+#begin LPC/body/female_headparts/eyes/gray.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1056,9 +1056,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/eyes/red.png
+/build:LPC/body/female_headparts/eyes/gray.png
 
-#begin LPC/body/female/eyes/yellow.png
+#begin LPC/body/female_headparts/eyes/green.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1068,9 +1068,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/eyes/yellow.png
+/build:LPC/body/female_headparts/eyes/green.png
 
-#begin LPC/body/female/nose/bignose_dark.png
+#begin LPC/body/female_headparts/eyes/orange.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1080,9 +1080,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/nose/bignose_dark.png
+/build:LPC/body/female_headparts/eyes/orange.png
 
-#begin LPC/body/female/nose/bignose_dark2.png
+#begin LPC/body/female_headparts/eyes/purple.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1092,9 +1092,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/nose/bignose_dark2.png
+/build:LPC/body/female_headparts/eyes/purple.png
 
-#begin LPC/body/female/nose/bignose_darkelf.png
+#begin LPC/body/female_headparts/eyes/red.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1104,9 +1104,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/nose/bignose_darkelf.png
+/build:LPC/body/female_headparts/eyes/red.png
 
-#begin LPC/body/female/nose/bignose_darkelf2.png
+#begin LPC/body/female_headparts/eyes/yellow.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1116,9 +1116,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/nose/bignose_darkelf2.png
+/build:LPC/body/female_headparts/eyes/yellow.png
 
-#begin LPC/body/female/nose/bignose_light.png
+#begin LPC/body/female_headparts/nose/bignose_dark.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1128,9 +1128,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/nose/bignose_light.png
+/build:LPC/body/female_headparts/nose/bignose_dark.png
 
-#begin LPC/body/female/nose/bignose_tanned.png
+#begin LPC/body/female_headparts/nose/bignose_dark2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1140,9 +1140,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/nose/bignose_tanned.png
+/build:LPC/body/female_headparts/nose/bignose_dark2.png
 
-#begin LPC/body/female/nose/bignose_tanned2.png
+#begin LPC/body/female_headparts/nose/bignose_darkelf.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1152,9 +1152,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/nose/bignose_tanned2.png
+/build:LPC/body/female_headparts/nose/bignose_darkelf.png
 
-#begin LPC/body/female/nose/buttonnose_dark.png
+#begin LPC/body/female_headparts/nose/bignose_darkelf2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1164,9 +1164,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/nose/buttonnose_dark.png
+/build:LPC/body/female_headparts/nose/bignose_darkelf2.png
 
-#begin LPC/body/female/nose/buttonnose_dark2.png
+#begin LPC/body/female_headparts/nose/bignose_light.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1176,9 +1176,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/nose/buttonnose_dark2.png
+/build:LPC/body/female_headparts/nose/bignose_light.png
 
-#begin LPC/body/female/nose/buttonnose_darkelf.png
+#begin LPC/body/female_headparts/nose/bignose_tanned.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1188,9 +1188,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/nose/buttonnose_darkelf.png
+/build:LPC/body/female_headparts/nose/bignose_tanned.png
 
-#begin LPC/body/female/nose/buttonnose_darkelf2.png
+#begin LPC/body/female_headparts/nose/bignose_tanned2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1200,9 +1200,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/nose/buttonnose_darkelf2.png
+/build:LPC/body/female_headparts/nose/bignose_tanned2.png
 
-#begin LPC/body/female/nose/buttonnose_light.png
+#begin LPC/body/female_headparts/nose/buttonnose_dark.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1212,9 +1212,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/nose/buttonnose_light.png
+/build:LPC/body/female_headparts/nose/buttonnose_dark.png
 
-#begin LPC/body/female/nose/buttonnose_tanned.png
+#begin LPC/body/female_headparts/nose/buttonnose_dark2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1224,9 +1224,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/nose/buttonnose_tanned.png
+/build:LPC/body/female_headparts/nose/buttonnose_dark2.png
 
-#begin LPC/body/female/nose/buttonnose_tanned2.png
+#begin LPC/body/female_headparts/nose/buttonnose_darkelf.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1236,9 +1236,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/nose/buttonnose_tanned2.png
+/build:LPC/body/female_headparts/nose/buttonnose_darkelf.png
 
-#begin LPC/body/female/nose/straightnose_dark.png
+#begin LPC/body/female_headparts/nose/buttonnose_darkelf2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1248,9 +1248,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/nose/straightnose_dark.png
+/build:LPC/body/female_headparts/nose/buttonnose_darkelf2.png
 
-#begin LPC/body/female/nose/straightnose_dark2.png
+#begin LPC/body/female_headparts/nose/buttonnose_light.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1260,9 +1260,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/nose/straightnose_dark2.png
+/build:LPC/body/female_headparts/nose/buttonnose_light.png
 
-#begin LPC/body/female/nose/straightnose_darkelf.png
+#begin LPC/body/female_headparts/nose/buttonnose_tanned.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1272,9 +1272,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/nose/straightnose_darkelf.png
+/build:LPC/body/female_headparts/nose/buttonnose_tanned.png
 
-#begin LPC/body/female/nose/straightnose_darkelf2.png
+#begin LPC/body/female_headparts/nose/buttonnose_tanned2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1284,9 +1284,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/nose/straightnose_darkelf2.png
+/build:LPC/body/female_headparts/nose/buttonnose_tanned2.png
 
-#begin LPC/body/female/nose/straightnose_light.png
+#begin LPC/body/female_headparts/nose/straightnose_dark.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1296,9 +1296,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/nose/straightnose_light.png
+/build:LPC/body/female_headparts/nose/straightnose_dark.png
 
-#begin LPC/body/female/nose/straightnose_tanned.png
+#begin LPC/body/female_headparts/nose/straightnose_dark2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1308,9 +1308,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/nose/straightnose_tanned.png
+/build:LPC/body/female_headparts/nose/straightnose_dark2.png
 
-#begin LPC/body/female/nose/straightnose_tanned2.png
+#begin LPC/body/female_headparts/nose/straightnose_darkelf.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1320,9 +1320,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/nose/straightnose_tanned2.png
+/build:LPC/body/female_headparts/nose/straightnose_darkelf.png
 
-#begin LPC/body/female/dark.png
+#begin LPC/body/female_headparts/nose/straightnose_darkelf2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1332,9 +1332,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/dark.png
+/build:LPC/body/female_headparts/nose/straightnose_darkelf2.png
 
-#begin LPC/body/female/dark2.png
+#begin LPC/body/female_headparts/nose/straightnose_light.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1344,9 +1344,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/dark2.png
+/build:LPC/body/female_headparts/nose/straightnose_light.png
 
-#begin LPC/body/female/darkelf.png
+#begin LPC/body/female_headparts/nose/straightnose_tanned.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1356,9 +1356,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/darkelf.png
+/build:LPC/body/female_headparts/nose/straightnose_tanned.png
 
-#begin LPC/body/female/darkelf2.png
+#begin LPC/body/female_headparts/nose/straightnose_tanned2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1368,9 +1368,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/darkelf2.png
+/build:LPC/body/female_headparts/nose/straightnose_tanned2.png
 
-#begin LPC/body/female/light.png
+#begin LPC/body/human/female/dark.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1380,9 +1380,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/light.png
+/build:LPC/body/human/female/dark.png
 
-#begin LPC/body/female/orc.png
+#begin LPC/body/human/female/dark2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1392,9 +1392,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/orc.png
+/build:LPC/body/human/female/dark2.png
 
-#begin LPC/body/female/red_orc.png
+#begin LPC/body/human/female/light.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1404,9 +1404,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/red_orc.png
+/build:LPC/body/human/female/light.png
 
-#begin LPC/body/female/tanned.png
+#begin LPC/body/human/female/tanned.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1416,9 +1416,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/tanned.png
+/build:LPC/body/human/female/tanned.png
 
-#begin LPC/body/female/tanned2.png
+#begin LPC/body/human/female/tanned2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1428,9 +1428,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/female/tanned2.png
+/build:LPC/body/human/female/tanned2.png
 
-#begin LPC/body/male/ears/bigears_dark.png
+#begin LPC/body/human/male/dark.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1440,9 +1440,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/ears/bigears_dark.png
+/build:LPC/body/human/male/dark.png
 
-#begin LPC/body/male/ears/bigears_dark2.png
+#begin LPC/body/human/male/dark2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1452,9 +1452,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/ears/bigears_dark2.png
+/build:LPC/body/human/male/dark2.png
 
-#begin LPC/body/male/ears/bigears_darkelf.png
+#begin LPC/body/human/male/light.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1464,9 +1464,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/ears/bigears_darkelf.png
+/build:LPC/body/human/male/light.png
 
-#begin LPC/body/male/ears/bigears_darkelf2.png
+#begin LPC/body/human/male/tanned.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1476,9 +1476,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/ears/bigears_darkelf2.png
+/build:LPC/body/human/male/tanned.png
 
-#begin LPC/body/male/ears/bigears_light.png
+#begin LPC/body/human/male/tanned2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1488,9 +1488,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/ears/bigears_light.png
+/build:LPC/body/human/male/tanned2.png
 
-#begin LPC/body/male/ears/bigears_tanned.png
+#begin LPC/body/male_headparts/ears/bigears_dark.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1500,9 +1500,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/ears/bigears_tanned.png
+/build:LPC/body/male_headparts/ears/bigears_dark.png
 
-#begin LPC/body/male/ears/bigears_tanned2.png
+#begin LPC/body/male_headparts/ears/bigears_dark2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1512,9 +1512,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/ears/bigears_tanned2.png
+/build:LPC/body/male_headparts/ears/bigears_dark2.png
 
-#begin LPC/body/male/ears/elvenears_dark.png
+#begin LPC/body/male_headparts/ears/bigears_darkelf.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1524,9 +1524,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/ears/elvenears_dark.png
+/build:LPC/body/male_headparts/ears/bigears_darkelf.png
 
-#begin LPC/body/male/ears/elvenears_dark2.png
+#begin LPC/body/male_headparts/ears/bigears_darkelf2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1536,9 +1536,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/ears/elvenears_dark2.png
+/build:LPC/body/male_headparts/ears/bigears_darkelf2.png
 
-#begin LPC/body/male/ears/elvenears_darkelf.png
+#begin LPC/body/male_headparts/ears/bigears_light.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1548,9 +1548,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/ears/elvenears_darkelf.png
+/build:LPC/body/male_headparts/ears/bigears_light.png
 
-#begin LPC/body/male/ears/elvenears_darkelf2.png
+#begin LPC/body/male_headparts/ears/bigears_tanned.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1560,9 +1560,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/ears/elvenears_darkelf2.png
+/build:LPC/body/male_headparts/ears/bigears_tanned.png
 
-#begin LPC/body/male/ears/elvenears_light.png
+#begin LPC/body/male_headparts/ears/bigears_tanned2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1572,9 +1572,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/ears/elvenears_light.png
+/build:LPC/body/male_headparts/ears/bigears_tanned2.png
 
-#begin LPC/body/male/ears/elvenears_tanned.png
+#begin LPC/body/male_headparts/ears/elvenears_dark.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1584,9 +1584,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/ears/elvenears_tanned.png
+/build:LPC/body/male_headparts/ears/elvenears_dark.png
 
-#begin LPC/body/male/ears/elvenears_tanned2.png
+#begin LPC/body/male_headparts/ears/elvenears_dark2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1596,9 +1596,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/ears/elvenears_tanned2.png
+/build:LPC/body/male_headparts/ears/elvenears_dark2.png
 
-#begin LPC/body/male/eyes/blue.png
+#begin LPC/body/male_headparts/ears/elvenears_darkelf.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1608,9 +1608,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/eyes/blue.png
+/build:LPC/body/male_headparts/ears/elvenears_darkelf.png
 
-#begin LPC/body/male/eyes/brown.png
+#begin LPC/body/male_headparts/ears/elvenears_darkelf2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1620,9 +1620,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/eyes/brown.png
+/build:LPC/body/male_headparts/ears/elvenears_darkelf2.png
 
-#begin LPC/body/male/eyes/casting_eyeglow_skeleton.png
+#begin LPC/body/male_headparts/ears/elvenears_light.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1632,9 +1632,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/eyes/casting_eyeglow_skeleton.png
+/build:LPC/body/male_headparts/ears/elvenears_light.png
 
-#begin LPC/body/male/eyes/gray.png
+#begin LPC/body/male_headparts/ears/elvenears_tanned.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1644,9 +1644,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/eyes/gray.png
+/build:LPC/body/male_headparts/ears/elvenears_tanned.png
 
-#begin LPC/body/male/eyes/green.png
+#begin LPC/body/male_headparts/ears/elvenears_tanned2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1656,9 +1656,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/eyes/green.png
+/build:LPC/body/male_headparts/ears/elvenears_tanned2.png
 
-#begin LPC/body/male/eyes/orange.png
+#begin LPC/body/male_headparts/eyes/blue.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1668,9 +1668,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/eyes/orange.png
+/build:LPC/body/male_headparts/eyes/blue.png
 
-#begin LPC/body/male/eyes/purple.png
+#begin LPC/body/male_headparts/eyes/brown.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1680,9 +1680,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/eyes/purple.png
+/build:LPC/body/male_headparts/eyes/brown.png
 
-#begin LPC/body/male/eyes/red.png
+#begin LPC/body/male_headparts/eyes/casting_eyeglow_skeleton.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1692,9 +1692,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/eyes/red.png
+/build:LPC/body/male_headparts/eyes/casting_eyeglow_skeleton.png
 
-#begin LPC/body/male/eyes/yellow.png
+#begin LPC/body/male_headparts/eyes/gray.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1704,9 +1704,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/eyes/yellow.png
+/build:LPC/body/male_headparts/eyes/gray.png
 
-#begin LPC/body/male/nose/bignose_dark.png
+#begin LPC/body/male_headparts/eyes/green.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1716,9 +1716,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/nose/bignose_dark.png
+/build:LPC/body/male_headparts/eyes/green.png
 
-#begin LPC/body/male/nose/bignose_dark2.png
+#begin LPC/body/male_headparts/eyes/orange.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1728,9 +1728,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/nose/bignose_dark2.png
+/build:LPC/body/male_headparts/eyes/orange.png
 
-#begin LPC/body/male/nose/bignose_darkelf.png
+#begin LPC/body/male_headparts/eyes/purple.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1740,9 +1740,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/nose/bignose_darkelf.png
+/build:LPC/body/male_headparts/eyes/purple.png
 
-#begin LPC/body/male/nose/bignose_darkelf2.png
+#begin LPC/body/male_headparts/eyes/red.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1752,9 +1752,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/nose/bignose_darkelf2.png
+/build:LPC/body/male_headparts/eyes/red.png
 
-#begin LPC/body/male/nose/bignose_light.png
+#begin LPC/body/male_headparts/eyes/yellow.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1764,9 +1764,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/nose/bignose_light.png
+/build:LPC/body/male_headparts/eyes/yellow.png
 
-#begin LPC/body/male/nose/bignose_tanned.png
+#begin LPC/body/male_headparts/nose/bignose_dark.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1776,9 +1776,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/nose/bignose_tanned.png
+/build:LPC/body/male_headparts/nose/bignose_dark.png
 
-#begin LPC/body/male/nose/bignose_tanned2.png
+#begin LPC/body/male_headparts/nose/bignose_dark2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1788,9 +1788,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/nose/bignose_tanned2.png
+/build:LPC/body/male_headparts/nose/bignose_dark2.png
 
-#begin LPC/body/male/nose/buttonnose_dark.png
+#begin LPC/body/male_headparts/nose/bignose_darkelf.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1800,9 +1800,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/nose/buttonnose_dark.png
+/build:LPC/body/male_headparts/nose/bignose_darkelf.png
 
-#begin LPC/body/male/nose/buttonnose_dark2.png
+#begin LPC/body/male_headparts/nose/bignose_darkelf2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1812,9 +1812,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/nose/buttonnose_dark2.png
+/build:LPC/body/male_headparts/nose/bignose_darkelf2.png
 
-#begin LPC/body/male/nose/buttonnose_darkelf.png
+#begin LPC/body/male_headparts/nose/bignose_light.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1824,9 +1824,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/nose/buttonnose_darkelf.png
+/build:LPC/body/male_headparts/nose/bignose_light.png
 
-#begin LPC/body/male/nose/buttonnose_darkelf2.png
+#begin LPC/body/male_headparts/nose/bignose_tanned.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1836,9 +1836,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/nose/buttonnose_darkelf2.png
+/build:LPC/body/male_headparts/nose/bignose_tanned.png
 
-#begin LPC/body/male/nose/buttonnose_light.png
+#begin LPC/body/male_headparts/nose/bignose_tanned2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1848,9 +1848,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/nose/buttonnose_light.png
+/build:LPC/body/male_headparts/nose/bignose_tanned2.png
 
-#begin LPC/body/male/nose/buttonnose_tanned.png
+#begin LPC/body/male_headparts/nose/buttonnose_dark.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1860,9 +1860,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/nose/buttonnose_tanned.png
+/build:LPC/body/male_headparts/nose/buttonnose_dark.png
 
-#begin LPC/body/male/nose/buttonnose_tanned2.png
+#begin LPC/body/male_headparts/nose/buttonnose_dark2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1872,9 +1872,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/nose/buttonnose_tanned2.png
+/build:LPC/body/male_headparts/nose/buttonnose_dark2.png
 
-#begin LPC/body/male/nose/straightnose_dark.png
+#begin LPC/body/male_headparts/nose/buttonnose_darkelf.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1884,9 +1884,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/nose/straightnose_dark.png
+/build:LPC/body/male_headparts/nose/buttonnose_darkelf.png
 
-#begin LPC/body/male/nose/straightnose_dark2.png
+#begin LPC/body/male_headparts/nose/buttonnose_darkelf2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1896,9 +1896,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/nose/straightnose_dark2.png
+/build:LPC/body/male_headparts/nose/buttonnose_darkelf2.png
 
-#begin LPC/body/male/nose/straightnose_darkelf.png
+#begin LPC/body/male_headparts/nose/buttonnose_light.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1908,9 +1908,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/nose/straightnose_darkelf.png
+/build:LPC/body/male_headparts/nose/buttonnose_light.png
 
-#begin LPC/body/male/nose/straightnose_darkelf2.png
+#begin LPC/body/male_headparts/nose/buttonnose_tanned.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1920,9 +1920,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/nose/straightnose_darkelf2.png
+/build:LPC/body/male_headparts/nose/buttonnose_tanned.png
 
-#begin LPC/body/male/nose/straightnose_light.png
+#begin LPC/body/male_headparts/nose/buttonnose_tanned2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1932,9 +1932,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/nose/straightnose_light.png
+/build:LPC/body/male_headparts/nose/buttonnose_tanned2.png
 
-#begin LPC/body/male/nose/straightnose_tanned.png
+#begin LPC/body/male_headparts/nose/straightnose_dark.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1944,9 +1944,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/nose/straightnose_tanned.png
+/build:LPC/body/male_headparts/nose/straightnose_dark.png
 
-#begin LPC/body/male/nose/straightnose_tanned2.png
+#begin LPC/body/male_headparts/nose/straightnose_dark2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1956,9 +1956,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/nose/straightnose_tanned2.png
+/build:LPC/body/male_headparts/nose/straightnose_dark2.png
 
-#begin LPC/body/male/dark.png
+#begin LPC/body/male_headparts/nose/straightnose_darkelf.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1968,9 +1968,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/dark.png
+/build:LPC/body/male_headparts/nose/straightnose_darkelf.png
 
-#begin LPC/body/male/dark2.png
+#begin LPC/body/male_headparts/nose/straightnose_darkelf2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1980,9 +1980,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/dark2.png
+/build:LPC/body/male_headparts/nose/straightnose_darkelf2.png
 
-#begin LPC/body/male/darkelf.png
+#begin LPC/body/male_headparts/nose/straightnose_light.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1992,9 +1992,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/darkelf.png
+/build:LPC/body/male_headparts/nose/straightnose_light.png
 
-#begin LPC/body/male/darkelf2.png
+#begin LPC/body/male_headparts/nose/straightnose_tanned.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -2004,9 +2004,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/darkelf2.png
+/build:LPC/body/male_headparts/nose/straightnose_tanned.png
 
-#begin LPC/body/male/light.png
+#begin LPC/body/male_headparts/nose/straightnose_tanned2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -2016,9 +2016,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/light.png
+/build:LPC/body/male_headparts/nose/straightnose_tanned2.png
 
-#begin LPC/body/male/orc.png
+#begin LPC/body/orc/female/orc.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -2028,9 +2028,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/orc.png
+/build:LPC/body/orc/female/orc.png
 
-#begin LPC/body/male/red_orc.png
+#begin LPC/body/orc/female/red_orc.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -2040,9 +2040,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/red_orc.png
+/build:LPC/body/orc/female/red_orc.png
 
-#begin LPC/body/male/skeleton.png
+#begin LPC/body/orc/male/orc.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -2052,9 +2052,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/skeleton.png
+/build:LPC/body/orc/male/orc.png
 
-#begin LPC/body/male/tanned.png
+#begin LPC/body/orc/male/red_orc.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -2064,9 +2064,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/tanned.png
+/build:LPC/body/orc/male/red_orc.png
 
-#begin LPC/body/male/tanned2.png
+#begin LPC/body/skeleton/skeleton.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -2076,7 +2076,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:LPC/body/male/tanned2.png
+/build:LPC/body/skeleton/skeleton.png
 
 #begin LPC/facial/female/beard/black.png
 /importer:TextureImporter

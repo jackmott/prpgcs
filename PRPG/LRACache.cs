@@ -28,7 +28,7 @@ namespace PRPG
                 var oldestKey = queue.Dequeue();
                 var e = dict[oldestKey];                
                 dict.Remove(oldestKey);
-             //   e.Dispose();
+                e.Dispose();
             }            
             dict.Add(key, item);
             queue.Enqueue(key);

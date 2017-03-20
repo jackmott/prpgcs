@@ -75,7 +75,7 @@ namespace PRPG
         
         
         
-        public NPC(Vector2 pos) {            
+        public NPC(Vector2 pos, ContentManager content) {            
             state = ENPCState.ROAM;            
             this.pos = pos;
             firstName = RandUtil.Index(namePool);
@@ -88,6 +88,7 @@ namespace PRPG
             } else {
                 gender = Gender.Female;
             }
+            
             //Give them some things relevant to their class
             int numItems = RandUtil.Int(0, 5);            
             for (int i = 0; i < numItems; i++) {                
@@ -198,7 +199,7 @@ namespace PRPG
             if (dist <= PRPGame.maxDist * PRPGame.maxDist) {
                 if (sprites == null) sprites = new CharSprites(gender,content);
             }
-            if (Vector2.DistanceSquared(pos, player.pos) <= helloDist) {
+            if (dist <= helloDist) {
                 AdvanceState(ECommand.ENTER_HELLO_DIST);
             }
             else {

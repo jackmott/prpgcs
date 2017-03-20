@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using static PRPG.GraphUtils;
 using System;
+using Microsoft.Xna.Framework.Content;
 
 namespace PRPG
 {
@@ -27,12 +28,12 @@ namespace PRPG
         Color[] texColor;
         
 
-        public World(int w, int h)
+        public World(int w, int h, ContentManager content)
         {
         
             
             texColor = new Color[(tileSize) * (tileSize)];
-            texCache = new LRACache<int, Texture2D>(1000);
+            texCache = new LRACache<int, Texture2D>(10000);
             simpleTex = new Dictionary<TerrainTile, Texture2D>();
             simpleTex.Add(TerrainTile.WATER, GetSolidTex(tileSize, tileSize, Color.Blue));
             simpleTex.Add(TerrainTile.GRASS, GetSolidTex(tileSize, tileSize, Color.ForestGreen));
@@ -63,18 +64,15 @@ namespace PRPG
             for (int i = 32; i < 55; i++) {
                 tilePallette[i] = TerrainTile.GRASS;
                 pallette[i] = Color.ForestGreen;
-            }
-            pallette[32] = Color.Lerp(Color.LightGoldenrodYellow, Color.ForestGreen, 0.5f);
+            }            
             for (int i = 55; i < 70; i++) {
                 tilePallette[i] = TerrainTile.DIRT;
                 pallette[i] = Color.SaddleBrown;
-            }
-            pallette[55] = Color.Lerp(Color.ForestGreen, Color.SaddleBrown, 0.5f);
+            }            
             for (int i = 70; i < 90; i++) {
                 tilePallette[i] = TerrainTile.ROCK;
                 pallette[i] = Color.Lerp(Color.Gray, Color.White, (float)(i - 70) / 20.0f);
-            }
-            pallette[70] = Color.Lerp(Color.SaddleBrown, Color.Gray, 0.5f);
+            }            
             for (int i = 90; i < 100; i++) {
                 tilePallette[i] = TerrainTile.SNOW;
                 pallette[i] = Color.White;
@@ -109,7 +107,7 @@ namespace PRPG
                         var npcPos = cityPos + npcVector;
                         tile = tiles[(int)npcPos.X, (int)npcPos.Y];
                         if (tile != TerrainTile.WATER) {
-                            npcs[npcIndex] = new NPC(npcPos);
+                            npcs[npcIndex] = new NPC(npcPos,content);
                             npcIndex++;
                         }
                     }
@@ -120,7 +118,7 @@ namespace PRPG
                 var npcPos = new Vector2(RandUtil.Float(w - 1), RandUtil.Float(h - 1));
                 var tile = tiles[(int)npcPos.X, (int)npcPos.Y];
                 if (tile != TerrainTile.WATER) {
-                    npcs[npcIndex] = new NPC(npcPos);
+                    npcs[npcIndex] = new NPC(npcPos,content);
                     npcIndex++;
                 }
             }
@@ -155,7 +153,7 @@ namespace PRPG
                         float fx = x + ((float)tx / (float)tileSize);
                         float f = Noise.FractalFBM(1337, 0.01f * fx, 0.01f * fy);
 
-                        int colorIndex = colorIndex = MathHelper.Clamp((int)Math.Floor(f * ((float)pallette.Length - 1.0f)), 0, pallette.Length);                        
+                        int colorIndex = colorIndex = MathHelper.Clamp((int)Math.Floor(f * ((float)pallette.Length - 1.0f)), 0, pallette.Length-1);                        
                         texColor[tyIndex + tx] = pallette[colorIndex];                        
                     }
                 }                

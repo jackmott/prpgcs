@@ -49,6 +49,9 @@ namespace PRPG
         public static float numTilesX, numTilesY;
         public static float maxDist;
 
+#if DEBUG
+        public static int npcSprited = 0;
+#endif
         public static bool renderFancyTiles = true;
 
 
@@ -116,7 +119,7 @@ namespace PRPG
                 Debug.Assert(noun != null);                
             }
 
-            world = new World(500, 500);
+            world = new World(500, 500,Content);
             screenTiles = new Texture2D[((windowWidth / World.tileSize) +4) * ((windowHeight / World.tileSize)+4)];
             player = new Player(new Vector2(world.width / 2, world.height / 2),Content);
             worldPos = player.pos;
@@ -381,6 +384,9 @@ namespace PRPG
                 Trade.Draw();
             }
 
+#if DEBUG
+            batch.DrawString(mainFont, "x:" + (int)worldPos.X + "," + (int)worldPos.Y + "  sprited:" + npcSprited, Vector2.Zero, Color.Yellow);
+#endif
             batch.End();
 
             base.Draw(gameTime);

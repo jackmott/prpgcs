@@ -34,16 +34,29 @@ namespace PRPG {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static float GradCoord2D(int seed, int x, int y, float xd, float yd) {
             int hash = seed;
-            hash += X_PRIME * x;
-            hash += Y_PRIME * y;
+            hash ^= X_PRIME * x;
+            hash ^= Y_PRIME * y;
 
             hash = hash * hash * hash * 60493;
             hash = (hash >> 13) ^ hash;
 
-            if ((hash & 4) == 0)
-                return ((hash & 1) != 0 ? xd : -xd) + ((hash & 2) != 0 ? yd : -yd);
+            if ((hash & 4) == 0) {
+                if ((hash & 1) != 0) {
+                    if ((hash & 2) != 0)
+                        return xd + yd;
 
-            return ((hash & 1) != 0 ? xd : yd) * ((hash & 2) != 0 ? 1 : -1);
+                    return xd - yd;
+                }
+                if ((hash & 2) != 0)
+                    return yd - xd;
+
+                return -xd - yd;
+            }
+
+            if ((hash & 2) == 0)
+                return ((hash & 1) != 0 ? -xd : -yd);
+
+            return ((hash & 1) != 0 ? xd : yd);
         }
 
         public static float Simplex(int seed, float x, float y) {

@@ -21,8 +21,10 @@ namespace PRPG
         public static string[] shirtPaths;
         public static string[] pantsPaths;
         public static string[] shoePaths;
+        public static string[] maleEyePaths;
+        public static string[] femaleEyePaths;
 
-        
+
 
         public static int UP = 0;
         public static int LEFT = 1;
@@ -36,49 +38,48 @@ namespace PRPG
         public Texture2D spriteSheet;
 
         public CharSprites(Gender gender,ContentManager content) {
+#if DEBUG
+            PRPGame.npcSprited++;
+#endif
             Texture2D baseSheet;
             Texture2D hairSheet;
+            Texture2D eyeSheet;
             if (gender == Gender.Male) {
                 baseSheet = RandUtil.Index(maleBodySheets);
                 hairSheet = content.Load<Texture2D>(RandUtil.Index(maleHairPaths));
+                eyeSheet = content.Load<Texture2D>(RandUtil.Index(maleEyePaths));
                 
             } else {
                 baseSheet = RandUtil.Index(femaleBodySheets);
                 hairSheet = content.Load<Texture2D>(RandUtil.Index(femaleHairPaths));
+                eyeSheet = content.Load<Texture2D>(RandUtil.Index(femaleEyePaths));
             }
 
             Texture2D shirtSheet = content.Load<Texture2D>(RandUtil.Index(shirtPaths));
             Texture2D pantSheet = content.Load<Texture2D>(RandUtil.Index(pantsPaths));
             Texture2D shoeSheet = content.Load<Texture2D>(RandUtil.Index(shoePaths));
-
-            
-            var renderTarget = new RenderTarget2D(
-                PRPGame.graphics,
-                baseSheet.Width,
-                baseSheet.Height);
+                        
+            var renderTarget = new RenderTarget2D(PRPGame.graphics,baseSheet.Width,baseSheet.Height,false,SurfaceFormat.Color,DepthFormat.None,0,RenderTargetUsage.PreserveContents);
                 
                         
             PRPGame.graphics.SetRenderTarget(renderTarget);
             PRPGame.graphics.Clear(Color.Transparent);
             PRPGame.batch.Begin();
             PRPGame.batch.Draw(baseSheet, Vector2.Zero, Color.White);
+            PRPGame.batch.Draw(eyeSheet, Vector2.Zero, Color.White);
             PRPGame.batch.Draw(hairSheet, Vector2.Zero, Color.White);
             PRPGame.batch.Draw(shirtSheet, Vector2.Zero, Color.White);
             PRPGame.batch.Draw(pantSheet, Vector2.Zero, Color.White);
             PRPGame.batch.Draw(shoeSheet, Vector2.Zero, Color.White);
             PRPGame.batch.End();
             PRPGame.graphics.SetRenderTarget(null);
+
+
             spriteSheet = renderTarget;
-
             
-
-            // Drop the render target
             
-
 
             walking = new Rectangle[4, 9];
-            //walk y index starts at 8 ends at 12
-            //walk width is 9
             for (int y = 0; y < 4; y++) { 
                 for (int x = 0; x < 9; x++) {
                     int walkIndex = y+ WALKING_INDEX;
@@ -108,19 +109,22 @@ namespace PRPG
 
         public static void Initialize(ContentManager content)
         {
-            var maleBodyFilenames = Directory.GetFiles("LPC/body/male");
-            var femaleBodyFilenames = Directory.GetFiles("LPC/body/female");
+            var maleBodyFilenames = LoadFileNames(content,"LPC/body/human/male");
+            var femaleBodyFilenames = LoadFileNames(content,"LPC/body/human/female");
 
-            femaleBodySheets = LoadAllContent<Texture2D>(content,"LPC/body/female",false);
-            maleBodySheets = LoadAllContent<Texture2D>(content, "LPC/body/male",false);
+            femaleBodySheets = LoadAllContent<Texture2D>(content,"LPC/body/human/female",false);
+            maleBodySheets = LoadAllContent<Texture2D>(content, "LPC/body/human/male",false);
 
             maleHairPaths = LoadFileNames(content,"LPC/hair/male");
             femaleHairPaths = LoadFileNames(content, "LPC/hair/female");
 
-            shirtPaths = LoadFileNames(content, "LPC/torso/shirts");
+            shirtPaths = LoadFileNames(content, "LPC/torso/shirts/longsleeve");
             pantsPaths = LoadFileNames(content, "LPC/legs/pants");
 
             shoePaths = LoadFileNames(content, "LPC/feet/shoes/male");
+
+            maleEyePaths = LoadFileNames(content, "LPC/body/male_headparts/eyes");
+            femaleEyePaths = LoadFileNames(content, "LPC/body/female_headparts/eyes");
 
         }
 
