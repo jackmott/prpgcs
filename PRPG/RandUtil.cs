@@ -17,6 +17,11 @@ namespace PRPG
             return x;
         }
 
+        public static bool Dice(int sides)
+        {
+            return r.Next(sides) == 0;
+            
+        }
         public static float Float(float max)
         {
             return (float)r.NextDouble() * max;

@@ -14,14 +14,12 @@ namespace PRPG
             WATER = 0, GRASS, DIRT, ROCK, SNOW
         };
 
-        TileSet tileSet;
-
+        
         public readonly int width;
         public readonly int height;
-        public const int tileSize = 64;
-        public TerrainTile[,] tiles;
+        public const int tileSize = 64;        
         public Color[] pallette;
-    //    public TerrainTile[] tilePallette;
+        public TerrainTile[] tilePallette;
         public Dictionary<TerrainTile, Texture2D> simpleTex;
         public LRACache<int, Texture2D> texCache;
         public const double cityDensity = 1.0 / 1000.0;
@@ -32,7 +30,7 @@ namespace PRPG
         public World(int w, int h, ContentManager content)
         {
 
-            
+
             texColor = new Color[(tileSize) * (tileSize)];
             texCache = new LRACache<int, Texture2D>(10000);
             simpleTex = new Dictionary<TerrainTile, Texture2D>();
@@ -46,23 +44,46 @@ namespace PRPG
             width = w;
             height = h;
 
-            //tilePallette = new TerrainTile[100];
-            pallette = GraphUtils.GetPallete();
-            
-            tiles = new TerrainTile[w, h];
-
-
-            for (int x = 0; x < w; x++) {
-                for (int y = 0; y < h; y++) {
-                    float f = Noise.FractalFBM(1337, 0.01f * x, 0.01f * y);
-
-                    // int tileIndex = (int)Math.Floor(MathHelper.Clamp(f, 0.0f, 1.0f) * (tilePallette.Length - 1));
-                    tiles[x, y] = TerrainTile.GRASS;//tilePallette[tileIndex];
-                }
+            var pal = new List<Color>(2560);
+            var tilePal = new List<TerrainTile>(2560);
+            int waterRange = 800;
+            for (int i = 0; i < waterRange; i++) {
+                pal.Add(Color.Lerp(Color.DarkBlue, Color.DeepSkyBlue, (float)i / (float)waterRange));
+                tilePal.Add(TerrainTile.WATER);
             }
 
-            npcs = new NPC[5000];
+            tilePal.Add(TerrainTile.GRASS);
+            pal.Add(Color.LightGoldenrodYellow);
+            tilePal.Add(TerrainTile.GRASS);
+            pal.Add(Color.LightGoldenrodYellow);
+            tilePal.Add(TerrainTile.GRASS);
+            pal.Add(Color.LightGoldenrodYellow);
+            tilePal.Add(TerrainTile.GRASS);
+            pal.Add(Color.LightGoldenrodYellow);
 
+            int grassRange = 1100;
+            for (int i = 0; i < grassRange; i++) {
+                pal.Add(Color.Lerp(Color.ForestGreen, Color.DarkGreen, (float)i / (float)grassRange));
+                tilePal.Add(TerrainTile.GRASS);
+            }
+            int dirtRange = 100;
+            for (int i = 0; i < dirtRange; i++) {
+                pal.Add(Color.Lerp(Color.DarkGreen, Color.SaddleBrown, (float)i / (float)dirtRange));
+                tilePal.Add(TerrainTile.DIRT);
+            }
+            float rockRange = 550;
+            for (int i = 0; i < rockRange; i++) {
+                pal.Add(Color.Lerp(Color.Gray, Color.White, (float)i / (float)rockRange));
+                if (i < rockRange / 2)
+                    tilePal.Add(TerrainTile.ROCK);
+                else
+                    tilePal.Add(TerrainTile.SNOW);
+            }
+
+            tilePallette = tilePal.ToArray();
+            pallette = pal.ToArray();
+
+            npcs = new NPC[5000];
 
             var worldArea = w * h;
             var numCities = (int)(worldArea * cityDensity);
@@ -71,12 +92,12 @@ namespace PRPG
             int npcsPerCity = 5;
             for (int i = 0; i < numCities; i++) {
                 var cityPos = new Vector2(RandUtil.IntEx(4, w - 4), RandUtil.IntEx(4, h - 4));
-                var tile = tiles[(int)cityPos.X, (int)cityPos.Y];
+                var tile = GetTile(cityPos);
                 if (tile != TerrainTile.WATER) {
                     for (int j = 0; j < npcsPerCity; j++) {
                         var npcVector = new Vector2(RandUtil.Float(-2.0f, 2.0f), RandUtil.Float(-2.0f, 2.0f));
                         var npcPos = cityPos + npcVector;
-                        tile = tiles[(int)npcPos.X, (int)npcPos.Y];
+                        tile = GetTile(npcPos);
                         if (tile != TerrainTile.WATER) {
                             npcs[npcIndex] = new NPC(npcPos, content);
                             npcIndex++;
@@ -87,7 +108,7 @@ namespace PRPG
 
             while (npcIndex < npcs.Length) {
                 var npcPos = new Vector2(RandUtil.Float(w - 1), RandUtil.Float(h - 1));
-                var tile = tiles[(int)npcPos.X, (int)npcPos.Y];
+                var tile = GetTile(npcPos);
                 if (tile != TerrainTile.WATER) {
                     npcs[npcIndex] = new NPC(npcPos, content);
                     npcIndex++;
@@ -97,14 +118,7 @@ namespace PRPG
 
         }
 
-
-
-        public Texture2D GetTexSimple(int x, int y)
-        {
-            return simpleTex[tiles[x, y]];
-
-        }
-
+        
         public Texture2D GetTex(int x, int y)
         {
             int key = (x << 12) + y;
@@ -118,7 +132,7 @@ namespace PRPG
                     PRPGame.tilePool.RemoveAt(PRPGame.tilePool.Count - 1);
                 }
                 else tex = new Texture2D(PRPGame.graphics, tileSize, tileSize);
-                
+
                 for (int ty = 0; ty < tileSize; ty++) {
                     float fy = y + ((float)ty / (float)tileSize);
                     int tyIndex = ty * (tileSize);
@@ -126,7 +140,7 @@ namespace PRPG
                         float fx = x + ((float)tx / (float)tileSize);
                         float f = Noise.FractalFBM(1337, 0.04f * fx, 0.04f * fy);
 
-                        int colorIndex = colorIndex = MathHelper.Clamp((int)Math.Floor(f * ((float)pallette.Length - 1.0f)), 0, pallette.Length - 1);
+                        int colorIndex = MathHelper.Clamp((int)Math.Floor(f * ((float)pallette.Length - 1.0f)), 0, pallette.Length - 1);
                         texColor[tyIndex + tx] = pallette[colorIndex];
                     }
                 }
@@ -140,9 +154,9 @@ namespace PRPG
 
         public TerrainTile GetTile(Vector2 pos)
         {
-            int x = (int)pos.X;
-            int y = (int)pos.Y;
-            return tiles[x, y];
+            float f = Noise.FractalFBM(1337, 0.04f * pos.X, 0.04f * pos.Y);
+            int colorIndex = MathHelper.Clamp((int)Math.Floor(f * ((float)pallette.Length - 1.0f)), 0, pallette.Length - 1);
+            return tilePallette[colorIndex];
         }
 
 

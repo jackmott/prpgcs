@@ -46,7 +46,7 @@ namespace PRPG
         public static SpriteBatch batch;
         public static WordBank wordBank;
         public static float numTilesX, numTilesY;
-        public static float maxDist;        
+        public static float maxDist;
         public static List<Texture2D> tilePool;
         public static List<Texture2D> pendingTilePool;
 
@@ -58,7 +58,7 @@ namespace PRPG
         public Vector2 offset;
 
 
-        public static int npcSprited = 0;        
+        public static int npcSprited = 0;
 
         public static bool renderFancyTiles = true;
 
@@ -78,7 +78,7 @@ namespace PRPG
         public PRPGame()
         {
             Content.RootDirectory = "Content";
-            graphicsManager = new GraphicsDeviceManager(this);            
+            graphicsManager = new GraphicsDeviceManager(this);
             tilePool = new List<Texture2D>(32);
             pendingTilePool = new List<Texture2D>(32);
             //graphicsManager.IsFullScreen = true;
@@ -239,9 +239,9 @@ namespace PRPG
 
                 float moveDistance = 0.0f;
                 if (tile == World.TerrainTile.WATER)
-                    moveDistance = 0.01f;
+                    moveDistance = 0.015f;
                 else
-                    moveDistance = 0.1f;
+                    moveDistance = 0.05f;
 
                 Vector2 movement = Vector2.Zero;
                 bool talkButton = false;
@@ -309,12 +309,14 @@ namespace PRPG
                 closestNPC = null;
                 float closestNPCDist = float.MaxValue;
                 foreach (var npc in world.npcs) {
-                    npc.Update(gameTime, player, Content);
-                    if (npc.state == ENPCState.HELLO) {
-                        var dist = Vector2.DistanceSquared(npc.pos, player.pos);
-                        if (dist < closestNPCDist) {
-                            closestNPC = npc;
-                            closestNPCDist = dist;
+                    if (Vector2.Distance(npc.pos, worldPos) <= maxDist) {
+                        npc.Update(gameTime, player, Content);
+                        if (npc.hello) {
+                            var dist = Vector2.DistanceSquared(npc.pos, player.pos);
+                            if (dist < closestNPCDist) {
+                                closestNPC = npc;
+                                closestNPCDist = dist;
+                            }
                         }
                     }
                 }
@@ -345,29 +347,24 @@ namespace PRPG
         protected override void Draw(GameTime gameTime)
         {
             //GraphicsDevice.Clear(Color.Black);                                    
-            for (int i = 0; i < pendingTilePool.Count;i++) {
+            for (int i = 0; i < pendingTilePool.Count; i++) {
                 tilePool.Add(pendingTilePool[i]);
             }
             pendingTilePool.Clear();
-            
+
             var screenTiles = new Texture2D[((windowWidth / World.tileSize) + 4) * ((windowHeight / World.tileSize) + 4)];
             int index = 0;
             for (int y = startY; y <= endY; y++) {
                 for (int x = startX; x <= endX; x++) {
 
-                    Texture2D tile;
-                    if (!renderFancyTiles) {
-                        tile = world.GetTexSimple(x, y);
-                    }
-                    else {
-                        tile = world.GetTex(x, y);
-                    }
+                    var tile = world.GetTex(x, y);
                     screenTiles[index] = tile;
                     index++;
+
                 }
             }
 
-            batch.Begin(SpriteSortMode.Immediate);            
+            batch.Begin(SpriteSortMode.Immediate);
             index = 0;
             for (int y = startY; y <= endY; y++) {
                 for (int x = startX; x <= endX; x++) {
@@ -397,10 +394,10 @@ namespace PRPG
                 Trade.Draw();
             }
 
-
+#if DEBUG
             batch.DrawString(mainFont, "x:" + (int)worldPos.X + "," + (int)worldPos.Y + "  sprited:" + npcSprited, Vector2.Zero, Color.Yellow);
-
-            batch.End();            
+#endif
+            batch.End();
             base.Draw(gameTime);
         }
     }

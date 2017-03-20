@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System.Linq;
 using Newtonsoft.Json.Linq;
-
+using static System.Math;
 using static PRPG.GraphUtils;
 using Microsoft.Xna.Framework.Content;
 
@@ -22,7 +22,7 @@ namespace PRPG
     public class Desire {
         public Item item;
         public int level;
-        public int sufficient;
+        public int sufficient;        
 
         public Desire(Item item, int level, int sufficient) {
             this.item = item;
@@ -40,12 +40,15 @@ namespace PRPG
         }
     }
 
-    public enum ENPCState { ROAM, HELLO};
+    public enum ENPCState { STILL, TRAVELLING};
     public enum ECommand { ENTER_HELLO_DIST, LEAVE_HELLO_DIST }
 
   
 
     public class Entity {
+        public TimeSpan lastAnimationTime;
+        public Vector2 pos;
+        public Vector2 oldPos;
         public string firstName;
         public string lastName;
         public int animIndex;
@@ -67,20 +70,22 @@ namespace PRPG
         public Personality personality;        
         public ENPCState state;
         public const int NPCSize = 32;
-        public const float helloDist = 2.0f;        
-        public Vector2 pos;        
+        public const float helloDist = 2.0f;                
         public HashSet<Desire> desires;
         public Color currentColor;
+        public bool hello = false;
+
+        public Vector2 destination = Vector2.Zero;
 
         
         
         
         public NPC(Vector2 pos, ContentManager content) {            
-            state = ENPCState.ROAM;            
+            state = ENPCState.STILL;            
             this.pos = pos;
             firstName = RandUtil.Index(namePool);
             NPCClass npcClass = RandUtil.Index(npcPool);
-                        
+            lastAnimationTime = TimeSpan.FromMilliseconds(0);
             items = new Inventory();
             
             if (RandUtil.Bool()) {
@@ -173,15 +178,12 @@ namespace PRPG
       
 
         public void AdvanceState(ECommand command) {    
-            
-            switch (state) {
-                case ENPCState.HELLO:
-                    if (command == ECommand.LEAVE_HELLO_DIST) state = ENPCState.ROAM;
-                    break;
-                case ENPCState.ROAM:
-                    if (command == ECommand.ENTER_HELLO_DIST) state = ENPCState.HELLO;
-                    break;
-            }
+            if (command == ECommand.ENTER_HELLO_DIST) {
+                hello = true;
+            } 
+            if (command == ECommand.LEAVE_HELLO_DIST) {
+                hello = false;
+            }            
                         
         }
 
@@ -199,14 +201,45 @@ namespace PRPG
             else {
                 AdvanceState(ECommand.LEAVE_HELLO_DIST);
             }
-               
+
+            if (destination == Vector2.Zero) {
+                if (RandUtil.Dice(1000)) {
+                    var destVector = new Vector2(RandUtil.Int(-10,10), RandUtil.Int(-10,10));
+                    destination = pos + destVector;
+                }
+            } else {
+                Vector2 toDestination = (destination - pos);
+                toDestination.Normalize();
+                toDestination *= 0.05f;
+                pos += toDestination;
+                if (Vector2.Distance(pos, destination) < 0.02) destination = Vector2.Zero;
+            }
+
+            if (pos == oldPos) return;
+            lastAnimationTime += gameTime.ElapsedGameTime;
+            if (lastAnimationTime.TotalMilliseconds > 100) {
+                animIndex = (animIndex + 1) % sprites.walking.GetLength(1);
+                lastAnimationTime = TimeSpan.FromMilliseconds(0);
+            }
+            Vector2 dir = pos - oldPos;
+            if (Abs(dir.X) > Abs(dir.Y)) {
+                if (dir.X > 0) facing = CharSprites.RIGHT;
+                else facing = CharSprites.LEFT;
+            }
+            else {
+                if (dir.Y > 0) facing = CharSprites.DOWN;
+                else facing = CharSprites.UP;
+
+            }
+            oldPos = pos;
+
         }
 
         public void Draw(SpriteBatch batch, float scale, Vector2 offset) {
 
             if (sprites != null) {
-                batch.Draw(sprites.spriteSheet, pos * scale - offset, sprites.walking[CharSprites.DOWN, 0], Color.White);
-                if (state == ENPCState.HELLO) {
+                batch.Draw(sprites.spriteSheet, pos * scale - offset, sprites.walking[facing, animIndex], Color.White);
+                if (hello) {
                     batch.DrawString(PRPGame.mainFont, "Hello!", pos * scale - offset, Color.White);
                 }
             }

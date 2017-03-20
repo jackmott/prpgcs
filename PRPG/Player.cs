@@ -11,9 +11,8 @@ namespace PRPG
     public class Player :Entity {
 
         public const int PlayerSize = 32;
-        public Vector2 pos;
-        public Vector2 oldPos;
-        public TimeSpan lastAnimationTime;
+       
+        
         
         public Player(Vector2 pos, ContentManager content) {
             firstName = "Player One";
@@ -32,7 +31,7 @@ namespace PRPG
         }
 
         public void Draw(SpriteBatch batch, float scale, Vector2 offset) {
-            batch.Draw(sprites.spriteSheet,pos * scale- offset,sprites.walking[facing,animIndex], Color.White);
+            batch.Draw(sprites.spriteSheet,pos * scale- offset - new Vector2(32.0f,64.0f),sprites.walking[facing,animIndex], Color.White);
         }
 
 
