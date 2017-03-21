@@ -1,9 +1,15 @@
 ﻿using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace PRPG
 {
     public static class Noise
     {
+        [DllImport("FastNoise")]
+        public static unsafe extern float* GetNoiseBlock(float startx, float starty, float stepsize);
+        [DllImport("FastNoise")]
+        public static unsafe extern void InitNoise(int blockSize, int octaves, float gain, float lac);
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static float Lerp(float a, float b, float t) { return a + t * (b - a); }
 

@@ -30,7 +30,7 @@ namespace PRPG
         public World(int w, int h, ContentManager content)
         {
 
-
+            Noise.InitNoise(tileSize, 4, 2.0f, 0.6f);
             texColor = new Color[(tileSize) * (tileSize)];
             texCache = new LRACache<int, Texture2D>(10000);
             simpleTex = new Dictionary<TerrainTile, Texture2D>();
@@ -119,7 +119,7 @@ namespace PRPG
         }
 
         
-        public Texture2D GetTex(int x, int y)
+        public unsafe Texture2D GetTex(int x, int y)
         {
             int key = (x << 12) + y;
             var tex = texCache.Get(key);
@@ -133,17 +133,29 @@ namespace PRPG
                 }
                 else tex = new Texture2D(PRPGame.graphics, tileSize, tileSize);
 
-                for (int ty = 0; ty < tileSize; ty++) {
-                    float fy = y + ((float)ty / (float)tileSize);
-                    int tyIndex = ty * (tileSize);
-                    for (int tx = 0; tx < tileSize; tx++) {
-                        float fx = x + ((float)tx / (float)tileSize);
-                        float f = Noise.FractalFBM(1337, 0.04f * fx, 0.04f * fy);
 
-                        int colorIndex = MathHelper.Clamp((int)Math.Floor(f * ((float)pallette.Length - 1.0f)), 0, pallette.Length - 1);
-                        texColor[tyIndex + tx] = pallette[colorIndex];
-                    }
+                float stepSize = 1.0f / (float)World.tileSize;
+            
+                float* noise = Noise.GetNoiseBlock((float)x*0.3f,(float)y*0.3f, stepSize*0.3f);
+#if DEBUG
+                float max = float.MinValue;
+                float min = float.MaxValue;
+#endif
+                for (int i = 0; i < tileSize*tileSize;i++) {
+                    float f = noise[i] * 2.95f + 0.5f;
+#if DEBUG
+                    if (f < min) min = f;
+                    if (f > max) max = f;
+#endif
+                    int colorIndex = MathHelper.Clamp((int)Math.Floor(f * ((float)pallette.Length - 1.0f)), 0, pallette.Length - 1);
+                    texColor[i] = pallette[colorIndex];
+    
                 }
+#if DEBUG
+                Console.WriteLine("min:" + min + " max:" + max + " range:" + (max - min));
+#endif
+
+                
                 tex.SetData(texColor);
                 var evictedTex = texCache.Add(key, tex);
                 if (evictedTex != null) PRPGame.pendingTilePool.Add(evictedTex);

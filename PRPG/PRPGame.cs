@@ -329,15 +329,7 @@ namespace PRPG
             if (IsNewButtonPress(Buttons.X)) {
                 renderFancyTiles = !renderFancyTiles;
             }
-
-            startX = (int)Floor(worldPos.X - numTilesX / 2.0f);
-            endX = (int)Ceiling(worldPos.X + numTilesX / 2.0f);
-            startY = (int)Floor(worldPos.Y - numTilesY / 2.0f);
-            endY = (int)Ceiling(worldPos.Y + numTilesY / 2.0f);
-
-            screenCenter = new Vector2(windowWidth / 2, windowHeight / 2);
-
-            offset = worldPos * (float)World.tileSize - screenCenter;
+            
 
             lastPadState = padState;
             lastKeyState = keyState;
@@ -352,25 +344,22 @@ namespace PRPG
             }
             pendingTilePool.Clear();
 
-            var screenTiles = new Texture2D[((windowWidth / World.tileSize) + 4) * ((windowHeight / World.tileSize) + 4)];
-            int index = 0;
-            for (int y = startY; y <= endY; y++) {
-                for (int x = startX; x <= endX; x++) {
+            startX = (int)Floor(worldPos.X - numTilesX / 2.0f);
+            endX = (int)Ceiling(worldPos.X + numTilesX / 2.0f);
+            startY = (int)Floor(worldPos.Y - numTilesY / 2.0f);
+            endY = (int)Ceiling(worldPos.Y + numTilesY / 2.0f);
 
-                    var tile = world.GetTex(x, y);
-                    screenTiles[index] = tile;
-                    index++;
+            screenCenter = new Vector2(windowWidth / 2, windowHeight / 2);
 
-                }
-            }
+            offset = worldPos * (float)World.tileSize - screenCenter;
 
             batch.Begin(SpriteSortMode.Immediate);
-            index = 0;
+            
             for (int y = startY; y <= endY; y++) {
                 for (int x = startX; x <= endX; x++) {
 
-                    Texture2D tile = screenTiles[index];
-                    index++;
+                    Texture2D tile = world.GetTex(x, y);
+                    
                     var screenPos = new Vector2(x, y) * World.tileSize - offset;
                     if (screenPos.X >= -World.tileSize && screenPos.Y >= -World.tileSize && screenPos.X < windowWidth && screenPos.Y < windowHeight)
                         batch.Draw(tile, new Rectangle((int)screenPos.X, (int)screenPos.Y, World.tileSize, World.tileSize), Color.White);
