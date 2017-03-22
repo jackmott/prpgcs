@@ -165,6 +165,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Noise.fx" />
+    <Content Include="plan.txt" />
     <Content Include="x64\FastNoise.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

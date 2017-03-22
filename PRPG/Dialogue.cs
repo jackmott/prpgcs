@@ -65,7 +65,7 @@ namespace PRPG
 
             PRPGame.batch.Draw(dialogBackground, new Rectangle(left, top, right - left, bottom - top), Color.White);
             int strLen = (int)PRPGame.mainFont.MeasureString(PRPGame.closestNPC.fullName).X;
-            PRPGame.batch.DrawString(PRPGame.mainFont, PRPGame.closestNPC.fullName, new Vector2(w / 2 + left - strLen / 2, top),Color.LightBlue);
+            PRPGame.batch.DrawString(PRPGame.mainFont, PRPGame.closestNPC.fullName, new Vector2(w / 2.0f + left - strLen / 2.0f, top),Color.LightBlue);
             top += 30;
             for (int i = 0; i < options.Count; i++) {
                 if (i == selection) {
@@ -76,7 +76,7 @@ namespace PRPG
 
             if (currentResponse != string.Empty) {
                 strLen = (int)PRPGame.mainFont.MeasureString(currentResponse).X;
-                PRPGame.batch.DrawString(PRPGame.mainFont, currentResponse, new Vector2(w / 2 + left - strLen/2, bottom - 100), Color.LightBlue);
+                PRPGame.batch.DrawString(PRPGame.mainFont, currentResponse, new Vector2(w / 2.0f + left - strLen/2.0f, bottom - 100), Color.LightBlue);
             }
 
             

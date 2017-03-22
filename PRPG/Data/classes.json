@@ -7,16 +7,24 @@
       "LastNamePrefix":[
         "Storm","Death","Axe","Hammer","Sword","Shield","Head","Bone","Skull","Doom" ],
       "LastNameSuffix": [
-        "Crusher","Smasher","Bringer","Slasher","Beard","Scar","Bane","Spell","Slayer"]            
+        "Crusher","Smasher","Bringer","Slasher","Beard","Scar","Bane","Spell","Slayer"],
+      "Crafting": []            
 		},
     {
-      "Name" : "Smith",
+      "Name" : "BlackSmith",
       "Desires" : [
-        "Iron", "Steel", "Leather", "Wood" ],
+        "Iron Ore", "Leather", "Coal" ],
       "LastNamePrefix" : [
         "Iron","Ferrous","Steel", "Smith", "Fire","Hammer","Sword","Axe","Armor"],
       "LastNameSuffix": [
-        "Forge","Craft","Brand","Black","Mane","Striker","Cast"]      
+        "Forge","Craft","Brand","Black","Mane","Striker","Cast"],      
+      "Crafting": [
+        { "Inputs" : [ {"Item" : "Iron Ore", "Qty":"1"}, 
+                       { "Item":"Coal", "Qty":"1"}],
+          "Output" : [ "Sword" ],
+          "Time": "3"
+        }]
+      
     },
     {
       "Name" : "Farmer",
@@ -25,7 +33,8 @@
       "LastNamePrefix": [
         "Muck","Farm","Plant","Dirt","Farm"],
       "LastNameSuffix": [
-        "Planter","Digger","Grower"]
+        "Planter","Digger","Grower"],
+      "Crafting":[]
     }
 	]
 }

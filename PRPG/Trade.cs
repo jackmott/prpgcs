@@ -170,21 +170,21 @@ namespace PRPG
                 var slot = playerItems[i];
                 var diff = slot.count - PRPGame.player.items.CountItem(slot.item);
                 var diffString = diff <= 0 ? "" : " +" + diff;
-                PRPGame.batch.DrawString(PRPGame.mainFont, slot.count + " " + slot.item.name + diffString, new Vector2(left + 10 + w / 2, top + 10 + i * 20), Color.White);
+                PRPGame.batch.DrawString(PRPGame.mainFont, slot.count + " " + slot.item.name + diffString, new Vector2(left + 10.0f + w / 2.0f, top + 10.0f + i * 20.0f), Color.White);
             }
 
             for (int i = 0; i < npcItems.Count; i++) {
                 var slot = npcItems[i];
                 var diff = slot.count - PRPGame.closestNPC.items.CountItem(slot.item);
                 var diffString = diff <= 0 ? "" : " +" + diff;
-                PRPGame.batch.DrawString(PRPGame.mainFont, slot.count + " " + slot.item.name + " " + diffString, new Vector2(left + 10, top + 10 + i * 20), Color.White);
+                PRPGame.batch.DrawString(PRPGame.mainFont, slot.count + " " + slot.item.name + " " + diffString, new Vector2(left + 10.0f, top + 10.0f + i * 20.0f), Color.White);
             }
 
             
             strLen = (int)PRPGame.mainFont.MeasureString(currentResponse).X;
             Color tradeColor = Color.Red;
             if (tradeState == TradeState.GOOD) tradeColor = Color.Green;
-            PRPGame.batch.DrawString(PRPGame.mainFont, currentResponse, new Vector2(w / 4 + left - strLen / 2, bottom - 100), tradeColor);
+            PRPGame.batch.DrawString(PRPGame.mainFont, currentResponse, new Vector2(w / 4.0f + left - strLen / 2.0f, bottom - 100.0f), tradeColor);
 
 
 #if DEBUG

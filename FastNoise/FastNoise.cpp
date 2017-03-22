@@ -17,12 +17,8 @@ __m128 pfive = SetOne(0.5);
 __m128 seventy = SetOne(70.0);
 
 
-inline __m128 dotSIMD(const __m128 &x1, const __m128 &y1, const __m128 &x2, const __m128 &y2 )
-{
-	__m128 xx = Mul(x1, x2);
-	__m128 yy = Mul(y1, y2);
-	return Add(xx,yy);
-}
+
+#define dotSIMD(x1,y1,x2,y2) Add(Mul(x1, x2), Mul(y1, y2))
 
 
 inline __m128 simplex2D(const __m128 &x,const __m128 &y) {
@@ -182,13 +178,18 @@ __m128 g_freqS;
 
 inline void fbm (__m128* out, const __m128& x, const __m128& y)
 {
-	__m128 freq = g_freqS;
-	__m128 amplitude = onef;
+	__m128 freq = g_freqS;		
+	__m128 vfx = Mul(x, freq);
+	__m128 vfy = Mul(y, freq);
 	*out = zero;
-	for (int i = 0; i < g_octaves; i++)
+	*out = Add(*out, simplex2D(vfx, vfy));
+	__m128 amplitude = g_gain;
+	freq = Mul(freq, g_lac);
+
+	for (int i = 1; i < g_octaves; i++)
 	{
-		__m128 vfx = Mul(x, freq);
-		__m128 vfy = Mul(y, freq);
+		vfx = Mul(x, freq);
+		vfy = Mul(y, freq);
 		*out = Add(*out, Mul(amplitude, simplex2D(vfx, vfy)));
 		freq = Mul(freq, g_lac);
 		amplitude = Mul(amplitude, g_gain);
@@ -207,7 +208,7 @@ void InitNoise(int blockSize, int octaves, float gain, float lac,float freq) {
 	g_octaves = octaves;
 	g_freq = freq;
 	g_freqS = SetOne(freq);
-	g_stepSize = (1.0/(float)blockSize)*freq;
+	g_stepSize = (1.0f/(float)blockSize)*freq;
 	g_stepSizeS = SetOne(g_stepSize*VECTOR_SIZE);
 	g_result = (__m128*)_aligned_malloc(g_blockSizeSquared * sizeof(float), MEMORY_ALIGNMENT);	
 }

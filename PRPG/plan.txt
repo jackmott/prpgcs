@@ -1,0 +1,6 @@
+﻿base resources
+
+
+wood -> bows
+iron ore -> sword, pick axe, axe
+

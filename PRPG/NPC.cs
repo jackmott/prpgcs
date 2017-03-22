@@ -10,13 +10,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace PRPG
 {
-
-
-
-    public class NPCPersonality
-    {
-
-    }
+   
 
     public class Desire {
         public Item item;
@@ -30,6 +24,7 @@ namespace PRPG
         }
 
         public override bool Equals(object obj) {
+            if (obj == null) return false;
             var desire = (Desire)obj;
             return item.Equals(desire.item);
         }
@@ -59,9 +54,8 @@ namespace PRPG
         public Inventory items;        
     }
 
-    public class NPC : Entity {
+    public class NPC : Entity {        
 
-      
         public static string[] namePool;
         public static NPCClass[] npcPool;
         public static Personality[] personalityPool;
@@ -199,7 +193,7 @@ namespace PRPG
             }
             else {
                 AdvanceState(ECommand.LEAVE_HELLO_DIST);
-            }
+            }            
 
             if (destination == Vector2.Zero) {
                 if (RandUtil.Dice(1000)) {

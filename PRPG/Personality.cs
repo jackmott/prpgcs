@@ -38,7 +38,7 @@ namespace PRPG
             response = response.Replace("ITEMS", itemWordPlural);
             response = response.Replace("ITEM", itemWord);
             response = response.Replace("ARTICLE", indefArticle);
-            response.Trim();
+            response = response.Trim();
             return response;
         }
     }

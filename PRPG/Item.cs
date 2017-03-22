@@ -134,6 +134,7 @@ namespace PRPG
         
 
         public override bool Equals(object obj) {
+            if (obj == null) return false;
             var item = (Item)obj;
             return name.Equals(item.name);
         }

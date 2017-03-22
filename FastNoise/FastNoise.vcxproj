@@ -65,7 +65,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions</EnableEnhancedInstructionSet>
@@ -73,6 +73,8 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <EnableParallelCodeGeneration>false</EnableParallelCodeGeneration>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <ExceptionHandling>false</ExceptionHandling>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
