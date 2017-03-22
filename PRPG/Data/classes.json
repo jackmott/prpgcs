@@ -18,10 +18,9 @@
         "Iron","Ferrous","Steel", "Smith", "Fire","Hammer","Sword","Axe","Armor"],
       "LastNameSuffix": [
         "Forge","Craft","Brand","Black","Mane","Striker","Cast"],      
-      "Crafting": [
-        { "Inputs" : [ {"Item" : "Iron Ore", "Qty":"1"}, 
-                       { "Item":"Coal", "Qty":"1"}],
-          "Output" : [ "Sword" ],
+      "CraftingRecipes": [
+        { "Inputs" : [ {"Item" : "Iron Ore", "Qty":1} ],                       
+          "Outputs" : [ {"Item" : "Sword", "Qty":1} ],
           "Time": "3"
         }]
       

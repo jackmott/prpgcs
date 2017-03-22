@@ -30,7 +30,7 @@ namespace PRPG
         public World(int w, int h, ContentManager content)
         {
             
-            Noise.InitNoise(tileSize, 5, 2.0f, 0.6f,0.4f);
+            Noise.InitNoise(tileSize, 5, 2.0f, 0.6f,0.6f);
             texColor = new Color[(tileSize) * (tileSize)];
             texCache = new LRACache<int, Texture2D>(10000);
             simpleTex = new Dictionary<TerrainTile, Texture2D>();
@@ -83,7 +83,7 @@ namespace PRPG
             tilePallette = tilePal.ToArray();
             pallette = pal.ToArray();
 
-            npcs = new NPC[5000];
+            npcs = new NPC[1000];
 
             var worldArea = w * h;
             var numCities =  (int)(worldArea * cityDensity);
@@ -150,7 +150,7 @@ namespace PRPG
 
                 }
 #if DEBUG
-                Console.WriteLine("min:" + min + " max:" + max + " range:" + (max - min));
+           //     Console.WriteLine("min:" + min + " max:" + max + " range:" + (max - min));
 #endif
 
                 tex.SetData(texColor);

@@ -195,6 +195,7 @@ namespace PRPG
                 AdvanceState(ECommand.LEAVE_HELLO_DIST);
             }            
 
+            /* move around code 
             if (destination == Vector2.Zero) {
                 if (RandUtil.Dice(1000)) {
                     var destVector = new Vector2(RandUtil.Int(-10,10), RandUtil.Int(-10,10));
@@ -224,7 +225,7 @@ namespace PRPG
                 else facing = CharSprites.UP;
 
             }
-            oldPos = pos;
+            oldPos = pos;*/
 
         }
 

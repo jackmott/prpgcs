@@ -126,8 +126,10 @@ namespace PRPG
             NPC.Initialize();
 
             foreach (var item in Item.itemPool.Values) {
-                var noun = wordBank.QueryNoun(item.name);
-                Debug.Assert(noun != null);
+                foreach (var word in item.name.Split(' ')) {
+                    var noun = wordBank.QueryNoun(word);
+                    Debug.Assert(noun != null);
+                }
             }
 
             world = new World(500, 500, Content);

@@ -7,12 +7,12 @@ namespace PRPG
 {
 
     public class Inventory {
-        Dictionary<Item, InventorySlot> itemDict;
-        List<InventorySlot> itemList;
+        Dictionary<Item, ItemQty> itemDict;
+        List<ItemQty> itemList;
 
         public Inventory() {
-            itemDict = new Dictionary<Item, InventorySlot>();
-            itemList = new List<InventorySlot>();
+            itemDict = new Dictionary<Item, ItemQty>();
+            itemList = new List<ItemQty>();
         }
 
         public int TotalCount() {
@@ -31,7 +31,7 @@ namespace PRPG
             }
         }
         
-        public InventorySlot this[int index] {
+        public ItemQty this[int index] {
             get {
                 return itemList[index];
             }
@@ -41,7 +41,7 @@ namespace PRPG
             }
         }
 
-        public InventorySlot this[Item key] {
+        public ItemQty this[Item key] {
             get {
                 return itemDict[key];
             }
@@ -51,12 +51,12 @@ namespace PRPG
             }
         }
 
-        public void Add(InventorySlot slot) {
+        public void Add(ItemQty slot) {
             itemDict.Add(slot.item, slot);
             itemList.Add(slot);
         }
 
-        public void Remove(InventorySlot slot) {
+        public void Remove(ItemQty slot) {
             itemDict.Remove(slot.item);
             itemList.Remove(slot);
         }
@@ -66,7 +66,7 @@ namespace PRPG
                 slot.count++;
             }
             else {
-                slot = new InventorySlot(1, item);
+                slot = new ItemQty(1, item);
                 itemDict.Add(item, slot);
                 itemList.Add(slot);
             }
@@ -93,17 +93,18 @@ namespace PRPG
             itemList.Clear();
         }
 
-        public List<InventorySlot>.Enumerator GetEnumerator() {
+        public List<ItemQty>.Enumerator GetEnumerator() {
             return itemList.GetEnumerator();
         }
               
     }
-    public class InventorySlot {
+
+    public class ItemQty {
 
         public int count;        
         public readonly Item item;
 
-        public InventorySlot(int count, Item item) {
+        public ItemQty(int count, Item item) {
             this.count = count;
             this.item = item;            
         }

@@ -43,19 +43,20 @@ namespace PRPG
         {
 
             Noun[] nouns = JsonConvert.DeserializeObject<Noun[]>(File.ReadAllText("Data/nouns.json"));
-            Verb[] verbs = JsonConvert.DeserializeObject<Verb[]>(File.ReadAllText("Data/verbs.json"));
-            Adjective[] adjectives = JsonConvert.DeserializeObject<Adjective[]>(File.ReadAllText("Data/adjectives.json"));
-            Adverb[] adverbs = JsonConvert.DeserializeObject<Adverb[]>(File.ReadAllText("Data/adverbs.json"));
+          //  Verb[] verbs = JsonConvert.DeserializeObject<Verb[]>(File.ReadAllText("Data/verbs.json"));
+//            Adjective[] adjectives = JsonConvert.DeserializeObject<Adjective[]>(File.ReadAllText("Data/adjectives.json"));
+            //Adverb[] adverbs = JsonConvert.DeserializeObject<Adverb[]>(File.ReadAllText("Data/adverbs.json"));
 
             Nouns = new Dictionary<string, Noun>();
-            Verbs = new Dictionary<string, Verb>();
-            Adjectives = new Dictionary<string, Adjective>();
-            Adverbs = new Dictionary<string, Adverb>();
+            //Verbs = new Dictionary<string, Verb>();
+            //Adjectives = new Dictionary<string, Adjective>();
+            //Adverbs = new Dictionary<string, Adverb>();
 
             foreach (var noun in nouns) {
                 Nouns.Add(noun.Word, noun);
             }
 
+            /*
             foreach (var verb in verbs) {
                 Verbs.Add(verb.Word, verb);
             }
@@ -66,7 +67,7 @@ namespace PRPG
 
             foreach (var adverb in adverbs) {
                 Adverbs.Add(adverb.Word, adverb);
-            }
+            }*/
 
 
         }

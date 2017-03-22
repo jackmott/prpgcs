@@ -42,10 +42,10 @@ namespace PRPG
             npc = _npc;
             player = _player;
             foreach (var slot in npc.items) {
-                npcItems.Add(new InventorySlot(slot.count, slot.item));
+                npcItems.Add(new ItemQty(slot.count, slot.item));
             }
             foreach (var slot in player.items) {
-                playerItems.Add(new InventorySlot(slot.count, slot.item));
+                playerItems.Add(new ItemQty(slot.count, slot.item));
             }
         }
 
