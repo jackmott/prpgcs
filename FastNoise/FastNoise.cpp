@@ -168,15 +168,21 @@ inline __m128 simplex2D(const __m128 &x,const __m128 &y) {
 }
 
 __m128* g_result = nullptr;
-int BLOCK_SIZE;
-int BLOCK_SIZE_SQ;
+int g_blockSize;
+int g_blockSizeSquared;
 __m128 g_lac, g_gain;
 int g_octaves;
 
+__m128 mulFactor = SetOne(1.51);
+__m128 offset = SetOne(0.5);
+__m128 g_stepSizeS;
+float g_stepSize;
+float g_freq;
+__m128 g_freqS;
 
 inline void fbm (__m128* out, const __m128& x, const __m128& y)
 {
-	__m128 freq = onef;
+	__m128 freq = g_freqS;
 	__m128 amplitude = onef;
 	*out = zero;
 	for (int i = 0; i < g_octaves; i++)
@@ -187,47 +193,63 @@ inline void fbm (__m128* out, const __m128& x, const __m128& y)
 		freq = Mul(freq, g_lac);
 		amplitude = Mul(amplitude, g_gain);
 	}
-			
+	*out = Add(Mul(mulFactor, *out), offset);
 }
 
 
 
-void InitNoise(int blockSize, int octaves, float gain, float lac) {
-	BLOCK_SIZE = blockSize;	
-	BLOCK_SIZE_SQ = blockSize*blockSize;
+
+void InitNoise(int blockSize, int octaves, float gain, float lac,float freq) {
+	g_blockSize = blockSize;	
+	g_blockSizeSquared = blockSize*blockSize;
 	g_lac = SetOne(lac);
 	g_gain = SetOne(gain);
 	g_octaves = octaves;
-	g_result = (__m128*)_aligned_malloc(BLOCK_SIZE_SQ * sizeof(float), MEMORY_ALIGNMENT);	
+	g_freq = freq;
+	g_freqS = SetOne(freq);
+	g_stepSize = (1.0/(float)blockSize)*freq;
+	g_stepSizeS = SetOne(g_stepSize*VECTOR_SIZE);
+	g_result = (__m128*)_aligned_malloc(g_blockSizeSquared * sizeof(float), MEMORY_ALIGNMENT);	
 }
 
-float* GetNoiseBlock(float startx, float starty, float stepsize) {
+float* GetNoiseBlock(float startx, float starty) {
 	um128 startxs;
 	__m128 xs, ys;
 	
-		
-	__m128 stepSizeS = SetOne(stepsize*VECTOR_SIZE);
-	
-	float inx = startx;
+				
+	float inx = startx*g_freq;
+	starty *= g_freq;
 	for (int i = 0; i < VECTOR_SIZE; i++)
 	{
 		startxs.a[i] = inx;
-		inx += stepsize;
+		inx += g_stepSize;
 	}
 		
 	int count = 0;
-	for (int y = 0; y < BLOCK_SIZE; y++)
+	for (int y = 0; y < g_blockSize; y++)
 	{
 		xs = startxs.m;
 		ys = SetOne(starty);
-		for (int x = 0; x < BLOCK_SIZE; x+=VECTOR_SIZE)
+		for (int x = 0; x < g_blockSize; x+=VECTOR_SIZE)
 		{						
 			fbm(&g_result[count], xs, ys);
-			xs = Add(xs, stepSizeS);			
+			xs = Add(xs, g_stepSizeS);			
 			count++;
 		}
-		starty += stepsize;
+		starty += g_stepSize;
 	}
 	
 	return (float*)g_result;
+}
+
+
+float GetNoisePoint(float x, float y) {
+		
+	__m128 xs = SetOne(x*g_freq);			
+	__m128 ys = SetOne(y*g_freq);
+	um128 result;
+		
+	fbm(&result.m, xs, ys);
+			
+	return result.a[0];
 }

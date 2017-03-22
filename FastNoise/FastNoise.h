@@ -232,7 +232,8 @@ const float gradZ[] =
 };
 
 extern "C" {
-	FAST_NOISE_API extern float* GetNoiseBlock(float startx, float starty, float stepsize);
-	FAST_NOISE_API extern void InitNoise(int blockSize, int octaves, float gain, float lac);
+	FAST_NOISE_API extern float* GetNoiseBlock(float startx, float starty);
+	FAST_NOISE_API extern float GetNoisePoint(float x, float y);
+	FAST_NOISE_API extern void InitNoise(int blockSize, int octaves, float gain, float lac,float freq);
 }
 

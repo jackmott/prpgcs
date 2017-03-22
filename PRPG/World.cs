@@ -14,7 +14,7 @@ namespace PRPG
             WATER = 0, GRASS, DIRT, ROCK, SNOW
         };
 
-        
+
         public readonly int width;
         public readonly int height;
         public const int tileSize = 64;        
@@ -29,8 +29,8 @@ namespace PRPG
 
         public World(int w, int h, ContentManager content)
         {
-
-            Noise.InitNoise(tileSize, 4, 2.0f, 0.6f);
+            
+            Noise.InitNoise(tileSize, 5, 2.0f, 0.6f,0.4f);
             texColor = new Color[(tileSize) * (tileSize)];
             texCache = new LRACache<int, Texture2D>(10000);
             simpleTex = new Dictionary<TerrainTile, Texture2D>();
@@ -86,7 +86,7 @@ namespace PRPG
             npcs = new NPC[5000];
 
             var worldArea = w * h;
-            var numCities = (int)(worldArea * cityDensity);
+            var numCities = 0;//  (int)(worldArea * cityDensity);
 
             int npcIndex = 0;
             int npcsPerCity = 5;
@@ -118,7 +118,7 @@ namespace PRPG
 
         }
 
-        
+
         public unsafe Texture2D GetTex(int x, int y)
         {
             int key = (x << 12) + y;
@@ -131,31 +131,28 @@ namespace PRPG
                     tex = PRPGame.tilePool[PRPGame.tilePool.Count - 1];
                     PRPGame.tilePool.RemoveAt(PRPGame.tilePool.Count - 1);
                 }
-                else tex = new Texture2D(PRPGame.graphics, tileSize, tileSize);
-
-
-                float stepSize = 1.0f / (float)World.tileSize;
-            
-                float* noise = Noise.GetNoiseBlock((float)x*0.3f,(float)y*0.3f, stepSize*0.3f);
+                else {
+                    tex = new Texture2D(PRPGame.graphics, tileSize, tileSize);
+                }
+                float* noise = Noise.GetNoiseBlock((float)x, (float)y);
 #if DEBUG
                 float max = float.MinValue;
                 float min = float.MaxValue;
 #endif
-                for (int i = 0; i < tileSize*tileSize;i++) {
-                    float f = noise[i] * 2.95f + 0.5f;
+                for (int i = 0; i < tileSize * tileSize; i++) {                    
 #if DEBUG
+                    float f = noise[i];
                     if (f < min) min = f;
                     if (f > max) max = f;
 #endif
-                    int colorIndex = MathHelper.Clamp((int)Math.Floor(f * ((float)pallette.Length - 1.0f)), 0, pallette.Length - 1);
+                    int colorIndex = MathHelper.Clamp((int)(noise[i] * ((float)pallette.Length - 1.0f)), 0, pallette.Length - 1);
                     texColor[i] = pallette[colorIndex];
-    
+
                 }
 #if DEBUG
                 Console.WriteLine("min:" + min + " max:" + max + " range:" + (max - min));
 #endif
 
-                
                 tex.SetData(texColor);
                 var evictedTex = texCache.Add(key, tex);
                 if (evictedTex != null) PRPGame.pendingTilePool.Add(evictedTex);
@@ -166,8 +163,8 @@ namespace PRPG
 
         public TerrainTile GetTile(Vector2 pos)
         {
-            float f = Noise.FractalFBM(1337, 0.04f * pos.X, 0.04f * pos.Y);
-            int colorIndex = MathHelper.Clamp((int)Math.Floor(f * ((float)pallette.Length - 1.0f)), 0, pallette.Length - 1);
+            float f = Noise.GetNoisePoint(pos.X , pos.Y);
+            int colorIndex = MathHelper.Clamp((int)(f * ((float)pallette.Length - 1.0f)), 0, pallette.Length - 1);
             return tilePallette[colorIndex];
         }
 

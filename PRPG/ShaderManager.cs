@@ -9,14 +9,15 @@
     mgcb.exe usually located in C:\Program Files (x86)\MSBuild\MonoGame\v3.0\Tools
 */
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using Microsoft.Xna.Framework.Content;
+using System;
 using System.IO;
 using System.Diagnostics;
+using System.Text;
 
-namespace PRPG{
+namespace PRPG
+{
 
 
     public class ShaderManager {

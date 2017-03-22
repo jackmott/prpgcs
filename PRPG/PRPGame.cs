@@ -39,6 +39,7 @@ namespace PRPG
         };
 
         // GLOBAL STATE
+        private FrameCounter frameCounter = new FrameCounter();
         public static GraphicsDevice graphics;
         public static SpriteFont mainFont;
         public static int windowWidth;
@@ -338,6 +339,11 @@ namespace PRPG
 
         protected override void Draw(GameTime gameTime)
         {
+
+            var deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            frameCounter.Update(deltaTime);
+            var fps = string.Format("FPS:{0}", frameCounter.AverageFramesPerSecond);
+
             //GraphicsDevice.Clear(Color.Black);                                    
             for (int i = 0; i < pendingTilePool.Count; i++) {
                 tilePool.Add(pendingTilePool[i]);
@@ -383,8 +389,10 @@ namespace PRPG
                 Trade.Draw();
             }
 
+            batch.DrawString(mainFont, fps, new Vector2(0, 40), Color.Yellow);
 #if DEBUG
             batch.DrawString(mainFont, "x:" + (int)worldPos.X + "," + (int)worldPos.Y + "  sprited:" + npcSprited, Vector2.Zero, Color.Yellow);
+            
 #endif
             batch.End();
             base.Draw(gameTime);

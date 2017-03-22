@@ -6,13 +6,12 @@ using Microsoft.Xna.Framework;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using static System.Math;
-using static PRPG.GraphUtils;
 using Microsoft.Xna.Framework.Content;
 
 namespace PRPG
 {
 
-    
+
 
     public class NPCPersonality
     {
@@ -212,7 +211,7 @@ namespace PRPG
                 toDestination.Normalize();
                 toDestination *= 0.05f;
                 pos += toDestination;
-                if (Vector2.Distance(pos, destination) < 0.02) destination = Vector2.Zero;
+                if (Vector2.Distance(pos, destination) < 0.2) destination = Vector2.Zero;
             }
 
             if (pos == oldPos) return;
