@@ -117,8 +117,8 @@ namespace PRPG
 
             if (column == NPC_COLUMN) {
                 var item = npcItems[row];
-                npcItems.Remove(item);
-                playerItems.Add(item);
+                npcItems.Remove(new Item(item.name,1));
+                playerItems.Add(new Item(item.name,1));
             }
             else {
                 var item = playerItems[row];

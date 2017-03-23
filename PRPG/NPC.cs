@@ -34,13 +34,7 @@ namespace PRPG
         }
     }
 
-    
-
-    
-    public enum NPCCommand { ENTER_HELLO_DIST, LEAVE_HELLO_DIST }
-
-  
-
+              
     public class Entity {
         public TimeSpan lastAnimationTime;
         public Vector2 pos;
@@ -70,12 +64,13 @@ namespace PRPG
         public const float helloDist = 2.0f;                
         public HashSet<Desire> desires;
         public Color currentColor;
+
+        public bool onScreen = false;
         public bool hello = false;
 
         public Vector2 destination = Vector2.Zero;
 
-        
-        
+                
         
         public NPC(Vector2 pos, ContentManager content) {
             state = new RestingState();            
@@ -205,12 +200,22 @@ namespace PRPG
         }
 
         public void Update(GameTime gameTime, Player player, ContentManager content) {
-            var dist = Vector2.DistanceSquared(pos, player.pos);            
-            if (dist <= PRPGame.maxDist * PRPGame.maxDist) {
-
-                if (sprites == null) {              
-                    sprites = new CharSprites(gender, content);
+            var distSquared = Vector2.DistanceSquared(pos, player.pos);            
+            if (distSquared <= PRPGame.maxDist * PRPGame.maxDist) {
+                onScreen = true;
+                if (distSquared < helloDist) {
+                    hello = true;
+                } else {
+                    hello = false;
                 }
+                
+            } else {
+                onScreen = false;
+                hello = false;
+            }
+
+            if (onScreen && sprites == null) {
+                sprites = new CharSprites(gender, content);
             }
 
             switch (state) {
