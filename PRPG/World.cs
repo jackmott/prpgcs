@@ -22,7 +22,7 @@ namespace PRPG
         public TerrainTile[] tilePallette;
         public Dictionary<TerrainTile, Texture2D> simpleTex;
         public LRACache<int, Texture2D> texCache;
-        public const double cityDensity = 1.0 / 1000.0;
+        public const double cityDensity = 1.0 / 5000.0;
         public NPC[] npcs;
         Color[] texColor;
 

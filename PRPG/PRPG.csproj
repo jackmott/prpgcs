@@ -68,6 +68,7 @@
     <Compile Include="LRACache.cs" />
     <Compile Include="NPCClass.cs" />
     <Compile Include="CharSprites.cs" />
+    <Compile Include="NPCStateMachine.cs" />
     <Compile Include="Personality.cs" />
     <Compile Include="RandUtil.cs" />
     <Compile Include="ShaderManager.cs" />

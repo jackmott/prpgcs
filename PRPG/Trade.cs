@@ -41,11 +41,11 @@ namespace PRPG
             tradeState = TradeState.NONE;
             npc = _npc;
             player = _player;
-            foreach (var slot in npc.items) {
-                npcItems.Add(new ItemQty(slot.count, slot.item));
+            foreach (var item in npc.items) {
+                npcItems.Add(item);
             }
-            foreach (var slot in player.items) {
-                playerItems.Add(new ItemQty(slot.count, slot.item));
+            foreach (var item in player.items) {
+                playerItems.Add(item);
             }
         }
 
@@ -81,9 +81,9 @@ namespace PRPG
         public static void CheckRow() {
             int count = 0;
             if (column == PLAYER_COLUMN)
-                count = playerItems.Count;
+                count = playerItems.DistinctItemsCount;
             else
-                count = npcItems.Count;
+                count = npcItems.DistinctItemsCount;
             if (row >= count)
                 row=count-1;
             if (row < 0)
@@ -106,9 +106,9 @@ namespace PRPG
                 column = 0;
             if (column > 1)
                 column = 1;
-            if (column == PLAYER_COLUMN && playerItems.Count == 0)
+            if (column == PLAYER_COLUMN && playerItems.DistinctItemsCount == 0)
                 column = NPC_COLUMN;
-            if (column == NPC_COLUMN && npcItems.Count == 0)
+            if (column == NPC_COLUMN && npcItems.DistinctItemsCount == 0)
                 column = PLAYER_COLUMN;
 
         }
@@ -116,14 +116,14 @@ namespace PRPG
         public static void MoveItem() {
 
             if (column == NPC_COLUMN) {
-                var item = npcItems[row].item;
+                var item = npcItems[row];
                 npcItems.Remove(item);
                 playerItems.Add(item);
             }
             else {
-                var item = playerItems[row].item;
-                playerItems.Remove(item);
-                npcItems.Add(item);
+                var item = playerItems[row];
+                playerItems.Remove(new Item(item.name,1));
+                npcItems.Add(new Item(item.name,1));
             }            
 
             if (npc.IsTradeAcceptable(npcItems)) {
@@ -166,18 +166,18 @@ namespace PRPG
             else {
                 PRPGame.batch.Draw(selectionBackground, new Rectangle(left + 10 + w / 2, top + 10 + row * 20, 200, 20), Color.White);
             }
-            for (int i = 0; i < playerItems.Count; i++) {
-                var slot = playerItems[i];
-                var diff = slot.count - PRPGame.player.items.CountItem(slot.item);
+            for (int i = 0; i < playerItems.DistinctItemsCount; i++) {
+                var item = playerItems[i];
+                var diff = item.qty - PRPGame.player.items.ItemQty(item.name);
                 var diffString = diff <= 0 ? "" : " +" + diff;
-                PRPGame.batch.DrawString(PRPGame.mainFont, slot.count + " " + slot.item.name + diffString, new Vector2(left + 10.0f + w / 2.0f, top + 10.0f + i * 20.0f), Color.White);
+                PRPGame.batch.DrawString(PRPGame.mainFont, item.qty+ " " + item.name + diffString, new Vector2(left + 10.0f + w / 2.0f, top + 10.0f + i * 20.0f), Color.White);
             }
 
-            for (int i = 0; i < npcItems.Count; i++) {
-                var slot = npcItems[i];
-                var diff = slot.count - PRPGame.closestNPC.items.CountItem(slot.item);
+            for (int i = 0; i < npcItems.DistinctItemsCount; i++) {
+                var item = npcItems[i];
+                var diff = item.qty - PRPGame.closestNPC.items.ItemQty(item.name);
                 var diffString = diff <= 0 ? "" : " +" + diff;
-                PRPGame.batch.DrawString(PRPGame.mainFont, slot.count + " " + slot.item.name + " " + diffString, new Vector2(left + 10.0f, top + 10.0f + i * 20.0f), Color.White);
+                PRPGame.batch.DrawString(PRPGame.mainFont, item.qty+ " " + item.name + " " + diffString, new Vector2(left + 10.0f, top + 10.0f + i * 20.0f), Color.White);
             }
 
             

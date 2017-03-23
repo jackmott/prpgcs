@@ -1,26 +1,26 @@
 ﻿{
-	"Classes": [
+	"NPCClasses": [
 		{
 			"Name": "Warrior",
       "Desires": [
         "Sword","Axe","Shield","Armor","Helmet" ],      
-      "LastNamePrefix":[
+      "LastNamePrefixes":[
         "Storm","Death","Axe","Hammer","Sword","Shield","Head","Bone","Skull","Doom" ],
-      "LastNameSuffix": [
+      "LastNameSuffixes": [
         "Crusher","Smasher","Bringer","Slasher","Beard","Scar","Bane","Spell","Slayer"],
-      "Crafting": []            
+      "CraftingRecipes": []            
 		},
     {
       "Name" : "BlackSmith",
       "Desires" : [
         "Iron Ore", "Leather", "Coal" ],
-      "LastNamePrefix" : [
+      "LastNamePrefixes" : [
         "Iron","Ferrous","Steel", "Smith", "Fire","Hammer","Sword","Axe","Armor"],
-      "LastNameSuffix": [
+      "LastNameSuffixes": [
         "Forge","Craft","Brand","Black","Mane","Striker","Cast"],      
       "CraftingRecipes": [
-        { "Inputs" : [ {"Item" : "Iron Ore", "Qty":1} ],                       
-          "Outputs" : [ {"Item" : "Sword", "Qty":1} ],
+        { "Inputs" : [ {"Name" : "Iron Ore", "Qty":1} ],                       
+          "Outputs" : [ {"Name" : "Sword", "Qty":1} ],
           "Time": "3"
         }]
       
@@ -29,11 +29,11 @@
       "Name" : "Farmer",
       "Desires" : [
         "Carrot","Potato","Shovel"],
-      "LastNamePrefix": [
+      "LastNamePrefixes": [
         "Muck","Farm","Plant","Dirt","Farm"],
-      "LastNameSuffix": [
+      "LastNameSuffixes": [
         "Planter","Digger","Grower"],
-      "Crafting":[]
+      "CraftingRecipes":[]
     }
 	]
 }

@@ -26,16 +26,18 @@ namespace PRPG
         public override bool Equals(object obj) {
             if (obj == null) return false;
             var desire = (Desire)obj;
-            return item.Equals(desire.item);
+            return item.name.Equals(desire.item.name);
         }
 
         public override int GetHashCode() {
-            return item.GetHashCode();
+            return item.name.GetHashCode();
         }
     }
 
-    public enum ENPCState { STILL, TRAVELLING};
-    public enum ECommand { ENTER_HELLO_DIST, LEAVE_HELLO_DIST }
+    
+
+    
+    public enum NPCCommand { ENTER_HELLO_DIST, LEAVE_HELLO_DIST }
 
   
 
@@ -57,11 +59,13 @@ namespace PRPG
     public class NPC : Entity {        
 
         public static string[] namePool;
-        public static NPCClass[] npcPool;
+        public static NPCClass[] classPool;
         public static Personality[] personalityPool;
 
+
         public Personality personality;        
-        public ENPCState state;
+        public NPCState state;
+        public NPCClass npcClass;
         public const int NPCSize = 32;
         public const float helloDist = 2.0f;                
         public HashSet<Desire> desires;
@@ -73,11 +77,11 @@ namespace PRPG
         
         
         
-        public NPC(Vector2 pos, ContentManager content) {            
-            state = ENPCState.STILL;            
+        public NPC(Vector2 pos, ContentManager content) {
+            state = new RestingState();            
             this.pos = pos;
             firstName = RandUtil.Index(namePool);
-            NPCClass npcClass = RandUtil.Index(npcPool);
+            npcClass = RandUtil.Index(classPool);
             lastAnimationTime = TimeSpan.FromMilliseconds(0);
             items = new Inventory();
             
@@ -90,23 +94,18 @@ namespace PRPG
             //Give them some things relevant to their class
             int numItems = RandUtil.Int(0, 5);            
             for (int i = 0; i < numItems; i++) {                
-                items.Add(RandUtil.Index(npcClass.desiredItems));
+                items.Add(new Item(RandUtil.Index(npcClass.desires),1));
             }
             
-            //Give them some stuff not relevant to their class
-            numItems = RandUtil.Int(0, 3);
-            var potentialItems = Item.itemPool.Values.ToArray();
-            for (int i = 0; i < numItems; i++) {
-                items.Add(RandUtil.Index(potentialItems));
-            }
+           
 
             desires = new HashSet<Desire>();
             var numDesires = RandUtil.Int(0, 4);
             for (int i = 0; i < numDesires; i++) {
-                var item = RandUtil.Index(npcClass.desiredItems);
+                var item = RandUtil.Index(npcClass.desires);
                 var level = RandUtil.Int(1, 10);
                 var sufficient = RandUtil.Int(1, 10);
-                Desire d = new Desire(item, level,sufficient);
+                Desire d = new Desire(new Item(item,0), level,sufficient);
                 desires.Add(d);
             }
 
@@ -124,8 +123,8 @@ namespace PRPG
 
             namePool = names.Select(x => (string)x).ToArray();
             
-            var classes = (JArray)JObject.Parse(File.ReadAllText("Data/classes.json"))["Classes"];
-            npcPool = classes.Select(x => new NPCClass((JObject)x)).ToArray();
+            var classes = (JArray)JObject.Parse(File.ReadAllText("Data/classes.json"))["NPCClasses"];
+            classPool = classes.Select(x => x.ToObject<NPCClass>()).ToArray();
             
             var personalities = (JArray)JObject.Parse(File.ReadAllText("Data/personalities.json"))["Personalities"];
             personalityPool = personalities.Select(x => new Personality((JObject)x, PRPGame.wordBank)).ToArray();
@@ -154,30 +153,55 @@ namespace PRPG
             if (inventory == null)
                 inventory = items;
 
-            double totalPossibleUtility = desires.Sum(d => d.level) 
-                + inventory.TotalCount();
+            double totalPossibleUtility = desires.Sum(d => d.level)
+                + inventory.TotalItems;
 
             //Bhuddism
             if (totalPossibleUtility== 0.0)
                 return 100;
 
-            double utility = desires.Sum(x => Utility(x, inventory.CountItem(x.item))) 
-                + inventory.TotalCount();
+            double utility = desires.Sum(x => Utility(x, inventory.ItemQty(x.item.name)))
+                + inventory.TotalItems;
                         
             double pct = utility / totalPossibleUtility;
             return (int)Math.Round(pct * 100.0);
         }
 
-      
+          
+        private void CheckIfDoneCrafting(CraftingState craftingState)
+        {
+            var elapsedTime = DateTime.Now - craftingState.startTime;
+            if (elapsedTime.TotalSeconds >= craftingState.recipe.time) {
+                foreach (var input in craftingState.recipe.inputs) {
+                    items.Remove(input);
+                }
 
-        public void AdvanceState(ECommand command) {    
-            if (command == ECommand.ENTER_HELLO_DIST) {
-                hello = true;
-            } 
-            if (command == ECommand.LEAVE_HELLO_DIST) {
-                hello = false;
-            }            
-                        
+                foreach (var output in craftingState.recipe.outputs) {
+                    items.Add(new Item(output.name,output.qty));
+                }
+
+                state = new RestingState();
+            }
+        }
+
+        private void CheckIfCanCraft()
+        {
+            foreach (var recipe in npcClass.craftingRecipes) {
+                bool canCraftThis = true;
+                foreach (var item in recipe.inputs) {
+                    if (!items.Contains(item)) {
+                        canCraftThis = false;
+                        break;
+                    } else {
+                        if (items.ItemQty(item.name) < item.qty) {
+                            canCraftThis = false;
+                            break;
+                        }
+                    }
+                }
+                if (canCraftThis) state = new CraftingState(recipe);
+            }
+
         }
 
         public void Update(GameTime gameTime, Player player, ContentManager content) {
@@ -188,13 +212,18 @@ namespace PRPG
                     sprites = new CharSprites(gender, content);
                 }
             }
-            if (dist <= helloDist) {
-                AdvanceState(ECommand.ENTER_HELLO_DIST);
-            }
-            else {
-                AdvanceState(ECommand.LEAVE_HELLO_DIST);
-            }            
 
+            switch (state) {
+                case CraftingState crafting:
+                    CheckIfDoneCrafting(crafting);
+                    break;
+                case RestingState resting:
+                    CheckIfCanCraft();
+                    break;
+                default:
+                    break;
+            }
+           
             /* move around code 
             if (destination == Vector2.Zero) {
                 if (RandUtil.Dice(1000)) {

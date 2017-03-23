@@ -17,10 +17,8 @@ namespace PRPG
         public Player(Vector2 pos, ContentManager content) {
             firstName = "Player One";
             this.pos = pos;
-            items = new Inventory();        
-            for (int i = 0; i < 5;i++) {
-                items.Add(RandUtil.Index(Item.itemPool.Values.ToArray()));
-            }
+            items = new Inventory();
+            items.Add(new Item("Iron Ore", 100));
             gender = Gender.Male;
             
             sprites = new CharSprites(gender,content);

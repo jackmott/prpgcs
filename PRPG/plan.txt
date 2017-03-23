@@ -1,6 +1,16 @@
-﻿base resources
+﻿
 
 
-wood -> bows
-iron ore -> sword, pick axe, axe
+
+tree + axe -> wood -> bows
+
+iron desposits + pick -> iron ore  + coal + wood -> pick axe, axe
+					     iron ore + leather -> sword
+
+gold deposits + pick -> gold
+
+cows + sword/bow -> leather
+
+
+
 

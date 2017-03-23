@@ -2,36 +2,48 @@
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
+using System.Diagnostics;
+using System.ComponentModel;
+using Newtonsoft.Json;
 
 namespace PRPG
 {
 
-    public class Inventory {
-        Dictionary<Item, ItemQty> itemDict;
-        List<ItemQty> itemList;
+    public class Inventory {        
+        List<Item> itemList;
 
-        public Inventory() {
-            itemDict = new Dictionary<Item, ItemQty>();
-            itemList = new List<ItemQty>();
+        public Inventory() {            
+            itemList = new List<Item>();
         }
 
-        public int TotalCount() {
-            return itemList.Sum(x => x.count);
-        }
-
-        public int CountItem(Item item) {            
-            if (itemDict.TryGetValue(item, out var slot)) {
-                return slot.count;
+        public int TotalItems {
+            get {
+                return itemList.Sum(x => x.qty);
             }
-            return 0;
         }
-        public int Count {
+
+        public int ItemQty(string name) {
+            return itemList.Where(x => x.name == name).Sum(x => x.qty);
+        }
+
+        public bool Contains(Item item)
+        {
+            return itemList.Exists(x => x.name == item.name);
+        }
+
+        public int DistinctItemsCount {
             get {
                 return itemList.Count;
             }
         }
-        
-        public ItemQty this[int index] {
+
+        public void Clear()
+        {
+            itemList.Clear();
+        }
+
+
+        public Item this[int index] {
             get {
                 return itemList[index];
             }
@@ -41,96 +53,48 @@ namespace PRPG
             }
         }
 
-        public ItemQty this[Item key] {
-            get {
-                return itemDict[key];
+        public void Add(Item item) {
+            var existingItems = itemList.Where(x => x.name == item.name);
+            Debug.Assert(existingItems.Count() <= 1);
+            if (existingItems.Count() == 0) {
+                itemList.Add(item);
+            } else {
+                var existingItem = existingItems.First(); 
+                existingItem.qty += item.qty;
             }
 
-            set {
-                itemDict[key] = value;
+        }
+
+        public void Remove(Item item) {
+            var existingItems = itemList.Where(x => x.name == item.name);
+            Debug.Assert(existingItems.Count() <= 1);
+            if (existingItems.Count() > 0) {
+                var existingItem = existingItems.First();
+                existingItem.qty -= item.qty;
+                if (existingItem.qty <= 0) itemList.Remove(existingItem);
             }
+            
         }
 
-        public void Add(ItemQty slot) {
-            itemDict.Add(slot.item, slot);
-            itemList.Add(slot);
-        }
-
-        public void Remove(ItemQty slot) {
-            itemDict.Remove(slot.item);
-            itemList.Remove(slot);
-        }
-
-        public void Add(Item item) {            
-            if (itemDict.TryGetValue(item, out var slot)) {
-                slot.count++;
-            }
-            else {
-                slot = new ItemQty(1, item);
-                itemDict.Add(item, slot);
-                itemList.Add(slot);
-            }
-        }
-
-        public bool Remove(Item item) {            
-            if (itemDict.TryGetValue(item, out var slot)) {
-                slot.count--;
-                if (slot.count == 0) {
-                    itemDict.Remove(item);
-                    itemList.Remove(slot);
-                }
-                return true;
-            }
-            return false;
-        }
-
-        public bool ContainsKey(Item key) {
-            return itemDict.ContainsKey(key);
-        }
-        
-        public void Clear() {
-            itemDict.Clear();
-            itemList.Clear();
-        }
-
-        public List<ItemQty>.Enumerator GetEnumerator() {
+        public List<Item>.Enumerator GetEnumerator()
+        {
             return itemList.GetEnumerator();
         }
-              
+
     }
-
-    public class ItemQty {
-
-        public int count;        
-        public readonly Item item;
-
-        public ItemQty(int count, Item item) {
-            this.count = count;
-            this.item = item;            
-        }
-    }
-    public struct Item {
-
-        public static Dictionary<string,Item> itemPool;
-
-        public static void Initialize() {
-            itemPool = new Dictionary<string, Item>();
-            var classes = (JArray)JObject.Parse(File.ReadAllText("Data/classes.json"))["Classes"];
-
-            foreach (var c in classes)
-            {
-                var items = (JArray)c["Desires"];
-                foreach (string item in items) {
-                    itemPool.Add(item, new Item(item));
-                }
-            }                        
-        }
-
-        public readonly string name;        
+ 
+    public class Item {
 
         
-        public Item(string name) {        
-            this.name = name;            
+        public string name;
+
+        [DefaultValue(0)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public int qty;
+        
+        public Item(string name, int qty) {        
+            this.name = name;
+            this.qty = qty;
         }
         
 

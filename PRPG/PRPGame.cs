@@ -122,15 +122,7 @@ namespace PRPG
             CharSprites.Initialize(Content);
             Dialogue.Initialize();
             Trade.Initialize();
-            Item.Initialize();
             NPC.Initialize();
-
-            foreach (var item in Item.itemPool.Values) {
-                foreach (var word in item.name.Split(' ')) {
-                    var noun = wordBank.QueryNoun(word);
-                    Debug.Assert(noun != null);
-                }
-            }
 
             world = new World(500, 500, Content);
             player = new Player(new Vector2(world.width / 2, world.height / 2), Content);
@@ -312,15 +304,12 @@ namespace PRPG
                 closestNPC = null;
                 float closestNPCDist = float.MaxValue;
                 foreach (var npc in world.npcs) {
-                    if (Vector2.Distance(npc.pos, worldPos) <= maxDist) {
-                        npc.Update(gameTime, player, Content);
-                        if (npc.hello) {
-                            var dist = Vector2.DistanceSquared(npc.pos, player.pos);
-                            if (dist < closestNPCDist) {
-                                closestNPC = npc;
-                                closestNPCDist = dist;
-                            }
-                        }
+
+                    npc.Update(gameTime, player, Content);
+                    var dist = Vector2.DistanceSquared(npc.pos, player.pos);
+                    if (dist < closestNPCDist) {
+                        closestNPC = npc;
+                        closestNPCDist = dist;
                     }
                 }
 
@@ -332,7 +321,7 @@ namespace PRPG
             if (IsNewButtonPress(Buttons.X)) {
                 renderFancyTiles = !renderFancyTiles;
             }
-            
+
 
             lastPadState = padState;
             lastKeyState = keyState;
@@ -362,12 +351,12 @@ namespace PRPG
             offset = worldPos * (float)World.tileSize - screenCenter;
 
             batch.Begin(SpriteSortMode.Immediate);
-            
+
             for (int y = startY; y <= endY; y++) {
                 for (int x = startX; x <= endX; x++) {
 
                     Texture2D tile = world.GetTex(x, y);
-                    
+
                     var screenPos = new Vector2(x, y) * World.tileSize - offset;
                     if (screenPos.X >= -World.tileSize && screenPos.Y >= -World.tileSize && screenPos.X < windowWidth && screenPos.Y < windowHeight)
                         batch.Draw(tile, new Rectangle((int)screenPos.X, (int)screenPos.Y, World.tileSize, World.tileSize), Color.White);
@@ -394,7 +383,7 @@ namespace PRPG
             batch.DrawString(mainFont, fps, new Vector2(0, 40), Color.Yellow);
 #if DEBUG
             batch.DrawString(mainFont, "x:" + (int)worldPos.X + "," + (int)worldPos.Y + "  sprited:" + npcSprited, Vector2.Zero, Color.Yellow);
-            
+
 #endif
             batch.End();
             base.Draw(gameTime);
