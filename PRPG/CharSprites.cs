@@ -64,25 +64,7 @@ namespace PRPG
             shoeSheet = RandUtil.Index(shoeSheets);
 
             hairColor = new Color(new Vector3(RandUtil.Float(1.0f), RandUtil.Float(1.0f), RandUtil.Float(1.0f)));
-
-
-            /*
-            var renderTarget = new RenderTarget2D(PRPGame.graphics,baseSheet.Width,baseSheet.Height,false,SurfaceFormat.Color,DepthFormat.None,0,RenderTargetUsage.DiscardContents);
-                     
-            PRPGame.graphics.SetRenderTarget(renderTarget);
-            PRPGame.graphics.Clear(Color.Transparent);
-            PRPGame.batch.Begin();            
-            PRPGame.batch.Draw(baseSheet, Vector2.Zero, Color.White);
-            PRPGame.batch.Draw(eyeSheet, Vector2.Zero, Color.White);
-            PRPGame.batch.Draw(hairSheet, Vector2.Zero, Color.White);
-            PRPGame.batch.Draw(shirtSheet, Vector2.Zero, Color.White);
-            PRPGame.batch.Draw(pantSheet, Vector2.Zero, Color.White);
-            PRPGame.batch.Draw(shoeSheet, Vector2.Zero, Color.White);
-            PRPGame.batch.End();
-            PRPGame.graphics.SetRenderTarget(null);*/
-
-            //and then use spriteSheet to render this character from here on out
-
+         
             walking = new Rectangle[4, 9];
             for (int y = 0; y < 4; y++) { 
                 for (int x = 0; x < 9; x++) {
