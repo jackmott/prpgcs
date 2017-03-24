@@ -42,13 +42,13 @@ namespace PRPG
         public void Draw(SpriteBatch batch, float scale, Vector2 offset) {
             var screenPos = pos * scale - offset;
             Rectangle srcRectangle = sprites.walking[facing, animIndex];
-            float depth = 1.0f - (screenPos.Y + srcRectangle.Height)/PRPGame.windowHeight;
-            PRPGame.batch.Draw(sprites.baseSheet,screenPos , null,sprites.walking[facing, animIndex],  null, 0, null, Color.White, SpriteEffects.None,depth+.06f);
-            PRPGame.batch.Draw(sprites.eyeSheet, screenPos, null, sprites.walking[facing, animIndex], null, 0, null, Color.White, SpriteEffects.None, depth+0.05f);
-            PRPGame.batch.Draw(sprites.hairSheet, screenPos, null, sprites.walking[facing, animIndex], null, 0, null, sprites.hairColor, SpriteEffects.None, depth+.04f);
-            PRPGame.batch.Draw(sprites.shirtSheet, screenPos, null, sprites.walking[facing, animIndex], null, 0, null, Color.White, SpriteEffects.None, depth+.03f);
-            PRPGame.batch.Draw(sprites.pantSheet, screenPos, null, sprites.walking[facing, animIndex], null, 0, null, Color.White, SpriteEffects.None, depth+.02f);
-            PRPGame.batch.Draw(sprites.shoeSheet, screenPos, null, sprites.walking[facing, animIndex], null, 0, null, Color.White, SpriteEffects.None, depth+.01f);
+            float depth = 1.0f - (screenPos.Y + srcRectangle.Height)/PRPGame.windowHeight;            
+            PRPGame.batch.Draw(sprites.baseSheet,screenPos ,sprites.walking[facing, animIndex],Color.White, 0, Vector2.Zero,1, SpriteEffects.None,depth+.06f);
+            PRPGame.batch.Draw(sprites.eyeSheet, screenPos,sprites.walking[facing, animIndex], Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, depth+0.05f);
+            PRPGame.batch.Draw(sprites.hairSheet, screenPos, sprites.walking[facing, animIndex],sprites.hairColor, 0, Vector2.Zero, 1, SpriteEffects.None, depth+.04f);
+            PRPGame.batch.Draw(sprites.shirtSheet, screenPos,sprites.walking[facing, animIndex],Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, depth+.03f);
+            PRPGame.batch.Draw(sprites.pantSheet, screenPos,sprites.walking[facing, animIndex],Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, depth+.02f);
+            PRPGame.batch.Draw(sprites.shoeSheet, screenPos,sprites.walking[facing, animIndex],Color.White,0, Vector2.Zero, 1, SpriteEffects.None, depth+.01f);
         }
 
 
