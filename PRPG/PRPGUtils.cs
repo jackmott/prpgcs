@@ -10,12 +10,16 @@ namespace PRPG
 {
     public static class PRPGUtils
     {
+        
+      
+
         public static (T obj, float value) MinBy<T>(this T[] array,Func<T,float> lambda) 
         {
             float minValue = float.MaxValue;
-            T minT = default(T);
-            foreach (var t in array)
+            T minT = array[0];
+            for (int i = 1; i < array.Length;i++)
             {
+                var t = array[i];
                 var value = lambda.Invoke(t);
                 if (value < minValue)
                 {
@@ -28,10 +32,12 @@ namespace PRPG
 
         public static (T obj, float value) ClosestTo<T>(this T[] array,Entity p) where T : Entity
         {
-            float minValue = float.MaxValue;
-            T minEntity = null;
-            foreach (var e in array)
+            
+            T minEntity = array[0];
+            float minValue = Vector2.DistanceSquared(minEntity.pos, p.pos);
+            for (int i = 1; i < array.Length;i++)
             {
+                var e = array[i];
                 var value = Vector2.DistanceSquared(e.pos, p.pos);
                 if (value < minValue)
                 {

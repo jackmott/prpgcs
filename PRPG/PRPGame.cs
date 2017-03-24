@@ -114,9 +114,7 @@ namespace PRPG
             base.Initialize();
             graphicsManager.PreferredBackBufferHeight = 1080;
             graphicsManager.PreferredBackBufferWidth = 1920;
-
-
-
+            graphicsManager.PreferredDepthStencilFormat = DepthFormat.Depth24Stencil8;
             graphicsManager.ApplyChanges();
             graphics = GraphicsDevice;
             windowHeight = GraphicsDevice.Viewport.Bounds.Height;
@@ -399,7 +397,7 @@ namespace PRPG
 
             offset = worldPos * (float)World.tileSize - screenCenter;
 
-            batch.Begin(SpriteSortMode.Immediate);
+            batch.Begin(SpriteSortMode.BackToFront,BlendState.AlphaBlend);
 
             for (int y = startY; y <= endY; y++)
             {
@@ -409,8 +407,9 @@ namespace PRPG
                     Texture2D tile = world.GetTex(x, y);
 
                     var screenPos = new Vector2(x, y) * World.tileSize - offset;
-                    if (OnScreen(screenPos, World.tileSize, World.tileSize))
-                        batch.Draw(tile, new Rectangle((int)screenPos.X, (int)screenPos.Y, World.tileSize, World.tileSize), Color.White);
+                    if (OnScreen(screenPos, World.tileSize, World.tileSize))                                                                    
+                        batch.Draw(tile, new Rectangle((int)screenPos.X, (int)screenPos.Y, World.tileSize, World.tileSize),null, Color.White,0,Vector2.Zero,SpriteEffects.None,1.0f);
+                    
                 }
             }
 

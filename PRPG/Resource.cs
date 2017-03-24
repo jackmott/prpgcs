@@ -26,7 +26,8 @@ namespace PRPG
 
         public virtual void Draw(Vector2 screenPos)
         {
-            PRPGame.batch.Draw(tex, screenPos, Color.White);
+            float bottomY = screenPos.Y + tex.Height;
+            PRPGame.batch.Draw(tex, screenPos, null, null, null, 0, null, Color.White, SpriteEffects.None, 1.0f - bottomY/PRPGame.windowHeight);
         }
 
         public abstract void Extract(Player player);
@@ -36,11 +37,10 @@ namespace PRPG
     public class IronMine : Resource
     {
         public IronMine(Vector2 pos, int count, ContentManager content) : base(pos, count,content)
-        {
-            width = 128;
-            height = 128;
+        {            
             tex = content.Load<Texture2D>("Resources/iron_mine");
-
+            width = tex.Width;
+            height = tex.Height;
         }
 
         public override void Extract(Player player)
@@ -54,10 +54,10 @@ namespace PRPG
     public class CoalMine : Resource
     {
         public CoalMine(Vector2 pos, int count, ContentManager content) : base(pos, count,content)
-        {
-            width = 128;
-            height = 128;
+        {            
             tex = content.Load<Texture2D>("Resources/mine");
+            width = tex.Width;
+            height = tex.Height;
         }
 
         public override void Extract(Player player)
@@ -71,11 +71,10 @@ namespace PRPG
     public class Tree : Resource
     {        
         public Tree(Vector2 pos, int count, ContentManager content) : base(pos, count,content)
-        {
-            width = 32;
-            height = 65;
-            
+        {            
             tex = content.Load<Texture2D>("Resources/tree01");
+            width = tex.Width;
+            height = tex.Height;
         }
 
         public override void Extract(Player player)

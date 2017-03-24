@@ -12,13 +12,13 @@ namespace PRPG
     {
         public static Texture2D[] maleBodySheets;
         public static Texture2D[] femaleBodySheets;
-        public static string[] maleHairPaths;
-        public static string[] femaleHairPaths;
-        public static string[] shirtPaths;
-        public static string[] pantsPaths;
-        public static string[] shoePaths;
-        public static string[] maleEyePaths;
-        public static string[] femaleEyePaths;
+        public static Texture2D[] maleHairSheets;
+        public static Texture2D[] femaleHairSheets;
+        public static Texture2D[] shirtSheets;
+        public static Texture2D[] pantsSheets;
+        public static Texture2D[] shoeSheets;
+        public static Texture2D[] maleEyeSheets;
+        public static Texture2D[] femaleEyeSheets;
 
 
 
@@ -31,32 +31,43 @@ namespace PRPG
         const int WALKING_INDEX = 8;
         const int WALKING_WIDTH = 9;
         public Rectangle[,] walking;
-        public Texture2D spriteSheet;
+
+        public Texture2D baseSheet;
+        public Texture2D hairSheet;
+        public Texture2D eyeSheet;
+        public Texture2D shirtSheet;
+        public Texture2D pantSheet; 
+        public Texture2D shoeSheet;
+        public Color hairColor;
 
         public CharSprites(Gender gender,ContentManager content) {
 #if DEBUG
             PRPGame.npcSprited++;
 #endif
-            Texture2D baseSheet;
-            Texture2D hairSheet;
-            Texture2D eyeSheet;
+            
             if (gender == Gender.Male) {
                 baseSheet = RandUtil.Index(maleBodySheets);
-                hairSheet = content.Load<Texture2D>(RandUtil.Index(maleHairPaths));
-                eyeSheet = content.Load<Texture2D>(RandUtil.Index(maleEyePaths));
+                hairSheet = RandUtil.Index(maleHairSheets);
+                eyeSheet = RandUtil.Index(maleEyeSheets);
                 
             } else {
                 baseSheet = RandUtil.Index(femaleBodySheets);
-                hairSheet = content.Load<Texture2D>(RandUtil.Index(femaleHairPaths));
-                eyeSheet = content.Load<Texture2D>(RandUtil.Index(femaleEyePaths));
+                hairSheet = RandUtil.Index(femaleHairSheets);
+                eyeSheet = RandUtil.Index(femaleHairSheets);
             }
 
-            Texture2D shirtSheet = content.Load<Texture2D>(RandUtil.Index(shirtPaths));            
-            Texture2D pantSheet = content.Load<Texture2D>(RandUtil.Index(pantsPaths));
-            Texture2D shoeSheet = content.Load<Texture2D>(RandUtil.Index(shoePaths));
-                        
-            var renderTarget = new RenderTarget2D(PRPGame.graphics,baseSheet.Width,baseSheet.Height,false,SurfaceFormat.Color,DepthFormat.None,0,RenderTargetUsage.DiscardContents);
 
+            // Compose a bunch of sprite sheets to make a uniqe npc as they
+            // come on screen. The sheets contain all the animation frames.
+            shirtSheet = RandUtil.Index(shirtSheets);            
+            pantSheet = RandUtil.Index(pantsSheets);
+            shoeSheet = RandUtil.Index(shoeSheets);
+
+            hairColor = new Color(new Vector3(RandUtil.Float(1.0f), RandUtil.Float(1.0f), RandUtil.Float(1.0f)));
+
+
+            /*
+            var renderTarget = new RenderTarget2D(PRPGame.graphics,baseSheet.Width,baseSheet.Height,false,SurfaceFormat.Color,DepthFormat.None,0,RenderTargetUsage.DiscardContents);
                      
             PRPGame.graphics.SetRenderTarget(renderTarget);
             PRPGame.graphics.Clear(Color.Transparent);
@@ -68,12 +79,10 @@ namespace PRPG
             PRPGame.batch.Draw(pantSheet, Vector2.Zero, Color.White);
             PRPGame.batch.Draw(shoeSheet, Vector2.Zero, Color.White);
             PRPGame.batch.End();
-            PRPGame.graphics.SetRenderTarget(null);
+            PRPGame.graphics.SetRenderTarget(null);*/
 
-            
+            //and then use spriteSheet to render this character from here on out
 
-            spriteSheet = renderTarget;
-          
             walking = new Rectangle[4, 9];
             for (int y = 0; y < 4; y++) { 
                 for (int x = 0; x < 9; x++) {
@@ -104,22 +113,20 @@ namespace PRPG
 
         public static void Initialize(ContentManager content)
         {
-            var maleBodyFilenames = LoadFileNames(content,"LPC/body/human/male");
-            var femaleBodyFilenames = LoadFileNames(content,"LPC/body/human/female");
-
+         
             femaleBodySheets = LoadAllContent<Texture2D>(content,"LPC/body/human/female",false);
             maleBodySheets = LoadAllContent<Texture2D>(content, "LPC/body/human/male",false);
 
-            maleHairPaths = LoadFileNames(content,"LPC/hair/male");
-            femaleHairPaths = LoadFileNames(content, "LPC/hair/female");
+            maleHairSheets = LoadAllContent<Texture2D>(content, "LPC/hair/male");
+            femaleHairSheets = LoadAllContent<Texture2D>(content, "LPC/hair/female");
 
-            shirtPaths = LoadFileNames(content, "LPC/torso/shirts/longsleeve");
-            pantsPaths = LoadFileNames(content, "LPC/legs/pants");
+            shirtSheets = LoadAllContent<Texture2D>(content, "LPC/torso/shirts/longsleeve");
+            pantsSheets = LoadAllContent<Texture2D>(content, "LPC/legs/pants");
 
-            shoePaths = LoadFileNames(content, "LPC/feet/shoes/male");
+            shoeSheets = LoadAllContent<Texture2D>(content, "LPC/feet/shoes/male");
 
-            maleEyePaths = LoadFileNames(content, "LPC/body/male_headparts/eyes");
-            femaleEyePaths = LoadFileNames(content, "LPC/body/female_headparts/eyes");
+            maleEyeSheets = LoadAllContent<Texture2D>(content, "LPC/body/male_headparts/eyes");
+            femaleEyeSheets = LoadAllContent<Texture2D>(content, "LPC/body/female_headparts/eyes");
 
         }
 

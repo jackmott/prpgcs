@@ -23,9 +23,9 @@ namespace PRPG
             return new Vector2(RandUtil.Float(0.0f, firstMax), RandUtil.Float(0.0f, secondMax));
         }
 
-        public static bool Dice(int sides)
+        public static bool OneInN(int N)
         {
-            return r.Next(sides) == 0;
+            return r.Next(N) == 0;
             
         }
         public static float Float(float max)
