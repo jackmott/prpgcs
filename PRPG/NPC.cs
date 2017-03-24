@@ -35,9 +35,13 @@ namespace PRPG
     }
 
               
-    public class Entity {
+    public abstract class Entity {
+        public Vector2 pos;       
+    }
+
+    public class NPC : Entity {
+
         public TimeSpan lastAnimationTime;
-        public Vector2 pos;
         public Vector2 oldPos;
         public string firstName;
         public string lastName;
@@ -47,10 +51,7 @@ namespace PRPG
         public Gender gender;
         public string fullName { get { return firstName + " " + lastName; } }
 
-        public Inventory items;        
-    }
-
-    public class NPC : Entity {        
+        public Inventory items;
 
         public static string[] namePool;
         public static NPCClass[] classPool;
@@ -60,8 +61,7 @@ namespace PRPG
         public Personality personality;        
         public NPCState state;
         public NPCClass npcClass;
-        public const int NPCSize = 32;
-        public const float helloDist = 2.0f;                
+        public const int NPCSize = 32;        
         public HashSet<Desire> desires;
         public Color currentColor;
 
@@ -79,7 +79,9 @@ namespace PRPG
             npcClass = RandUtil.Index(classPool);
             lastAnimationTime = TimeSpan.FromMilliseconds(0);
             items = new Inventory();
-            
+
+            facing = CharSprites.DOWN;
+
             if (RandUtil.Bool()) {
                 gender = Gender.Male;
             } else {
@@ -203,7 +205,7 @@ namespace PRPG
             var distSquared = Vector2.DistanceSquared(pos, player.pos);            
             if (distSquared <= PRPGame.maxDist * PRPGame.maxDist) {
                 onScreen = true;
-                if (distSquared < helloDist) {
+                if (distSquared < PRPGame.actionDist) {
                     hello = true;
                 } else {
                     hello = false;
@@ -263,12 +265,12 @@ namespace PRPG
 
         }
 
-        public void Draw(SpriteBatch batch, float scale, Vector2 offset) {
+        public void Draw(Vector2 screenPos) {
 
             if (sprites != null) {
-                batch.Draw(sprites.spriteSheet, pos * scale - offset, sprites.walking[facing, animIndex], Color.White);
+                PRPGame.batch.Draw(sprites.spriteSheet, screenPos, sprites.walking[facing, animIndex], Color.White);
                 if (hello) {
-                    batch.DrawString(PRPGame.mainFont, "Hello!", pos * scale - offset, Color.White);
+                    PRPGame.batch.DrawString(PRPGame.mainFont, "Hello!", screenPos, Color.White);
                 }
             }
         }

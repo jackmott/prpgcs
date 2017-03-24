@@ -17,14 +17,16 @@ namespace PRPG
 
         public readonly int width;
         public readonly int height;
-        public const int tileSize = 64;        
+        public const int tileSize =64;        
         public Color[] pallette;
         public TerrainTile[] tilePallette;
         public Dictionary<TerrainTile, Texture2D> simpleTex;
         public LRACache<int, Texture2D> texCache;
         public const double cityDensity = 1.0 / 5000.0;
         public NPC[] npcs;
+        public Resource[] resources;
         Color[] texColor;
+
 
 
         public World(int w, int h, ContentManager content)
@@ -82,6 +84,22 @@ namespace PRPG
 
             tilePallette = tilePal.ToArray();
             pallette = pal.ToArray();
+
+            resources = new Resource[2500];
+            for (int i = 0; i < 1500 ;i++)
+            {                
+                resources[i] = new Tree(RandUtil.Vector2(width, height), RandUtil.Int(1, 3),content);
+            }
+            for (int i = 1500; i < 2000; i++)
+            {
+                resources[i] = new IronMine(RandUtil.Vector2(width, height), RandUtil.Int(10, 1000),content);
+            }
+            for (int i = 2000; i < 2500; i++)
+            {
+                resources[i] = new CoalMine(RandUtil.Vector2(width, height), RandUtil.Int(10, 1000),content);
+            }
+            
+            
 
             npcs = new NPC[1000];
 

@@ -41,6 +41,7 @@
     <Prefer32Bit>false</Prefer32Bit>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
@@ -64,15 +65,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="FrameCounter.cs" />
+    <Compile Include="Resource.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="LRACache.cs" />
     <Compile Include="NPCClass.cs" />
     <Compile Include="CharSprites.cs" />
     <Compile Include="NPCStateMachine.cs" />
     <Compile Include="Personality.cs" />
+    <Compile Include="PRPGUtils.cs" />
     <Compile Include="RandUtil.cs" />
     <Compile Include="ShaderManager.cs" />
-    <Compile Include="TileSet.cs" />
     <Compile Include="Trade.cs" />
     <Compile Include="Dialogue.cs" />
     <Compile Include="Noise.cs" />
@@ -93,6 +95,9 @@
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -165,7 +170,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Noise.fx" />
+    <None Include="Content\Noise.fx" />
     <Content Include="plan.txt" />
     <Content Include="x64\FastNoise.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

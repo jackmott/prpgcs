@@ -8,8 +8,19 @@ using static System.Math;
 
 namespace PRPG
 {
-    public class Player :Entity {
+    public class Player : Entity {
 
+        public TimeSpan lastAnimationTime;
+        public Vector2 oldPos;
+        public string firstName;
+        public string lastName;
+        public int animIndex;
+        public CharSprites sprites;
+        public int facing;
+        public Gender gender;
+        public string fullName { get { return firstName + " " + lastName; } }
+
+        public Inventory items;
         public const int PlayerSize = 32;
        
         

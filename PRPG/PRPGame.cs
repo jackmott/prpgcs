@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System.Diagnostics;
-
+using System.Linq;
 
 namespace PRPG
 {
@@ -37,6 +37,8 @@ namespace PRPG
             { new GameStateTransition(GameState.DIALOGUE,GameCommand.TRADE),GameState.TRADE},
             { new GameStateTransition(GameState.TRADE,GameCommand.BACK),GameState.DIALOGUE }
         };
+
+        public const float actionDist = 2.0f;
 
         // GLOBAL STATE
         private FrameCounter frameCounter = new FrameCounter();
@@ -78,6 +80,7 @@ namespace PRPG
 
         public PRPGame()
         {
+           // this.TargetElapsedTime = TimeSpan.FromSeconds(1.0f / 100.0f);
             Content.RootDirectory = "Content";
             graphicsManager = new GraphicsDeviceManager(this);
             tilePool = new List<Texture2D>(32);
@@ -88,16 +91,20 @@ namespace PRPG
         public void AdvanceState(GameCommand command)
         {
             var trans = new GameStateTransition(state, command);
-            if (stateMachine.TryGetValue(trans, out var newState)) {
-                if (newState == GameState.TRADE) {
+            if (stateMachine.TryGetValue(trans, out var newState))
+            {
+                if (newState == GameState.TRADE)
+                {
                     Trade.Setup(player, closestNPC);
                 }
-                else if (newState == GameState.DIALOGUE) {
+                else if (newState == GameState.DIALOGUE)
+                {
                     Dialogue.Setup();
                 }
                 state = newState;
             }
-            else {
+            else
+            {
                 Debug.Assert(command == GameCommand.NONE);
             }
         }
@@ -129,6 +136,16 @@ namespace PRPG
             worldPos = player.pos;
         }
 
+
+        private bool OnScreen(Vector2 pos, int w, int h)
+        {
+            return
+                pos.X >= -w &&
+                pos.X < windowWidth &&
+                pos.Y >= -h &&
+                pos.Y < windowHeight;
+        }
+
         protected override void LoadContent()
         {
             batch = new SpriteBatch(GraphicsDevice);
@@ -155,10 +172,13 @@ namespace PRPG
             return currentlyPressed && !wasPressed;
         }
 
-        private enum Action { MAIN, CONFIRM, BACK, LEFT, RIGHT, UP, DOWN };
+        private enum Action { MAIN, USE_ITEM, CONFIRM, BACK, LEFT, RIGHT, UP, DOWN };
         private bool IsNewAction(Action a)
         {
-            switch (a) {
+            switch (a)
+            {
+                case Action.USE_ITEM:
+                    return IsNewKeyPress(Keys.Space) || IsNewButtonPress(Buttons.X);
                 case Action.CONFIRM:
                     return IsNewKeyPress(Keys.Enter) || IsNewButtonPress(Buttons.Y);
                 case Action.MAIN:
@@ -188,47 +208,72 @@ namespace PRPG
             if (keyState.IsKeyDown(Keys.Escape))
                 Exit();
 
-            if (state == GameState.DIALOGUE) {
-                if (IsNewAction(Action.UP)) {
+            if (state == GameState.DIALOGUE)
+            {
+                if (IsNewAction(Action.UP))
+                {
                     Dialogue.DecrementSelection();
                 }
-                else if (IsNewAction(Action.DOWN)) {
+                else if (IsNewAction(Action.DOWN))
+                {
                     Dialogue.IncrementSelection();
                 }
-                else if (IsNewAction(Action.MAIN)) {
+                else if (IsNewAction(Action.MAIN))
+                {
                     command = Dialogue.Selection();
                 }
-                else if (IsNewAction(Action.BACK)) {
+                else if (IsNewAction(Action.BACK))
+                {
                     command = GameCommand.BACK;
                 }
             }
-            else if (state == GameState.TRADE) {
-                if (IsNewAction(Action.UP)) {
+            else if (state == GameState.TRADE)
+            {
+                if (IsNewAction(Action.UP))
+                {
                     Trade.DecRow();
                 }
-                else if (IsNewAction(Action.DOWN)) {
+                else if (IsNewAction(Action.DOWN))
+                {
                     Trade.IncRow();
                 }
-                else if (IsNewAction(Action.LEFT)) {
+                else if (IsNewAction(Action.LEFT))
+                {
                     Trade.DecColumn();
                 }
-                else if (IsNewAction(Action.RIGHT)) {
+                else if (IsNewAction(Action.RIGHT))
+                {
                     Trade.IncColumn();
                 }
-                else if (IsNewAction(Action.BACK)) {
+                else if (IsNewAction(Action.BACK))
+                {
                     command = GameCommand.BACK;
                 }
-                else if (IsNewAction(Action.MAIN)) {
+                else if (IsNewAction(Action.MAIN))
+                {
                     Trade.MoveItem();
                 }
-                else if (IsNewAction(Action.CONFIRM)) {
-                    if (Trade.Accept()) {
+                else if (IsNewAction(Action.CONFIRM))
+                {
+                    if (Trade.Accept())
+                    {
                         command = GameCommand.BACK;
                     }
                 }
             }
-            else {
+            else
+            {
 
+                if (IsNewAction(Action.USE_ITEM))
+                {
+                    var (closestResource, minDist) =
+                        world.resources.ClosestTo(player);
+                    
+                    if (minDist < actionDist + (closestResource.width / 2) && closestResource != null)
+                    {
+                        closestResource.Extract(player);                        
+                    }
+                }
 
                 var tile = world.GetTile(player.pos);
 
@@ -238,43 +283,43 @@ namespace PRPG
                 else
                     moveDistance = 0.05f;
 
-                Vector2 movement = Vector2.Zero;
-                bool talkButton = false;
+                Vector2 movement = Vector2.Zero;                
 
                 var gamePadCap = GamePad.GetCapabilities(PlayerIndex.One);
-                if (gamePadCap.IsConnected) {
-
-                    if (gamePadCap.HasLeftXThumbStick) {
+                if (gamePadCap.IsConnected)
+                {
+                    if (gamePadCap.HasLeftXThumbStick)
+                    {
                         movement += new Vector2(padState.ThumbSticks.Left.X * moveDistance, 0);
                     }
-                    if (gamePadCap.HasLeftYThumbStick) {
+                    if (gamePadCap.HasLeftYThumbStick)
+                    {
                         movement -= new Vector2(0, padState.ThumbSticks.Left.Y * moveDistance);
                     }
-                    if (IsNewAction(Action.MAIN)) {
-                        talkButton = true;
-                    }
-
                 }
 
 
-                if (keyState.IsKeyDown(Keys.Right)) {
+                if (keyState.IsKeyDown(Keys.Right))
+                {
                     movement += new Vector2(moveDistance, 0);
                 }
-                if (keyState.IsKeyDown(Keys.Left)) {
+                if (keyState.IsKeyDown(Keys.Left))
+                {
                     movement -= new Vector2(moveDistance, 0);
                 }
-                if (keyState.IsKeyDown(Keys.Up)) {
+                if (keyState.IsKeyDown(Keys.Up))
+                {
                     movement -= new Vector2(0, moveDistance);
                 }
-                if (keyState.IsKeyDown(Keys.Down)) {
+                if (keyState.IsKeyDown(Keys.Down))
+                {
                     movement += new Vector2(0, moveDistance);
                 }
-                if (IsNewKeyPress(Keys.E)) {
-                    talkButton = true;
-                }
 
 
-                if (movement.Length() > moveDistance) {
+
+                if (movement.Length() > moveDistance)
+                {
                     movement = Vector2.Normalize(movement) * moveDistance;
                 }
 
@@ -286,39 +331,42 @@ namespace PRPG
                 float yDiff = worldPos.Y - player.pos.Y;
 
                 float threshold = 1.5f;
-                if (xDiff > threshold) {
+                if (xDiff > threshold)
+                {
                     worldPos.X += movement.X;
                 }
-                else if (xDiff < -threshold) {
+                else if (xDiff < -threshold)
+                {
                     worldPos.X += movement.X;
                 }
 
-                if (yDiff > threshold) {
+                if (yDiff > threshold)
+                {
                     worldPos.Y += movement.Y;
                 }
-                else if (yDiff < -threshold) {
+                else if (yDiff < -threshold)
+                {
                     worldPos.Y += movement.Y;
                 }
 
-
-                closestNPC = null;
-                float closestNPCDist = float.MaxValue;
-                foreach (var npc in world.npcs) {
-
+                foreach (var npc in world.npcs)
+                {
                     npc.Update(gameTime, player, Content);
-                    var dist = Vector2.DistanceSquared(npc.pos, player.pos);
-                    if (dist < closestNPCDist) {
-                        closestNPC = npc;
-                        closestNPCDist = dist;
-                    }
                 }
+                float closestNPCDist;
+                (closestNPC, closestNPCDist) =
+                    world.npcs.ClosestTo(player);
+                                 
 
-                if (talkButton && closestNPC != null)
+                if (IsNewAction(Action.MAIN) && closestNPCDist < actionDist)
+                {
                     command = GameCommand.TALK;
+                }
 
             }
             AdvanceState(command);
-            if (IsNewButtonPress(Buttons.X)) {
+            if (IsNewButtonPress(Buttons.X))
+            {
                 renderFancyTiles = !renderFancyTiles;
             }
 
@@ -336,7 +384,8 @@ namespace PRPG
             var fps = string.Format("FPS:{0}", frameCounter.AverageFramesPerSecond);
 
             //GraphicsDevice.Clear(Color.Black);                                    
-            for (int i = 0; i < pendingTilePool.Count; i++) {
+            for (int i = 0; i < pendingTilePool.Count; i++)
+            {
                 tilePool.Add(pendingTilePool[i]);
             }
             pendingTilePool.Clear();
@@ -352,31 +401,47 @@ namespace PRPG
 
             batch.Begin(SpriteSortMode.Immediate);
 
-            for (int y = startY; y <= endY; y++) {
-                for (int x = startX; x <= endX; x++) {
+            for (int y = startY; y <= endY; y++)
+            {
+                for (int x = startX; x <= endX; x++)
+                {
 
                     Texture2D tile = world.GetTex(x, y);
 
                     var screenPos = new Vector2(x, y) * World.tileSize - offset;
-                    if (screenPos.X >= -World.tileSize && screenPos.Y >= -World.tileSize && screenPos.X < windowWidth && screenPos.Y < windowHeight)
+                    if (OnScreen(screenPos, World.tileSize, World.tileSize))
                         batch.Draw(tile, new Rectangle((int)screenPos.X, (int)screenPos.Y, World.tileSize, World.tileSize), Color.White);
                 }
             }
 
 
 
-            foreach (var npc in world.npcs) {
-                if (Vector2.Distance(npc.pos, worldPos) <= maxDist) {
-                    npc.Draw(batch, World.tileSize, offset);
+            foreach (var npc in world.npcs)
+            {
+                var screenPos = npc.pos*World.tileSize-offset;
+                if (OnScreen(screenPos,64,64))
+                { 
+                    npc.Draw(screenPos);
+                }
+            }
+
+            foreach (var resource in world.resources)
+            {
+                var screenPos = resource.pos * World.tileSize - offset;
+                if (OnScreen(screenPos,resource.width,resource.height))
+                {                 
+                    resource.Draw(screenPos);
                 }
             }
 
             player.Draw(batch, World.tileSize, offset);
 
-            if (state == GameState.DIALOGUE) {
+            if (state == GameState.DIALOGUE)
+            {
                 Dialogue.Draw();
             }
-            else if (state == GameState.TRADE) {
+            else if (state == GameState.TRADE)
+            {
                 Trade.Draw();
             }
 

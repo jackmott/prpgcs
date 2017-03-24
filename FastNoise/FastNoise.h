@@ -6,8 +6,8 @@
 #include <stdint.h>
 
 #define SSE2  //indicates we want SSE2
-//#define SSE41 //indicates we want SSE4.1 instructions (floor and blend is available)
-//#define AVX2  //indicates we want AVX2 instructions (double speed!) 
+#define SSE41 //indicates we want SSE4.1 instructions (floor and blend is available)
+#define AVX2  //indicates we want AVX2 instructions (double speed!) 
 
 
 #ifndef AVX2
@@ -140,13 +140,14 @@ typedef __m256i SIMDi; //for integers
 #endif
 
 
-typedef union {
-	__m128 m;
-	float a[4];
-} um128;
 
 typedef union {
-	__m128i m;
+	SIMD m;
+	float a[4];
+} USIMD;
+
+typedef union {
+	SIMDi m;
 	int a[4];
 } um128i;
 

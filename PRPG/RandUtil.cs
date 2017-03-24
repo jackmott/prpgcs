@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 
 namespace PRPG
@@ -15,6 +16,11 @@ namespace PRPG
             x *= range;
             x += min;
             return x;
+        }
+
+        public static Vector2 Vector2(float firstMax, float secondMax)
+        {
+            return new Vector2(RandUtil.Float(0.0f, firstMax), RandUtil.Float(0.0f, secondMax));
         }
 
         public static bool Dice(int sides)
