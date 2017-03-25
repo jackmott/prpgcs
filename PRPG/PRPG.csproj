@@ -75,8 +75,8 @@
     <Compile Include="PRPGUtils.cs" />
     <Compile Include="RandUtil.cs" />
     <Compile Include="ShaderManager.cs" />
-    <Compile Include="Trade.cs" />
     <Compile Include="Dialogue.cs" />
+    <Compile Include="DeprecatedDialogue.cs" />
     <Compile Include="Noise.cs" />
     <Compile Include="NPC.cs" />
     <Compile Include="Player.cs" />
@@ -105,7 +105,7 @@
     <EmbeddedResource Include="Icon.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\Content.mgcb" />
+    <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\x86\SDL2.dll">
       <Link>x86\SDL2.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -10,8 +10,8 @@ using System.Linq;
 namespace PRPG
 {
 
-    public enum GameState { ROAM, DIALOGUE, TRADE };
-    public enum GameCommand { NONE, TALK, TRADE, BACK };
+    public enum GameState { ROAM, DIALOGUE};
+    public enum GameCommand { NONE, TALK, BACK };
 
 
     public struct GameStateTransition
@@ -33,9 +33,7 @@ namespace PRPG
         private static Dictionary<GameStateTransition, GameState> stateMachine =
             new Dictionary<GameStateTransition, GameState> {
             { new GameStateTransition(GameState.ROAM,GameCommand.TALK),GameState.DIALOGUE },
-            { new GameStateTransition(GameState.DIALOGUE,GameCommand.BACK),GameState.ROAM},
-            { new GameStateTransition(GameState.DIALOGUE,GameCommand.TRADE),GameState.TRADE},
-            { new GameStateTransition(GameState.TRADE,GameCommand.BACK),GameState.DIALOGUE }
+            { new GameStateTransition(GameState.DIALOGUE,GameCommand.BACK),GameState.ROAM},            
         };
 
         public const float actionDist = 2.0f;
@@ -93,14 +91,10 @@ namespace PRPG
             var trans = new GameStateTransition(state, command);
             if (stateMachine.TryGetValue(trans, out var newState))
             {
-                if (newState == GameState.TRADE)
+                if (newState == GameState.DIALOGUE)
                 {
-                    Trade.Setup(player, closestNPC);
-                }
-                else if (newState == GameState.DIALOGUE)
-                {
-                    Dialogue.Setup();
-                }
+                    Dialogue.Setup(player, closestNPC);
+                }                
                 state = newState;
             }
             else
@@ -125,8 +119,7 @@ namespace PRPG
 
             wordBank = new WordBank();
             CharSprites.Initialize(Content);
-            Dialogue.Initialize();
-            Trade.Initialize();
+            Dialogue.Initialize(Content);            
             NPC.Initialize();
 
             world = new World(500, 500, Content);
@@ -210,38 +203,19 @@ namespace PRPG
             {
                 if (IsNewAction(Action.UP))
                 {
-                    Dialogue.DecrementSelection();
+                    Dialogue.DecRow();
                 }
                 else if (IsNewAction(Action.DOWN))
                 {
-                    Dialogue.IncrementSelection();
-                }
-                else if (IsNewAction(Action.MAIN))
-                {
-                    command = Dialogue.Selection();
-                }
-                else if (IsNewAction(Action.BACK))
-                {
-                    command = GameCommand.BACK;
-                }
-            }
-            else if (state == GameState.TRADE)
-            {
-                if (IsNewAction(Action.UP))
-                {
-                    Trade.DecRow();
-                }
-                else if (IsNewAction(Action.DOWN))
-                {
-                    Trade.IncRow();
+                    Dialogue.IncRow();
                 }
                 else if (IsNewAction(Action.LEFT))
                 {
-                    Trade.DecColumn();
+                    Dialogue.DecColumn();
                 }
                 else if (IsNewAction(Action.RIGHT))
                 {
-                    Trade.IncColumn();
+                    Dialogue.IncColumn();
                 }
                 else if (IsNewAction(Action.BACK))
                 {
@@ -249,11 +223,11 @@ namespace PRPG
                 }
                 else if (IsNewAction(Action.MAIN))
                 {
-                    Trade.MoveItem();
+                    Dialogue.MoveItem();
                 }
                 else if (IsNewAction(Action.CONFIRM))
                 {
-                    if (Trade.Accept())
+                    if (Dialogue.Accept())
                     {
                         command = GameCommand.BACK;
                     }
@@ -433,16 +407,13 @@ namespace PRPG
                 }
             }
 
-            player.Draw(batch, World.tileSize, offset);
+            var playerScreenPos = player.pos * World.tileSize - offset;
+            player.Draw(playerScreenPos);
 
             if (state == GameState.DIALOGUE)
             {
                 Dialogue.Draw();
-            }
-            else if (state == GameState.TRADE)
-            {
-                Trade.Draw();
-            }
+            }            
 
             batch.DrawString(mainFont, fps, new Vector2(0, 40), Color.Yellow);
 #if DEBUG

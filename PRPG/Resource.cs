@@ -24,11 +24,8 @@ namespace PRPG
             this.pos = pos;                        
         }
 
-        public virtual void Draw(Vector2 screenPos)
-        {
-            float bottomY = screenPos.Y + tex.Height;
-            PRPGame.batch.Draw(tex, screenPos, null, null, null, 0, null, Color.White, SpriteEffects.None, 1.0f - bottomY/PRPGame.windowHeight);
-        }
+        public abstract void Draw(Vector2 screenPos);
+        
 
         public abstract void Extract(Player player);
         
@@ -49,6 +46,12 @@ namespace PRPG
             player.items.Add(new Item("Iron Ore", 1));
         }
 
+        public override void Draw(Vector2 screenPos)
+        {
+            float depth = 1.0f - (screenPos.Y +40.0f) / PRPGame.windowHeight;
+            PRPGame.batch.Draw(tex, screenPos, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, depth); 
+        }
+
     }
 
     public class CoalMine : Resource
@@ -66,6 +69,12 @@ namespace PRPG
             player.items.Add(new Item("Coal", 1));
         }
 
+        public override void Draw(Vector2 screenPos)
+        {
+            float depth = 1.0f - (screenPos.Y +40.0f) / PRPGame.windowHeight;
+            PRPGame.batch.Draw(tex, screenPos, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, depth);
+        }
+
     }
 
     public class Tree : Resource
@@ -81,6 +90,12 @@ namespace PRPG
         {
             count--;
             player.items.Add(new Item("Wood", 1));
+        }
+
+        public override void Draw(Vector2 screenPos)
+        {
+            float depth = 1.0f - (screenPos.Y + tex.Height) / PRPGame.windowHeight;
+            PRPGame.batch.Draw(tex, screenPos, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, depth);
         }
 
     }

@@ -101,7 +101,7 @@ namespace PRPG
             
             
 
-            npcs = new NPC[1000];
+            npcs = new NPC[3000];
 
             var worldArea = w * h;
             var numCities =  (int)(worldArea * cityDensity);
