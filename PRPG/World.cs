@@ -85,23 +85,26 @@ namespace PRPG
             tilePallette = tilePal.ToArray();
             pallette = pal.ToArray();
 
-            resources = new Resource[2500];
-            for (int i = 0; i < 1500 ;i++)
-            {                
-                resources[i] = new Tree(RandUtil.Vector2(width, height), RandUtil.Int(1, 3),content);
-            }
-            for (int i = 1500; i < 2000; i++)
+            resources = new Resource[1];
+            resources[0] = new Tree(new Vector2(250, 250), RandUtil.Int(1, 3), content);
+
+            /*
+            for (int i = 0; i < 500; i++)
             {
                 resources[i] = new IronMine(RandUtil.Vector2(width, height), RandUtil.Int(10, 1000),content);
             }
-            for (int i = 2000; i < 2500; i++)
+            for (int i = 500; i < 1000; i++)
             {
                 resources[i] = new CoalMine(RandUtil.Vector2(width, height), RandUtil.Int(10, 1000),content);
             }
-            
-            
+            for (int i = 1000; i < 25000; i++)
+            {
+                resources[i] = new Tree(RandUtil.Vector2(width, height), RandUtil.Int(1, 3), content);
+            }*/
 
-            npcs = new NPC[3000];
+
+
+            npcs = new NPC[1000];
 
             var worldArea = w * h;
             var numCities =  (int)(worldArea * cityDensity);

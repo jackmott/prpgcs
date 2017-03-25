@@ -382,7 +382,7 @@ namespace PRPG
 
                     var screenPos = new Vector2(x, y) * World.tileSize - offset;
                     if (OnScreen(screenPos, World.tileSize, World.tileSize))                                                                    
-                        batch.Draw(tile, new Rectangle((int)screenPos.X, (int)screenPos.Y, World.tileSize, World.tileSize),null, Color.White,0,Vector2.Zero,SpriteEffects.None,1.0f);
+                        batch.Draw(tile, new Vector2(screenPos.X, screenPos.Y),null, Color.White,0,Vector2.Zero,1f,SpriteEffects.None,1.0f);
                     
                 }
             }
@@ -392,7 +392,7 @@ namespace PRPG
             foreach (var npc in world.npcs)
             {
                 var screenPos = npc.pos*World.tileSize-offset;
-                if (OnScreen(screenPos,64,64))
+                if (OnScreen(screenPos,CharSprites.CHAR_SIZE,CharSprites.CHAR_SIZE))
                 { 
                     npc.Draw(screenPos);
                 }

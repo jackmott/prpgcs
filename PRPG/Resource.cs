@@ -49,6 +49,7 @@ namespace PRPG
         public override void Draw(Vector2 screenPos)
         {
             float depth = 1.0f - (screenPos.Y +40.0f) / PRPGame.windowHeight;
+            depth = MathHelper.Clamp(depth, 0.0f, float.MaxValue);
             PRPGame.batch.Draw(tex, screenPos, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, depth); 
         }
 
@@ -72,6 +73,7 @@ namespace PRPG
         public override void Draw(Vector2 screenPos)
         {
             float depth = 1.0f - (screenPos.Y +40.0f) / PRPGame.windowHeight;
+            depth = MathHelper.Clamp(depth, 0.0f, float.MaxValue);
             PRPGame.batch.Draw(tex, screenPos, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, depth);
         }
 
@@ -95,6 +97,7 @@ namespace PRPG
         public override void Draw(Vector2 screenPos)
         {
             float depth = 1.0f - (screenPos.Y + tex.Height) / PRPGame.windowHeight;
+            depth = MathHelper.Clamp(depth, 0.0f, float.MaxValue);
             PRPGame.batch.Draw(tex, screenPos, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, depth);
         }
 

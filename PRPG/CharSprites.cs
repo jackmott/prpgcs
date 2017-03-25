@@ -27,7 +27,7 @@ namespace PRPG
         public static int DOWN = 2;        
         public static int RIGHT = 3;
 
-        const int CHAR_SIZE = 64;
+        public const int CHAR_SIZE = 64;
         const int WALKING_INDEX = 8;
         const int WALKING_WIDTH = 9;
         public Rectangle[,] walking;
