@@ -123,7 +123,7 @@ namespace PRPG
             NPC.Initialize();
 
             world = new World(500, 500, Content);
-            player = new Player(new Vector2(world.width / 2, world.height / 2), Content);
+            player = new Player(new Vector2(world.width / 2, world.height / 2), world,Content);
             worldPos = player.pos;
         }
 
@@ -241,9 +241,9 @@ namespace PRPG
                     var (closestResource, minDist) =
                         world.resources.ClosestTo(player);
                     
-                    if (minDist < actionDist + (closestResource.width / 2) && closestResource != null)
+                    if (minDist < actionDist + (closestResource.width / 2 / World.tileSize) && closestResource != null)
                     {
-                        closestResource.Extract(player);                        
+                        player.Chop(closestResource);                        
                     }
                 }
 
@@ -348,6 +348,32 @@ namespace PRPG
         }
 
 
+        
+        public static void DrawString(SpriteFont font, string s, Vector2 pos, Color color,float scale , float depth)
+        {
+            batch.DrawString(font, s, pos, color, 0, Vector2.Zero, scale, SpriteEffects.None, depth);
+        }
+
+        public static void DrawString(SpriteFont font, string s, Vector2 pos, Color color, float depth)
+        {
+            batch.DrawString(font, s, pos, color, 0, Vector2.Zero, 1.0f, SpriteEffects.None, depth);
+        }
+
+        public static void Draw(Texture2D tex, Rectangle rect, float depth)
+        {
+            batch.Draw(tex, rect, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, depth);
+        }
+
+        public static void Draw(Texture2D tex, Vector2 pos,Vector2 scale, float depth)
+        {
+            batch.Draw(tex, pos, null, Color.White,0, Vector2.Zero, scale,SpriteEffects.None,depth);
+        }
+
+        public static void Draw(Texture2D tex, Vector2 pos, Color color,Vector2 scale, float depth)
+        {
+            batch.Draw(tex, pos, null, color, 0, Vector2.Zero, scale, SpriteEffects.None, depth);
+        }
+
         protected override void Draw(GameTime gameTime)
         {
 
@@ -405,6 +431,16 @@ namespace PRPG
                 {                 
                     resource.Draw(screenPos);
                 }
+            }
+
+            foreach (var resource in world.deadResources)
+            {
+                var screenPos = resource.pos * World.tileSize - offset;
+                if (OnScreen(screenPos, resource.width, resource.height))
+                {
+                    resource.Draw(screenPos);
+                }
+
             }
 
             var playerScreenPos = player.pos * World.tileSize - offset;

@@ -14,6 +14,10 @@ namespace PRPG
             WATER = 0, GRASS, DIRT, ROCK, SNOW
         };
 
+        public const int TREE_COUNT = 10_000;
+        public const int COAL_COUNT = 500;
+        public const int IRON_COUNT = 500;
+        public const int NPC_COUNT = 5_000;
 
         public readonly int width;
         public readonly int height;
@@ -23,8 +27,9 @@ namespace PRPG
         public Dictionary<TerrainTile, Texture2D> simpleTex;
         public LRACache<int, Texture2D> texCache;
         public const double cityDensity = 1.0 / 5000.0;
-        public NPC[] npcs;
-        public Resource[] resources;
+        public List<NPC> npcs;
+        public List<Resource> resources;
+        public List<Resource> deadResources;
         Color[] texColor;
 
 
@@ -85,26 +90,41 @@ namespace PRPG
             tilePallette = tilePal.ToArray();
             pallette = pal.ToArray();
 
-            resources = new Resource[1];
-            resources[0] = new Tree(new Vector2(250, 250), RandUtil.Int(1, 3), content);
+            resources = new List<Resource>(TREE_COUNT+COAL_COUNT+IRON_COUNT);
+            deadResources = new List<Resource>(32);
 
-            /*
-            for (int i = 0; i < 500; i++)
+            
+            for (int i = 0; i < IRON_COUNT; i++)
             {
-                resources[i] = new IronMine(RandUtil.Vector2(width, height), RandUtil.Int(10, 1000),content);
+                var pos = RandUtil.Vector2(width, height);
+                while (GetTile(pos) != TerrainTile.ROCK)
+                {
+                    pos = RandUtil.Vector2(width, height);
+                }
+                resources.Add(new IronMine(pos, RandUtil.Int(10, 1000), content));
             }
-            for (int i = 500; i < 1000; i++)
+            for (int i = 0; i < COAL_COUNT; i++)
             {
-                resources[i] = new CoalMine(RandUtil.Vector2(width, height), RandUtil.Int(10, 1000),content);
+                var pos = RandUtil.Vector2(width, height);
+                while (GetTile(pos) != TerrainTile.GRASS)
+                {
+                    pos = RandUtil.Vector2(width, height);
+                }
+                resources.Add(new CoalMine(pos, RandUtil.Int(10, 1000), content));
             }
-            for (int i = 1000; i < 25000; i++)
+            for (int i = 0; i < TREE_COUNT; i++)
             {
-                resources[i] = new Tree(RandUtil.Vector2(width, height), RandUtil.Int(1, 3), content);
-            }*/
+                var pos = RandUtil.Vector2(width, height);
+                while (GetTile(pos) != TerrainTile.GRASS)
+                {
+                    pos = RandUtil.Vector2(width, height);
+                }
+                resources.Add(new Tree(pos, RandUtil.Int(1, 3), content));
+            }
 
 
 
-            npcs = new NPC[1000];
+            npcs = new List<NPC>(NPC_COUNT);
 
             var worldArea = w * h;
             var numCities =  (int)(worldArea * cityDensity);
@@ -120,23 +140,21 @@ namespace PRPG
                         var npcPos = cityPos + npcVector;
                         tile = GetTile(npcPos);
                         if (tile != TerrainTile.WATER) {
-                            npcs[npcIndex] = new NPC(npcPos, content);
+                            npcs.Add(new NPC(npcPos, content));
                             npcIndex++;
                         }
                     }
                 }
             }
 
-            while (npcIndex < npcs.Length) {
+            while (npcIndex < NPC_COUNT) {
                 var npcPos = new Vector2(RandUtil.Float(w - 1), RandUtil.Float(h - 1));
                 var tile = GetTile(npcPos);
                 if (tile != TerrainTile.WATER) {
-                    npcs[npcIndex] = new NPC(npcPos, content);
+                    npcs.Add(new NPC(npcPos, content));
                     npcIndex++;
                 }
             }
-
-
         }
 
 

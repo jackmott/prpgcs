@@ -18,9 +18,34 @@ namespace PRPG
             return x;
         }
 
+        public static int NormalInt(int mean, int variance)
+        {
+            return (int)NormalFloat(mean,variance);
+        }
+
+        
+        public static float NormalFloat(float mean, float variance)
+        {
+            double u1 = 1.0f - r.NextDouble(); //uniform(0,1] random doubles
+            double u2 = 1.0f - r.NextDouble();
+            float randStdNormal =(float)( Math.Sqrt(-2.0 * Math.Log(u1)) *
+                                   Math.Sin(2.0 * Math.PI * u2)); //random normal(0,1)            
+            return mean + variance * randStdNormal; //random normal(mean,stdDev^2)            
+        }
+
+        public static int NormalInt(int mean, int variance, int min, int max)
+        {
+            return MathHelper.Clamp(NormalInt(mean, variance), min, max);
+        }
+
+        public static float NormalFloat(float mean, float variance, float min, float max)
+        {
+            return MathHelper.Clamp(NormalFloat(mean, variance), min, max);
+        }
+
         public static Vector2 Vector2(float firstMax, float secondMax)
         {
-            return new Vector2(RandUtil.Float(0.0f, firstMax), RandUtil.Float(0.0f, secondMax));
+            return new Vector2(Float(0.0f, firstMax), Float(0.0f, secondMax));
         }
 
         public static bool OneInN(int N)

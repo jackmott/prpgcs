@@ -11,6 +11,7 @@ namespace PRPG
 
     public class Inventory {        
         List<Item> itemList;
+        public int gold;
 
         public Inventory() {            
             itemList = new List<Item>();

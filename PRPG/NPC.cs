@@ -51,7 +51,7 @@ namespace PRPG
         public Gender gender;
         public string fullName { get { return firstName + " " + lastName; } }
 
-        public Inventory items;
+        public Inventory inventory;
 
         public static string[] namePool;
         public static NPCClass[] classPool;
@@ -78,7 +78,7 @@ namespace PRPG
             firstName = RandUtil.Index(namePool);
             npcClass = RandUtil.Index(classPool);
             lastAnimationTime = TimeSpan.FromMilliseconds(0);
-            items = new Inventory();
+            inventory = new Inventory();
 
             facing = CharSprites.DOWN;
 
@@ -91,7 +91,7 @@ namespace PRPG
             //Give them some things relevant to their class
             int numItems = RandUtil.Int(0, 5);            
             for (int i = 0; i < numItems; i++) {                
-                items.Add(new Item(RandUtil.Index(npcClass.desires),1));
+                inventory.Add(new Item(RandUtil.Index(npcClass.desires),1));
             }
             
            
@@ -148,7 +148,7 @@ namespace PRPG
 
         public int Happiness(Inventory inventory = null) {
             if (inventory == null)
-                inventory = items;
+                inventory = this.inventory;
 
             double totalPossibleUtility = desires.Sum(d => d.level)
                 + inventory.TotalItems;
@@ -170,11 +170,11 @@ namespace PRPG
             var elapsedTime = DateTime.Now - craftingState.startTime;
             if (elapsedTime.TotalSeconds >= craftingState.recipe.time) {
                 foreach (var input in craftingState.recipe.inputs) {
-                    items.Remove(input);
+                    inventory.Remove(input);
                 }
 
                 foreach (var output in craftingState.recipe.outputs) {
-                    items.Add(new Item(output.name,output.qty));
+                    inventory.Add(new Item(output.name,output.qty));
                 }
 
                 state = new RestingState();
@@ -186,11 +186,11 @@ namespace PRPG
             foreach (var recipe in npcClass.craftingRecipes) {
                 bool canCraftThis = true;
                 foreach (var item in recipe.inputs) {
-                    if (!items.Contains(item)) {
+                    if (!inventory.Contains(item)) {
                         canCraftThis = false;
                         break;
                     } else {
-                        if (items.ItemQty(item.name) < item.qty) {
+                        if (inventory.ItemQty(item.name) < item.qty) {
                             canCraftThis = false;
                             break;
                         }
@@ -268,7 +268,7 @@ namespace PRPG
         public void Draw(Vector2 screenPos, float scale = 1.0f, bool onTop = false) {
 
             if (sprites != null) {                
-                Rectangle srcRectangle = sprites.walking[facing, animIndex];                
+                Rectangle srcRectangle = sprites.walkingAnimation[facing, animIndex];                
                 float depth = 1.0f - (screenPos.Y + srcRectangle.Height) / PRPGame.windowHeight;
                 if (onTop) depth = 0.0f;
                 PRPGame.batch.Draw(sprites.baseSheet, screenPos,  srcRectangle, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, depth + .000006f);
@@ -278,7 +278,7 @@ namespace PRPG
                 PRPGame.batch.Draw(sprites.pantSheet, screenPos,  srcRectangle, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, depth + .000002f);
                 PRPGame.batch.Draw(sprites.shoeSheet, screenPos,  srcRectangle, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, depth + .000001f);
                 if (hello && !onTop) {
-                    PRPGame.batch.DrawString(PRPGame.mainFont, "Hello!", screenPos, Color.White);
+                    PRPGame.DrawString(PRPGame.mainFont, "Hello!", screenPos, Color.White, 0.02f);                    
                 }
             }
         }

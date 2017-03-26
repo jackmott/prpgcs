@@ -28,6 +28,11 @@ namespace PRPG
             badTrade = p["BadTrade"].Select(x => (string)x).ToArray();
         }
 
+        public string GetIdleChat()
+        {
+            return RandUtil.Index(idleChat);
+        }
+
         public string GetLikeResponse(Item item)
         {
             var response = RandUtil.Index(like);
