@@ -231,9 +231,9 @@ namespace PRPG
                     break;
             }
            
-            /* move around code 
+             
             if (destination == Vector2.Zero) {
-                if (RandUtil.Dice(1000)) {
+                if (RandUtil.OneInN(1000)) {
                     var destVector = new Vector2(RandUtil.Int(-10,10), RandUtil.Int(-10,10));
                     destination = pos + destVector;
                 }
@@ -248,7 +248,7 @@ namespace PRPG
             if (pos == oldPos) return;
             lastAnimationTime += gameTime.ElapsedGameTime;
             if (lastAnimationTime.TotalMilliseconds > 100) {
-                animIndex = (animIndex + 1) % sprites.walking.GetLength(1);
+                animIndex = (animIndex + 1) % CharSprites.WALKING_WIDTH;
                 lastAnimationTime = TimeSpan.FromMilliseconds(0);
             }
             Vector2 dir = pos - oldPos;
@@ -261,7 +261,7 @@ namespace PRPG
                 else facing = CharSprites.UP;
 
             }
-            oldPos = pos;*/
+            oldPos = pos;
 
         }
 

@@ -243,7 +243,8 @@ namespace PRPG
                     
                     if (minDist < actionDist + (closestResource.width / 2 / World.tileSize) && closestResource != null)
                     {
-                        player.Chop(closestResource);                        
+                        if (!player.chopping) 
+                            player.Chop(closestResource);                        
                     }
                 }
 
