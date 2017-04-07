@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System.IO;
 using Microsoft.Xna.Framework.Content;
+using JM.LinqFaster;
 
 namespace PRPG
 {
@@ -132,10 +133,11 @@ namespace PRPG
             }
             return fileNames;
         }
+
         public static T[] LoadAllContent<T>(ContentManager contentManager, string contentFolder, bool subDirs = true)
         {
 
-            return LoadFileNames(contentManager, contentFolder, subDirs).Select(x => contentManager.Load<T>(x)).ToArray();
+            return LoadFileNames(contentManager, contentFolder, subDirs).SelectF(x => contentManager.Load<T>(x));
         }
 
 

@@ -7,6 +7,7 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 using static System.Math;
 using Microsoft.Xna.Framework.Content;
+using JM.LinqFaster;
 
 namespace PRPG
 {

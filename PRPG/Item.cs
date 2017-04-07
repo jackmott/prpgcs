@@ -20,7 +20,7 @@ namespace PRPG
 
         public int TotalItems {
             get {
-                return itemList.Sum(x => x.qty);
+                return itemList.SumF(x => x.qty);
             }
         }
 
@@ -56,22 +56,22 @@ namespace PRPG
         }
 
         public void Add(Item item) {
-            var existingItems = itemList.Where(x => x.name == item.name);
-            Debug.Assert(existingItems.Count() <= 1);
-            if (existingItems.Count() == 0) {
+            var existingItems = itemList.WhereF(x => x.name == item.name);
+            Debug.Assert(existingItems.Count <= 1);
+            if (existingItems.Count == 0) {
                 itemList.Add(item);
             } else {
-                var existingItem = existingItems.First(); 
+                var existingItem = existingItems.FirstF(); 
                 existingItem.qty += item.qty;
             }
 
         }
 
         public void Remove(Item item) {
-            var existingItems = itemList.Where(x => x.name == item.name);
-            Debug.Assert(existingItems.Count() <= 1);
-            if (existingItems.Count() > 0) {
-                var existingItem = existingItems.First();
+            var existingItems = itemList.WhereF(x => x.name == item.name);
+            Debug.Assert(existingItems.Count <= 1);
+            if (existingItems.Count > 0) {
+                var existingItem = existingItems.FirstF();
                 existingItem.qty -= item.qty;
                 if (existingItem.qty <= 0) itemList.Remove(existingItem);
             }
