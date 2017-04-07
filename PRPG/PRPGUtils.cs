@@ -20,7 +20,7 @@ namespace PRPG
             for (int i = 1; i < array.Length;i++)
             {
                 var t = array[i];
-                var value = lambda.Invoke(t);
+                var value = lambda(t);
                 if (value < minValue)
                 {
                     minValue = value;
@@ -34,7 +34,7 @@ namespace PRPG
         {
             foreach (var x in array)
             {
-                lambda.Invoke(x);
+                lambda(x);
             }        
         }
 
